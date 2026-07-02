@@ -185,6 +185,11 @@
   },
   "active": "bd9d28b1c2833ae1",
   "lastOpenFiles": [
+    "node_modules/lightningcss-win32-x64-msvc/README.md",
+    "node_modules/lightningcss-win32-x64-msvc/package.json",
+    "node_modules/lightningcss-win32-x64-msvc/lightningcss.win32-x64-msvc.node",
+    "node_modules/lightningcss-win32-x64-msvc/LICENSE",
+    "node_modules/lightningcss-win32-x64-msvc",
     "specs/world-events.md",
     "docs/Sprint5.md",
     "lib/domain/events.ts",
@@ -205,10 +210,6 @@
     "specs/game-creation.md",
     "app/setup/players/page.tsx",
     "app/setup/players",
-    "components/features/setup/CreateGameForm.tsx",
-    "lib/domain/game.test.ts",
-    "lib/domain/game.ts",
-    "lib/domain/id.ts",
     "docs/Sprint1.md",
     "docs/Sprint0.md",
     "docs/Vision.md",
@@ -220,7 +221,6 @@
     "node_modules/eslint-plugin-jsx-a11y/docs/rules/role-has-required-aria-props.md",
     "node_modules/eslint-plugin-jsx-a11y/docs/rules/no-static-element-interactions.md",
     "node_modules/eslint-plugin-jsx-a11y/docs/rules/no-redundant-roles.md",
-    "node_modules/eslint-plugin-jsx-a11y/docs/rules/no-onchange.md",
     "node_modules/dexie/testmuai-logo.svg",
     "node_modules/dexie/testmuai-logo-white.svg"
   ]
