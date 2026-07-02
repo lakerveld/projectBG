@@ -1,9 +1,14 @@
 @import "tailwindcss";
+@config "../tailwind.config.ts";
 
 :root {
   color-scheme: light;
   background: #f8f5ee;
   color: #1f2421;
+
+  /* Fantasy type roles (graceful serif fallbacks if webfonts are unavailable) */
+  --font-display: "Cinzel", "Trajan Pro", "Georgia", serif;
+  --font-body: "Spectral", "Iowan Old Style", "Georgia", serif;
 }
 
 * {
@@ -49,3 +54,125 @@ button {
   flex-direction: column;
 }
 
+/* ------------------------------------------------------------------ */
+/*  Chronicle: dark-fantasy theme surfaces                            */
+/* ------------------------------------------------------------------ */
+
+/* Candle-lit great hall backdrop. Scope the dark theme to this wrapper
+   so existing light screens are untouched. */
+.hall {
+  color: #efe4c9;
+  font-family: var(--font-body);
+  background-color: #14100a;
+  background-image:
+    radial-gradient(120% 60% at 50% -10%, rgba(200, 148, 44, 0.18), transparent 60%),
+    radial-gradient(90% 50% at 12% 8%, rgba(109, 91, 176, 0.1), transparent 55%),
+    radial-gradient(90% 55% at 88% 4%, rgba(180, 71, 47, 0.08), transparent 55%),
+    linear-gradient(180deg, #1a140c 0%, #14100a 42%, #0d0a06 100%);
+  background-attachment: fixed;
+}
+
+/* Faint woven-linen tone for parchment faces */
+.parchment-face {
+  background-color: #efe4c9;
+  background-image:
+    radial-gradient(140% 120% at 50% -20%, rgba(255, 251, 238, 0.9), transparent 45%),
+    linear-gradient(180deg, #f3e9d2 0%, #efe4c9 55%, #e6d7b4 100%);
+}
+
+/* Deckled / illuminated top sheen used on primary cards */
+.illuminated::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    160deg,
+    rgba(232, 191, 106, 0.9),
+    rgba(200, 148, 44, 0.25) 30%,
+    rgba(120, 96, 54, 0.15) 65%,
+    rgba(232, 191, 106, 0.5)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Slow breathing glow for the wax seal / active accents */
+@keyframes seal-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 8px 18px rgba(10, 8, 5, 0.6),
+      0 0 0 rgba(200, 148, 44, 0);
+  }
+  50% {
+    box-shadow:
+      0 8px 18px rgba(10, 8, 5, 0.6),
+      0 0 22px rgba(200, 148, 44, 0.45);
+  }
+}
+
+.seal-pulse {
+  animation: seal-pulse 4.5s ease-in-out infinite;
+}
+
+@keyframes dice-settle {
+  0% {
+    transform: rotate(-14deg) scale(0.82);
+    opacity: 0;
+  }
+  60% {
+    transform: rotate(4deg) scale(1.04);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+.dice-settle {
+  animation: dice-settle 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes veil-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scroll-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.veil-in {
+  animation: veil-in 0.2s ease-out both;
+}
+
+.scroll-in {
+  animation: scroll-in 0.32s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .seal-pulse,
+  .dice-settle,
+  .veil-in,
+  .scroll-in {
+    animation: none !important;
+  }
+}

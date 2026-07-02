@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { History, Play, Settings, UsersRound } from "lucide-react";
+import { History, Play, Settings, Sparkles, UsersRound } from "lucide-react";
 import { AppHeader } from "@/components/ui/AppHeader";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { Panel } from "@/components/ui/Panel";
@@ -15,6 +15,9 @@ export default function HomePage() {
         </ButtonLink>
         <ButtonLink href="/game" icon={Play} variant="secondary">
           Open dashboard
+        </ButtonLink>
+        <ButtonLink href="/kit" icon={Sparkles} variant="secondary">
+          Fantasy component kit
         </ButtonLink>
       </section>
 
