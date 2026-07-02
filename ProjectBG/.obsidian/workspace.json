@@ -1,0 +1,227 @@
+{
+  "main": {
+    "id": "6ec1256071669761",
+    "type": "split",
+    "children": [
+      {
+        "id": "b14c838b024f649f",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "bd9d28b1c2833ae1",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "docs/Events.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Events"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "647b805a101c242c",
+    "type": "split",
+    "children": [
+      {
+        "id": "2f7da197e42285ff",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "1c28151abedf3341",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "8251df0a07d71654",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "2e6dbd7449420ac7",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "34fcfaf481bf08bb",
+    "type": "split",
+    "children": [
+      {
+        "id": "2555fe4cda2805ac",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "94863dee9793dd93",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "docs/Events.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Events"
+            }
+          },
+          {
+            "id": "ec0e1c349b065b71",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "docs/Events.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Events"
+            }
+          },
+          {
+            "id": "e1b1547c918d1631",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "c0fa7fbcd51da1ea",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "745b64576c2fe7b6",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "docs/Events.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Events"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "bd9d28b1c2833ae1",
+  "lastOpenFiles": [
+    "specs/world-events.md",
+    "docs/Sprint5.md",
+    "lib/domain/events.ts",
+    "docs/Untitled.md",
+    "docs/Events.md",
+    "docs/Mechanics.md",
+    "docs/Sprint4.md",
+    "specs/dice-entry.md",
+    "lib/domain/dice.test.ts",
+    "lib/domain/dice.ts",
+    "docs/Sprint3.md",
+    "docs/Sprint2.md",
+    "docs/Roadmap.md",
+    "docs/Resources.md",
+    "docs/PlayerFlow.md",
+    "specs/start-game-king-selection.md",
+    "node_modules/next/navigation.d.ts",
+    "specs/game-creation.md",
+    "app/setup/players/page.tsx",
+    "app/setup/players",
+    "components/features/setup/CreateGameForm.tsx",
+    "lib/domain/game.test.ts",
+    "lib/domain/game.ts",
+    "lib/domain/id.ts",
+    "docs/Sprint1.md",
+    "docs/Sprint0.md",
+    "docs/Vision.md",
+    "node_modules/eslint-plugin-jsx-a11y/CHANGELOG.md",
+    "node_modules/eslint-plugin-jsx-a11y/docs/rules/scope.md",
+    "node_modules/eslint-plugin-jsx-a11y/docs/rules/tabindex-no-positive.md",
+    "node_modules/eslint-plugin-jsx-a11y/docs/rules/role-supports-aria-props.md",
+    "node_modules/eslint-plugin-jsx-a11y/docs/rules/prefer-tag-over-role.md",
+    "node_modules/eslint-plugin-jsx-a11y/docs/rules/role-has-required-aria-props.md",
+    "node_modules/eslint-plugin-jsx-a11y/docs/rules/no-static-element-interactions.md",
+    "node_modules/eslint-plugin-jsx-a11y/docs/rules/no-redundant-roles.md",
+    "node_modules/eslint-plugin-jsx-a11y/docs/rules/no-onchange.md",
+    "node_modules/dexie/testmuai-logo.svg",
+    "node_modules/dexie/testmuai-logo-white.svg"
+  ]
+}
