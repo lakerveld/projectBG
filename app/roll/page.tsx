@@ -16,6 +16,16 @@ export default function RollPage() {
   const currentTurnPlayer = game.players.find((player) => player.id === game.currentTurnPlayerId);
   const diceTotals = useMemo(() => [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], []);
   const roundRolls = game.currentRoundRolls ?? [];
+  const roundRollSummaries = roundRolls.map((roll) => {
+    const player = game.players.find((candidate) => candidate.id === roll.playerId);
+
+    return {
+      playerId: roll.playerId,
+      playerName: player?.name ?? "Unknown realm",
+      playerColor: player?.color ?? "#8a5f18",
+      total: roll.total
+    };
+  });
 
   useEffect(() => {
     void hydrate();
@@ -69,10 +79,10 @@ export default function RollPage() {
         <section className="grid content-end gap-3">
           <DicePanel
             round={game.round}
-            currentPlayerName={currentTurnPlayer?.name}
+            currentPlayer={currentTurnPlayer}
             selectedTotal={selectedTotal}
             diceTotals={diceTotals}
-            roundRolls={roundRolls.length}
+            roundRolls={roundRollSummaries}
             playerCount={game.players.length}
             onSelectTotal={setSelectedTotal}
             onApplyRoll={() => void handleApplyRoll()}

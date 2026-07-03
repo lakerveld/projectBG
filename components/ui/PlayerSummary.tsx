@@ -34,7 +34,7 @@ export function PlayerSummary({
   const body = (
     <div className="flex items-center gap-3.5 p-3.5">
       <span
-        className="relative grid size-14 shrink-0 place-items-center overflow-hidden rounded-2xl border-[3px] bg-[#e6d7b4] font-display text-xl font-bold text-white shadow-carved"
+        className="relative grid size-14 shrink-0 place-items-center overflow-hidden rounded-full border-[3px] bg-[#e6d7b4] font-display text-xl font-bold text-white shadow-carved"
         style={{ borderColor: player.color, backgroundColor: avatar ? undefined : player.color }}
         aria-hidden="true"
       >
