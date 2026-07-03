@@ -11,6 +11,7 @@ type RealmAvatarProps = {
   player: Player;
   resources: ResourceDefinition[];
   turnActive?: boolean;
+  diceTotal?: number;
   positionLabel: string;
   top: string;
   left: string;
@@ -20,6 +21,7 @@ export const RealmAvatar = memo(function RealmAvatar({
   player,
   resources,
   turnActive,
+  diceTotal,
   positionLabel,
   top,
   left
@@ -88,6 +90,11 @@ export const RealmAvatar = memo(function RealmAvatar({
             {totalResources}
           </span>
         </div>
+        {typeof diceTotal === "number" ? (
+          <div className="mt-0.5 rounded-full border border-gold/25 bg-night/75 px-2.5 py-0.5 font-display text-[0.72rem] font-bold uppercase tracking-[0.2em] text-gold shadow-seal">
+            Roll {diceTotal}
+          </div>
+        ) : null}
       </div>
     </article>
   );

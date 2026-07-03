@@ -47,6 +47,7 @@ export function GameDashboard() {
           players={game.players}
           resources={game.resources}
           currentTurnPlayerId={game.currentTurnPlayerId}
+          roundRolls={roundRolls}
         />
         <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex justify-center p-3">
           <ActiveEventBanner event={game.activeWorldEvent} />

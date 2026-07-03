@@ -3,13 +3,14 @@
 import { memo, useMemo } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/ui/cn";
-import type { Player, ResourceDefinition } from "@/lib/domain/types";
+import type { Player, ResourceDefinition, RoundRoll } from "@/lib/domain/types";
 import { RealmAvatar } from "./RealmAvatar";
 
 type KingdomMapProps = {
   players: Player[];
   resources: ResourceDefinition[];
   currentTurnPlayerId?: string;
+  roundRolls?: RoundRoll[];
 };
 
 type Slot = {
@@ -54,10 +55,15 @@ const SLOT_MAP: Record<number, Slot[]> = {
 export const KingdomMap = memo(function KingdomMap({
   players,
   resources,
-  currentTurnPlayerId
+  currentTurnPlayerId,
+  roundRolls = []
 }: KingdomMapProps) {
   const slots = useMemo(() => SLOT_MAP[players.length] ?? SLOT_MAP[6], [players.length]);
   const shownPlayers = players.slice(0, slots.length);
+  const rollByPlayerId = useMemo(
+    () => new Map(roundRolls.map((roll) => [roll.playerId, roll.total] as const)),
+    [roundRolls]
+  );
 
   return (
     <section className="relative h-full w-full min-h-0 overflow-hidden bg-[#05131a]">
@@ -87,6 +93,7 @@ export const KingdomMap = memo(function KingdomMap({
               player={player}
               resources={resources}
               turnActive={player.id === currentTurnPlayerId}
+              diceTotal={rollByPlayerId.get(player.id)}
               positionLabel={slot.anchor}
               top={slot.top}
               left={slot.left}

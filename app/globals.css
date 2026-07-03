@@ -236,6 +236,224 @@ button {
   will-change: transform;
 }
 
+@keyframes summary-card-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes summary-die-drop {
+  0% {
+    opacity: 0;
+    transform: translateY(-18px) rotate(-10deg) scale(0.84);
+  }
+  62% {
+    opacity: 1;
+    transform: translateY(3px) rotate(4deg) scale(1.06);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+}
+
+@keyframes summary-loader-glow {
+  0% {
+    opacity: 0;
+    transform: scale(0.96);
+    box-shadow: 0 0 0 rgba(200, 148, 44, 0);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.02);
+    box-shadow: 0 0 28px rgba(200, 148, 44, 0.3);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 18px rgba(200, 148, 44, 0.18);
+  }
+}
+
+@keyframes catan-hex-breathe {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+    filter: saturate(1);
+  }
+  50% {
+    transform: translateY(-5px) scale(1.05);
+    filter: saturate(1.22);
+  }
+}
+
+@keyframes catan-road-draw {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scaleX(0.5);
+  }
+  45%,
+  70% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes catan-settlement-pop {
+  0%,
+  58% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.55);
+  }
+  72% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.18);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes summary-event-open {
+  from {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.08);
+    filter: blur(10px);
+  }
+}
+
+.round-summary-card {
+  animation: summary-card-rise 0.48s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.round-summary-die {
+  opacity: 0;
+  animation: summary-die-drop 0.62s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.round-summary-loader {
+  opacity: 0;
+  animation: summary-loader-glow 0.72s cubic-bezier(0.2, 0.8, 0.2, 1) 1.15s both;
+}
+
+.round-summary-stage-open > .relative {
+  animation: summary-event-open 0.65s ease-in both;
+}
+
+.catan-loader {
+  position: relative;
+  width: min(13rem, 72vw);
+  height: 7.8rem;
+}
+
+.catan-hex {
+  position: absolute;
+  width: 4.1rem;
+  aspect-ratio: 1.12;
+  clip-path: polygon(25% 4%, 75% 4%, 100% 50%, 75% 96%, 25% 96%, 0 50%);
+  border: 1px solid rgba(239, 228, 201, 0.32);
+  box-shadow:
+    inset 0 0 18px rgba(255, 246, 224, 0.16),
+    0 10px 18px rgba(0, 0, 0, 0.32);
+  animation: catan-hex-breathe 1.9s ease-in-out infinite;
+}
+
+.catan-hex-grain {
+  left: 4.45rem;
+  top: 0;
+  background:
+    radial-gradient(circle at 35% 28%, rgba(255, 246, 180, 0.78), transparent 26%),
+    linear-gradient(145deg, #cf9f31, #7d5a19);
+}
+
+.catan-hex-forest {
+  left: 2.18rem;
+  top: 2.05rem;
+  background:
+    radial-gradient(circle at 40% 25%, rgba(167, 219, 111, 0.58), transparent 24%),
+    linear-gradient(145deg, #2e6b3f, #123321);
+  animation-delay: 120ms;
+}
+
+.catan-hex-brick {
+  left: 6.72rem;
+  top: 2.05rem;
+  background:
+    radial-gradient(circle at 35% 30%, rgba(255, 178, 118, 0.52), transparent 24%),
+    linear-gradient(145deg, #a64a2e, #4c1f16);
+  animation-delay: 240ms;
+}
+
+.catan-hex-sheep {
+  left: 0;
+  top: 4.1rem;
+  background:
+    radial-gradient(circle at 48% 30%, rgba(226, 255, 190, 0.6), transparent 24%),
+    linear-gradient(145deg, #77a849, #2e5225);
+  animation-delay: 360ms;
+}
+
+.catan-hex-ore {
+  left: 4.45rem;
+  top: 4.1rem;
+  background:
+    radial-gradient(circle at 36% 28%, rgba(214, 219, 224, 0.5), transparent 22%),
+    linear-gradient(145deg, #727978, #272f31);
+  animation-delay: 480ms;
+}
+
+.catan-road {
+  position: absolute;
+  z-index: 2;
+  height: 0.34rem;
+  width: 3.7rem;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #7a3f21, #d8a052, #7a3f21);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.38);
+  transform-origin: left center;
+  animation: catan-road-draw 1.8s ease-in-out infinite;
+}
+
+.catan-road-one {
+  left: 4.25rem;
+  top: 3.72rem;
+  rotate: 30deg;
+}
+
+.catan-road-two {
+  left: 6.65rem;
+  top: 5.08rem;
+  rotate: -30deg;
+  animation-delay: 340ms;
+}
+
+.catan-settlement {
+  position: absolute;
+  left: 8.6rem;
+  top: 4.9rem;
+  z-index: 3;
+  width: 1.05rem;
+  height: 1.05rem;
+  background: #e8bf6a;
+  clip-path: polygon(50% 0, 100% 38%, 100% 100%, 0 100%, 0 38%);
+  box-shadow:
+    inset 0 -3px 0 rgba(95, 57, 22, 0.34),
+    0 5px 12px rgba(0, 0, 0, 0.45);
+  animation: catan-settlement-pop 1.8s ease-in-out infinite;
+}
+
 .kingdom-island {
   background:
     radial-gradient(circle at 50% 48%, rgba(255, 244, 214, 0.18), transparent 16%),
@@ -345,6 +563,13 @@ button {
   .veil-in,
   .scroll-in,
   .event-bg-zoom,
+  .round-summary-card,
+  .round-summary-die,
+  .round-summary-loader,
+  .round-summary-stage-open > .relative,
+  .catan-hex,
+  .catan-road,
+  .catan-settlement,
   .realm-aura,
   .realm-avatar-active,
   .realm-particles {

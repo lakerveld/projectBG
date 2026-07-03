@@ -5,16 +5,10 @@ import Image from "next/image";
 import { Dice5 } from "lucide-react";
 import { ActionButton } from "@/components/ui/ActionButton";
 import { ParchmentCard } from "@/components/ui/ParchmentCard";
+import type { RoundRollSummary } from "@/components/features/game/RoundRollsPanel";
 import { getPlayerAvatar } from "@/lib/domain/avatars";
 import { cn } from "@/lib/ui/cn";
 import type { Player } from "@/lib/domain/types";
-
-type RoundRollSummary = {
-  playerId: string;
-  playerName: string;
-  playerColor: string;
-  total: number;
-};
 
 type DicePanelProps = {
   round: number;
@@ -110,41 +104,6 @@ export const DicePanel = memo(function DicePanel({
               {total}
             </button>
           ))}
-        </div>
-
-        <div className="rounded-2xl border border-parchment-edge/60 bg-night/5 px-3 py-2.5">
-          <div className="flex items-center justify-between gap-3">
-            <p className="font-display text-[0.7rem] uppercase tracking-[0.26em] text-sepia-muted">
-              Previous rolls
-            </p>
-            <p className="font-display text-xs font-bold text-sepia-muted">This round</p>
-          </div>
-          {roundRolls.length > 0 ? (
-            <ul className="mt-2 grid gap-1.5">
-              {roundRolls.map((roll) => (
-                <li
-                  key={roll.playerId}
-                  className="grid grid-cols-[auto_1fr_auto] items-center gap-2 rounded-xl border border-parchment-edge/50 bg-white/35 px-2.5 py-2"
-                >
-                  <span
-                    className="size-2.5 rounded-full"
-                    style={{ backgroundColor: roll.playerColor }}
-                    aria-hidden="true"
-                  />
-                  <span className="truncate font-body text-sm font-semibold text-sepia">
-                    {roll.playerName}
-                  </span>
-                  <span className="grid size-8 place-items-center rounded-full bg-night/85 font-display text-base font-bold text-gold">
-                    {roll.total}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="mt-2 font-body text-sm font-semibold text-sepia/65">
-              No dice entered yet.
-            </p>
-          )}
         </div>
 
         <ActionButton

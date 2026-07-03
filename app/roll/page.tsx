@@ -4,10 +4,10 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, ScrollText } from "lucide-react";
 import { DicePanel } from "@/components/features/game/DicePanel";
+import { RoundRollsPanel } from "@/components/features/game/RoundRollsPanel";
 import { ActionButton } from "@/components/ui/ActionButton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { useGameStore } from "@/lib/state/gameStore";
-import { playEventSoundOnce } from "@/lib/ui/useEventSound";
 
 export default function RollPage() {
   const router = useRouter();
@@ -41,8 +41,7 @@ export default function RollPage() {
     setSelectedTotal(null);
 
     if (updatedGame?.activeWorldEvent && willCompleteRound) {
-      void playEventSoundOnce(`${updatedGame.round}:${updatedGame.activeWorldEvent.id}`);
-      router.push("/event");
+      router.push("/round-summary");
       return;
     }
 
@@ -63,7 +62,7 @@ export default function RollPage() {
 
   return (
     <main className="hall min-h-dvh overflow-hidden px-4 py-5">
-      <div className="mx-auto grid min-h-[calc(100dvh-2.5rem)] w-full max-w-md grid-rows-[auto_1fr] gap-5">
+      <div className="mx-auto grid min-h-[calc(100dvh-2.5rem)] w-full max-w-md grid-rows-[auto_auto_1fr] gap-5">
         <div className="flex items-center justify-between gap-3">
           <ActionButton
             icon={ArrowLeft}
@@ -75,6 +74,10 @@ export default function RollPage() {
           </ActionButton>
           <p className="font-display text-xs uppercase tracking-[0.32em] text-gold/80">Roll</p>
         </div>
+
+        <section>
+          <RoundRollsPanel roundRolls={roundRollSummaries} />
+        </section>
 
         <section className="grid content-end gap-3">
           <DicePanel
