@@ -8,6 +8,7 @@ import { RoundRollsPanel } from "@/components/features/game/RoundRollsPanel";
 import { ActionButton } from "@/components/ui/ActionButton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { useGameStore } from "@/lib/state/gameStore";
+import { unlockEventSound } from "@/lib/ui/useEventSound";
 
 export default function RollPage() {
   const router = useRouter();
@@ -35,6 +36,8 @@ export default function RollPage() {
     if (selectedTotal === null) {
       return;
     }
+
+    void unlockEventSound();
 
     const willCompleteRound = roundRolls.length + 1 >= game.players.length;
     const updatedGame = await recordDiceTotal(selectedTotal);
