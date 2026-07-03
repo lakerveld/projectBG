@@ -10,10 +10,10 @@ export function PlayerSetupPreview() {
     <ol className="grid gap-3">
       {setupSteps.map((step, index) => (
         <li
-          className="flex min-h-12 items-center gap-3 rounded-lg border border-line bg-bg px-3 text-sm font-semibold"
+          className="flex min-h-12 items-center gap-3 rounded-xl border border-parchment-edge/60 bg-[#e6d7b4]/40 px-3 font-body text-sm font-semibold text-sepia"
           key={step}
         >
-          <span className="grid size-7 place-items-center rounded-full bg-forest text-xs font-black text-white">
+          <span className="grid size-7 place-items-center rounded-full bg-gold font-display text-xs font-black text-night-deep shadow-carved">
             {index + 1}
           </span>
           {step}
@@ -22,4 +22,3 @@ export function PlayerSetupPreview() {
     </ol>
   );
 }
-

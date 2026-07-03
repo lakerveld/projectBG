@@ -11,6 +11,7 @@ export type Player = {
   id: EntityId;
   name: string;
   color: string;
+  avatarId?: string;
   resources: Record<EntityId, number>;
 };
 
@@ -69,6 +70,24 @@ export type WorldEventSeverity = "minor" | "medium" | "major";
 
 export type WorldEventDuration = "instant" | "1_round" | "2_rounds";
 
+export type WorldEventEffectKind =
+  | "grant_resource"
+  | "road_discount"
+  | "harbor_trade_boost"
+  | "bank_trade_bonus"
+  | "free_bank_trade"
+  | "tournament"
+  | "production_block"
+  | "road_surcharge";
+
+export type WorldEventEffect = {
+  kind: WorldEventEffectKind;
+  resourceId?: EntityId;
+  quantity?: number;
+  appliesTo?: "all_players" | "winner" | "global";
+  metadata?: Record<string, unknown>;
+};
+
 export type WorldEvent = {
   id: string;
   name: string;
@@ -79,6 +98,7 @@ export type WorldEvent = {
   severity: WorldEventSeverity;
   duration: WorldEventDuration;
   effectsApplied: string[];
+  effects: WorldEventEffect[];
   mvp: boolean;
 };
 
@@ -104,6 +124,7 @@ export type CreateGameCommand = {
 export type CreateGamePlayerInput = {
   name: string;
   color: string;
+  avatarId?: string;
 };
 
 export type StartGameCommand = {
@@ -118,6 +139,7 @@ export type RecordDiceRollCommand = {
   total: number;
   now?: string;
   idFactory?: () => EntityId;
+  random?: () => number;
 };
 
 export type CommandResult<TState> = {

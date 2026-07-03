@@ -7,7 +7,7 @@ Implement the review, start game, and random King selection flow after players a
 ## Goals
 
 - Let players review the table before starting.
-- Start the local game from the setup screen.
+- Start the local game from a dedicated King selection screen.
 - Randomly select one player as the King.
 - Mark the King as the first-turn player.
 - Persist the started game locally.
@@ -15,11 +15,12 @@ Implement the review, start game, and random King selection flow after players a
 ## Scope
 
 - Add domain command for `startGame`.
+- Add `/king` as the review and King randomizer route.
 - Randomly select a King from the saved players.
 - Store `kingPlayerId`, `currentTurnPlayerId`, `round`, and `setupStatus`.
 - Record a `game.started` history entry.
 - Add a short King selection animation.
-- Route to the game dashboard after starting.
+- Route to the game dashboard after the King is selected.
 - Highlight the King in the dashboard.
 - Add unit tests for King selection and already-started validation.
 
@@ -36,7 +37,7 @@ Implement the review, start game, and random King selection flow after players a
 ## Definition of Done
 
 - A saved setup can be reviewed.
-- Pressing Start Game triggers a short King selection animation.
+- Pressing Select King triggers a short King selection animation.
 - Exactly one player is selected as King.
 - The King receives the first-turn marker.
 - The game is persisted as in progress.
@@ -48,6 +49,7 @@ Implement the review, start game, and random King selection flow after players a
 - Should the King selection animation be skippable?
 - Should the selected King be announced with sound later in a native wrapper?
 - Should players be able to restart King selection before round 1 begins?
+- Should the King screen eventually include a manual override before continuing?
 
 ## Future Improvements
 

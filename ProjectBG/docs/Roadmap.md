@@ -22,7 +22,7 @@ Describe a staged delivery plan from repository setup through MVP validation and
 
 - Initialize Next.js, TypeScript, React, and TailwindCSS.
 - Add base app shell, route structure, responsive layout primitives, and theme tokens.
-- Create non-functional UI screens for create game, players, dashboard, history, and settings.
+- Create non-functional UI screens for create game, players, and the shared game dashboard.
 - Add local component documentation.
 
 ## Phase 2: Setup MVP
@@ -34,9 +34,8 @@ Describe a staged delivery plan from repository setup through MVP validation and
 
 ## Phase 3: Gameplay MVP
 
-- Add dice roll entry, round-average world events, resource tracking, bonuses, penalties, and history.
-- Add undo-friendly command history for core actions.
-- Add trading and attack/defense only after setup and first-turn flow are stable.
+- Add dice roll entry and round-average world events.
+- Keep resource tracking, bonuses, penalties, history screens, trading, and attack/defense deferred until setup and first-turn flow are stable.
 
 ## Phase 4: Table Play Validation
 

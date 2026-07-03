@@ -1,49 +1,29 @@
-import Link from "next/link";
-import { History, Play, Settings, Sparkles, UsersRound } from "lucide-react";
-import { AppHeader } from "@/components/ui/AppHeader";
-import { ButtonLink } from "@/components/ui/ButtonLink";
-import { Panel } from "@/components/ui/Panel";
+"use client";
+
+import { useRouter } from "next/navigation";
+import { UsersRound } from "lucide-react";
+import { ActionButton } from "@/components/ui/ActionButton";
 
 export default function HomePage() {
+  const router = useRouter();
+
   return (
-    <main className="mx-auto flex w-full max-w-xl flex-1 flex-col gap-5 px-4 py-5">
-      <AppHeader eyebrow="Sprint 2" title="ProjectBG" />
+    <main className="hall min-h-dvh overflow-x-hidden">
+      <div className="mx-auto flex min-h-dvh w-full max-w-md flex-col justify-center gap-8 px-4 py-12">
+        <header>
+          <p className="font-display text-xs uppercase tracking-[0.4em] text-gold">ProjectBG</p>
+          <h1 className="mt-2 font-display text-4xl font-bold leading-none text-parchment">
+            The Table Chronicle
+          </h1>
+          <p className="mt-3 font-body text-sm leading-6 text-parchment/70">
+            A shared-phone game master for physical fantasy board-game nights.
+          </p>
+        </header>
 
-      <section className="grid gap-3">
-        <ButtonLink href="/setup" icon={UsersRound}>
-          Create local game
-        </ButtonLink>
-        <ButtonLink href="/game" icon={Play} variant="secondary">
-          Open dashboard
-        </ButtonLink>
-        <ButtonLink href="/kit" icon={Sparkles} variant="secondary">
-          Fantasy component kit
-        </ButtonLink>
-      </section>
-
-      <Panel title="Current focus">
-        <p className="text-sm leading-6 text-muted">
-          Current focus is local setup through first turn. Create a table session, add players,
-          review the table, start the game, and crown the King.
-        </p>
-      </Panel>
-
-      <nav className="grid grid-cols-2 gap-3">
-        <Link
-          className="flex min-h-16 items-center gap-3 rounded-lg border border-line bg-panel px-4 text-sm font-semibold shadow-soft"
-          href="/history"
-        >
-          <History size={20} aria-hidden="true" />
-          History
-        </Link>
-        <Link
-          className="flex min-h-16 items-center gap-3 rounded-lg border border-line bg-panel px-4 text-sm font-semibold shadow-soft"
-          href="/settings"
-        >
-          <Settings size={20} aria-hidden="true" />
-          Settings
-        </Link>
-      </nav>
+        <ActionButton icon={UsersRound} fullWidth size="lg" onClick={() => router.push("/setup")}>
+          Create game
+        </ActionButton>
+      </div>
     </main>
   );
 }

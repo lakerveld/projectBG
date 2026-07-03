@@ -15,11 +15,11 @@ Define the first implementation sprint after the project foundation is accepted.
 
 - Initialize Next.js, TypeScript, React, and TailwindCSS. Status: started.
 - Add ESLint, formatting, import aliases, and basic scripts. Status: started.
-- Create route skeletons for setup, game dashboard, history, and settings. Status: started.
+- Create route skeletons for setup and game dashboard. Status: revised after MVP simplification.
 - Add base UI components and theme tokens. Status: started.
 - Implement minimal domain types for games, players, resources, and history. Status: started.
 - Spike local persistence with IndexedDB/Dexie. Status: started.
-- Add initial unit tests for a resource adjustment command. Status: started.
+- Add initial unit tests for a resource adjustment command. Status: superseded by setup-first MVP direction.
 
 ## Out of Scope
 
@@ -33,13 +33,13 @@ Define the first implementation sprint after the project foundation is accepted.
 
 - App runs locally.
 - Mobile-first shell displays on a phone viewport.
-- One thin state transition is implemented and tested.
+- One thin state transition is implemented and ready for testing.
 - Persistence spike can save and reload a sample game.
 - Architecture assumptions are updated in [Decisions](./Decisions.md).
 
 ## Open Questions
 
-- Should the first slice be resource tracking or game setup? Answer: resource tracking.
+- Should the first slice be resource tracking or game setup? Answer: game setup after MVP simplification.
 - Should UI components be built directly or documented with Storybook/Ladle later?
 - Should persistence spike use a real migration from day one? Answer: yes, start with Dexie schema version 1.
 

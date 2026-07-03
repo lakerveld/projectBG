@@ -22,8 +22,9 @@ Maintain the initial product backlog with work grouped by Epic, Feature, Story, 
 | Epic | App Foundation | Initialize Next.js app and baseline tooling. | L | MVP |
 | Task | Initialize Next.js TypeScript app | Configure framework, routes, TailwindCSS, linting, and aliases. | M | MVP |
 | Task | Add testing tools | Add Vitest and Playwright baseline. | M | MVP |
-| Feature | App Shell | Mobile-first navigation and layout. | M | MVP |
-| Story | Resume or create local game | As a group, we can start or resume a game quickly. | M | MVP |
+| Feature | App Shell | Mobile-first start screen and layout. | M | MVP |
+| Story | Create game entry point | As a group, we see one clear action to start setup. | S | MVP |
+| Story | Resume local game | As a group, we can resume an active game quickly after the setup loop is stable. | M | Future |
 | Epic | Game Setup | Create a local session and add players. | M | MVP |
 | Feature | Create Game | Start a local game from player setup. | S | MVP |
 | Story | Generate game metadata | As a group, we do not need to fill in game details before adding players. | XS | MVP |
@@ -42,9 +43,9 @@ Maintain the initial product backlog with work grouped by Epic, Feature, Story, 
 | Story | First turn marker | As players, we can see who takes the first turn. | S | MVP |
 | Story | Highlight King's capital | As players, the dashboard clearly marks the King. | S | MVP |
 | Task | Validate setup on mobile | Check create game and player setup on common phone widths. | S | MVP |
-| Epic | Game Dashboard | Shared table view for current game state. | L | Future |
-| Feature | Kingdom Dashboard | Show each player's resources, effects, and recent changes. | M | Future |
-| Story | View player kingdoms | As players, we can compare current state at a glance. | M | Future |
+| Epic | Game Dashboard | Shared table view for current game state. | L | MVP |
+| Feature | Kingdom Dashboard | Show each player's identity, King state, and current turn. | M | MVP |
+| Story | View player kingdoms | As players, we can see who is in the game at a glance. | S | MVP |
 | Story | Focus one kingdom | As the phone operator, I can update one player quickly. | S | Future |
 | Feature | Resource Tracking | Adjust and validate player resources. | M | Future |
 | Story | Increment and decrement resources | As players, we can keep counts accurate during play. | S | Future |
@@ -56,7 +57,7 @@ Maintain the initial product backlog with work grouped by Epic, Feature, Story, 
 | Feature | Event System | Trigger and apply structured world events. | L | MVP |
 | Story | Track round rolls | As players, each player's roll is counted toward the round average. | S | MVP |
 | Story | Generate event from round average | As players, the world mood changes after every player has rolled. | M | MVP |
-| Story | Apply event history | As players, world events are visible in history and dashboard. | M | MVP |
+| Story | Show active event | As players, the latest world event is visible on the dashboard. | S | MVP |
 | Story | Skip optional event | As players, optional events can be declined when allowed. | S | Future |
 | Epic | Player Interaction | Trades, attacks, defenses, bonuses, and penalties. | XL | Future |
 | Feature | Trade Support | Log and settle resource trades. | M | Future |
@@ -72,8 +73,8 @@ Maintain the initial product backlog with work grouped by Epic, Feature, Story, 
 | Feature | Game History | Chronological list of meaningful actions. | M | Future |
 | Story | View game history | As players, we can see how state changed. | S | Future |
 | Story | Filter history by player | As players, we can investigate disputes quickly. | S | Future |
-| Feature | Correction Flow | Undo or record corrections. | M | MVP |
-| Story | Undo last action | As players, we can recover from accidental input. | M | MVP |
+| Feature | Correction Flow | Undo or record corrections. | M | Future |
+| Story | Undo last action | As players, we can recover from accidental input. | M | Future |
 | Story | Add correction note | As players, we can explain manual fixes. | S | Future |
 | Epic | Persistence | Save and restore local games. | L | MVP |
 | Feature | Local Storage | Persist games in IndexedDB. | M | MVP |

@@ -92,6 +92,7 @@ export function createGame(command: CreateGameCommand): CommandResult<GameState>
         id: idFactory(),
         name: player.name,
         color: player.color,
+        avatarId: player.avatarId,
         resources: { ...startingResources }
       })),
       history: [historyEntry]

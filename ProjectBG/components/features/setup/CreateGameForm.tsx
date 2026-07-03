@@ -2,54 +2,63 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Check, Crown, Plus, Trash2, UsersRound } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { Panel } from "@/components/ui/Panel";
+import Image from "next/image";
+import { Check, Plus, Trash2, UsersRound } from "lucide-react";
+import { ActionButton } from "@/components/ui/ActionButton";
+import { EmptyState } from "@/components/ui/EmptyState";
+import { Modal } from "@/components/ui/Modal";
+import { ParchmentCard } from "@/components/ui/ParchmentCard";
+import { getPlayerAvatar, getRandomPlayerAvatar } from "@/lib/domain/avatars";
 import { CURATED_PLAYER_COLORS, MAX_PLAYERS, MIN_PLAYERS } from "@/lib/domain/defaults";
 import { useGameStore } from "@/lib/state/gameStore";
 
 const inputClassName =
-  "min-h-12 w-full rounded-lg border border-line bg-bg px-3 text-base font-semibold text-ink outline-none focus:border-forest";
+  "min-h-12 w-full rounded-xl border border-parchment-edge/70 bg-[#e6d7b4]/50 px-3 font-body text-base font-semibold text-sepia outline-none shadow-carved placeholder:text-sepia-muted/70 focus:border-gold focus:ring-2 focus:ring-gold/30";
 
 type PlayerDraft = {
   id: string;
   name: string;
   color: string;
+  avatarId: string;
 };
 
-const initialPlayers: PlayerDraft[] = [
-  {
-    id: "draft-player-1",
+function createPlayerDraft(index: number, existingAvatarIds: string[] = []): PlayerDraft {
+  return {
+    id: `draft-player-${Date.now()}-${index}`,
     name: "",
-    color: CURATED_PLAYER_COLORS[0] ?? "#b33a3a"
-  },
-  {
-    id: "draft-player-2",
-    name: "",
-    color: CURATED_PLAYER_COLORS[1] ?? "#2f6db3"
-  }
-];
+    color: CURATED_PLAYER_COLORS[index - 1] ?? CURATED_PLAYER_COLORS[0] ?? "#b33a3a",
+    avatarId: getRandomPlayerAvatar(existingAvatarIds).id
+  };
+}
+
+function createInitialPlayers(): PlayerDraft[] {
+  const firstPlayer = createPlayerDraft(1);
+  const secondPlayer = createPlayerDraft(2, [firstPlayer.avatarId]);
+
+  return [firstPlayer, secondPlayer];
+}
 
 export function CreateGameForm() {
   const router = useRouter();
-  const game = useGameStore((state) => state.game);
   const createLocalGame = useGameStore((state) => state.createLocalGame);
-  const startLocalGame = useGameStore((state) => state.startLocalGame);
   const saveStatus = useGameStore((state) => state.saveStatus);
   const storeError = useGameStore((state) => state.error);
 
-  const [players, setPlayers] = useState<PlayerDraft[]>(initialPlayers);
+  const [players, setPlayers] = useState<PlayerDraft[]>(createInitialPlayers);
   const [formError, setFormError] = useState<string | null>(null);
-  const [savedMessage, setSavedMessage] = useState<string | null>(null);
-  const [isSelectingKing, setIsSelectingKing] = useState(false);
-  const [selectionPreviewName, setSelectionPreviewName] = useState<string | null>(null);
+  const [removeCandidateId, setRemoveCandidateId] = useState<string | null>(null);
 
   const isSubmitting = saveStatus === "saving";
-  const canStartGame = Boolean(savedMessage) && game.players.length >= MIN_PLAYERS;
+  const normalizedPlayerNames = players.map((player) => player.name.trim().toLocaleLowerCase());
+  const playerColors = players.map((player) => player.color);
+  const canContinue =
+    players.length >= MIN_PLAYERS &&
+    players.every((player) => Boolean(player.name.trim())) &&
+    new Set(normalizedPlayerNames).size === normalizedPlayerNames.length &&
+    new Set(playerColors).size === playerColors.length;
 
   function markSetupDirty() {
-    setSavedMessage(null);
-    setSelectionPreviewName(null);
+    setFormError(null);
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -83,48 +92,20 @@ export function CreateGameForm() {
     }
 
     setFormError(null);
-    setSavedMessage(null);
 
     const game = await createLocalGame({
       rulesetPreset: "original-mvp",
       playerColorMode: "curated",
       players: normalizedPlayers.map((player) => ({
         name: player.name,
-        color: player.color
+        color: player.color,
+        avatarId: player.avatarId
       }))
     });
 
     if (game) {
-      setSavedMessage(`${game.name} is saved locally with ${game.players.length} players.`);
+      router.push("/king");
     }
-  }
-
-  async function handleStartGame() {
-    if (!canStartGame || isSelectingKing) {
-      return;
-    }
-
-    setFormError(null);
-    setIsSelectingKing(true);
-
-    let previewIndex = 0;
-    const intervalId = window.setInterval(() => {
-      const previewPlayer = game.players[previewIndex % game.players.length];
-      setSelectionPreviewName(previewPlayer?.name ?? null);
-      previewIndex += 1;
-    }, 120);
-
-    window.setTimeout(async () => {
-      window.clearInterval(intervalId);
-      const startedGame = await startLocalGame();
-      setIsSelectingKing(false);
-
-      if (startedGame) {
-        const king = startedGame.players.find((player) => player.id === startedGame.kingPlayerId);
-        setSelectionPreviewName(king?.name ?? null);
-        router.push("/game");
-      }
-    }, 1400);
   }
 
   function addPlayer() {
@@ -142,8 +123,10 @@ export function CreateGameForm() {
     setPlayers((currentPlayers) => [
       ...currentPlayers,
       {
-        id: `draft-player-${Date.now()}-${currentPlayers.length + 1}`,
-        name: "",
+        ...createPlayerDraft(
+          currentPlayers.length + 1,
+          currentPlayers.map((player) => player.avatarId)
+        ),
         color: nextColor
       }
     ]);
@@ -164,149 +147,169 @@ export function CreateGameForm() {
   }
 
   function removePlayer(playerId: string) {
-    if (players.length <= MIN_PLAYERS) {
+    if (playerId === players[0]?.id) {
       return;
     }
 
     markSetupDirty();
     setPlayers((currentPlayers) => currentPlayers.filter((player) => player.id !== playerId));
+    setRemoveCandidateId(null);
   }
 
+  const removeCandidate = players.find((player) => player.id === removeCandidateId);
+
   return (
-    <form className="grid gap-4" onSubmit={handleSubmit}>
-      <Panel title="Players">
-        <div className="mb-4 flex items-start gap-3">
-          <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-forest text-white">
-            <UsersRound size={20} aria-hidden="true" />
-          </span>
-          <div className="grid gap-1">
-            <p className="text-sm font-black text-ink">Name each player and pick a color</p>
-            <p className="text-sm leading-6 text-muted">
-              Add {MIN_PLAYERS}-{MAX_PLAYERS} players. Gameplay systems start after this setup flow.
-            </p>
-          </div>
-        </div>
+    <form className="grid gap-4 pb-28" onSubmit={handleSubmit}>
+      <div className="grid gap-3">
+        {players.map((player, index) => {
+          const avatar = getPlayerAvatar(player.avatarId);
+          const canRemovePlayer = index > 0;
 
-        <div className="grid gap-3">
-          {players.map((player, index) => (
-            <div className="rounded-lg border border-line bg-bg p-3" key={player.id}>
-              <div className="mb-3 flex items-center justify-between gap-3">
-                <p className="text-sm font-black text-ink">Player {index + 1}</p>
-                <button
-                  aria-label={`Remove player ${index + 1}`}
-                  className="grid size-10 place-items-center rounded-lg border border-line bg-panel text-muted disabled:opacity-40"
-                  disabled={players.length <= MIN_PLAYERS}
-                  onClick={() => removePlayer(player.id)}
-                  type="button"
-                >
-                  <Trash2 size={18} aria-hidden="true" />
-                </button>
-              </div>
+          return (
+            <ParchmentCard className="p-3" key={player.id}>
+              <div className="grid gap-3">
+                <div className="flex items-center gap-3">
+                  <span
+                    className="grid size-16 shrink-0 place-items-center overflow-hidden rounded-full border-[4px] bg-[#e6d7b4] shadow-carved"
+                    style={{ borderColor: player.color }}
+                    aria-hidden="true"
+                  >
+                    {avatar ? (
+                      <Image
+                        src={avatar.src}
+                        alt=""
+                        width={64}
+                        height={64}
+                        className="size-full object-cover"
+                        draggable={false}
+                      />
+                    ) : null}
+                  </span>
 
-              <label className="mb-3 grid gap-2">
-                <span className="text-xs font-bold text-muted">Name</span>
-                <input
-                  className={inputClassName}
-                  maxLength={32}
-                  onChange={(event) => updatePlayer(player.id, { name: event.target.value })}
-                  placeholder={`Player ${index + 1}`}
-                  value={player.name}
-                />
-              </label>
+                  <label className="min-w-0 flex-1">
+                    <span className="sr-only">Player {index + 1} name</span>
+                    <input
+                      className={inputClassName}
+                      maxLength={32}
+                      onChange={(event) => updatePlayer(player.id, { name: event.target.value })}
+                      placeholder={`Player ${index + 1}`}
+                      value={player.name}
+                    />
+                  </label>
 
-              <div className="grid gap-2">
-                <span className="text-xs font-bold text-muted">Color</span>
-                <div className="grid grid-cols-6 gap-2">
-                  {CURATED_PLAYER_COLORS.map((color) => {
-                    const isSelected = player.color === color;
-                    const isUsed = players.some(
-                      (candidate) => candidate.id !== player.id && candidate.color === color
-                    );
+                  {canRemovePlayer ? (
+                    <button
+                      aria-label={`Remove player ${index + 1}`}
+                      className="grid size-12 shrink-0 place-items-center rounded-full border border-[#6f2417] bg-ember text-parchment shadow-seal transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-bright"
+                      onClick={() => setRemoveCandidateId(player.id)}
+                      type="button"
+                    >
+                      <Trash2 size={20} aria-hidden="true" />
+                    </button>
+                  ) : null}
+                </div>
 
-                    return (
-                      <button
-                        aria-label={`Choose color ${color} for player ${index + 1}`}
-                        className={`grid aspect-square min-h-10 place-items-center rounded-lg border ${
-                          isSelected ? "border-ink" : "border-line"
-                        } ${isUsed ? "opacity-35" : ""}`}
-                        disabled={isUsed}
-                        key={color}
-                        onClick={() => updatePlayer(player.id, { color })}
-                        style={{ backgroundColor: color }}
-                        type="button"
-                      >
-                        {isSelected ? <Check size={18} className="text-white" aria-hidden="true" /> : null}
-                      </button>
-                    );
-                  })}
+                <div>
+                  <span className="sr-only">Player {index + 1} color</span>
+                  <div className="grid grid-cols-6 gap-2">
+                    {CURATED_PLAYER_COLORS.map((color) => {
+                      const isSelected = player.color === color;
+                      const isUsed = players.some(
+                        (candidate) => candidate.id !== player.id && candidate.color === color
+                      );
+
+                      return (
+                        <button
+                          aria-label={`Choose color ${color} for player ${index + 1}`}
+                          className={`grid aspect-square min-h-10 place-items-center rounded-full border shadow-carved ${
+                            isSelected ? "border-sepia ring-2 ring-gold" : "border-parchment-edge"
+                          } ${isUsed ? "opacity-35" : ""}`}
+                          disabled={isUsed}
+                          key={color}
+                          onClick={() => updatePlayer(player.id, { color })}
+                          style={{ backgroundColor: color }}
+                          type="button"
+                        >
+                          {isSelected ? (
+                            <Check size={18} className="text-white" aria-hidden="true" />
+                          ) : null}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-
-        <Button
-          className="mt-4 w-full"
-          disabled={players.length >= MAX_PLAYERS}
-          onClick={addPlayer}
-          type="button"
-          variant="secondary"
-        >
-          <Plus size={18} aria-hidden="true" />
-          Add player
-        </Button>
-      </Panel>
+            </ParchmentCard>
+          );
+        })}
+      </div>
 
       {formError || storeError ? (
-        <p className="rounded-lg border border-danger bg-panel p-3 text-sm font-bold text-danger">
+        <p className="rounded-2xl border border-ember/50 bg-ember/10 p-3 font-body text-sm font-bold text-parchment">
           {formError ?? storeError}
         </p>
       ) : null}
 
-      {savedMessage ? (
-        <Panel title="Review players">
-          <div className="grid gap-3">
-            <p className="rounded-lg border border-forest bg-bg p-3 text-sm font-bold text-forest">
-              {savedMessage}
-            </p>
-            <ul className="grid gap-2">
-              {game.players.map((player) => (
-                <li
-                  className="flex min-h-12 items-center justify-between gap-3 rounded-lg border border-line bg-bg px-3"
-                  key={player.id}
-                >
-                  <span className="truncate text-sm font-black text-ink">{player.name}</span>
-                  <span
-                    className="size-7 rounded-full border border-line"
-                    style={{ backgroundColor: player.color }}
-                    aria-hidden="true"
-                  />
-                </li>
-              ))}
-            </ul>
-            {selectionPreviewName ? (
-              <p className="flex min-h-12 items-center justify-center gap-2 rounded-lg border border-gold bg-bg px-3 text-sm font-black text-ink">
-                <Crown size={18} aria-hidden="true" />
-                {isSelectingKing ? `Selecting ${selectionPreviewName}` : `${selectionPreviewName} is King`}
-              </p>
-            ) : null}
-            <Button
-              className="min-h-14 text-base"
-              disabled={!canStartGame || isSelectingKing}
-              onClick={() => void handleStartGame()}
-              type="button"
-            >
-              <Crown size={20} aria-hidden="true" />
-              {isSelectingKing ? "Selecting King..." : "Start game"}
-            </Button>
-          </div>
-        </Panel>
+      {players.length === 0 ? (
+        <EmptyState
+          icon={UsersRound}
+          title="No realms have gathered"
+          description="Add the first realm to begin writing this table's chronicle."
+        />
       ) : null}
 
-      <Button className="min-h-14 text-base" disabled={isSubmitting} type="submit">
-        {isSubmitting ? "Saving..." : "Create game"}
-        <Check size={20} aria-hidden="true" />
-      </Button>
+      <div className="fixed inset-x-0 bottom-0 z-20 border-t border-gold/20 bg-night/95 px-4 py-3 shadow-glow backdrop-blur">
+        <div className="mx-auto grid w-full max-w-md grid-cols-[auto_1fr] gap-3">
+          <ActionButton
+            className="min-h-14 px-4"
+            disabled={players.length >= MAX_PLAYERS}
+            icon={Plus}
+            onClick={addPlayer}
+            type="button"
+            variant="iron"
+          >
+            Add player
+          </ActionButton>
+          <ActionButton
+            className="min-h-14 text-base"
+            disabled={!canContinue || isSubmitting}
+            icon={Check}
+            loading={isSubmitting}
+            type="submit"
+          >
+            {isSubmitting ? "Saving..." : "Continue"}
+          </ActionButton>
+        </div>
+      </div>
+
+      <Modal
+        open={Boolean(removeCandidate)}
+        onClose={() => setRemoveCandidateId(null)}
+        icon={Trash2}
+        tone="ember"
+        title="Remove this realm?"
+        description={
+          removeCandidate
+            ? `${removeCandidate.name || "This unnamed realm"} will be removed from setup.`
+            : undefined
+        }
+        footer={
+          <>
+            <ActionButton variant="ghost" onClick={() => setRemoveCandidateId(null)}>
+              Keep
+            </ActionButton>
+            <ActionButton
+              variant="ember"
+              icon={Trash2}
+              onClick={() => {
+                if (removeCandidate) removePlayer(removeCandidate.id);
+              }}
+            >
+              Remove
+            </ActionButton>
+          </>
+        }
+      />
     </form>
   );
 }

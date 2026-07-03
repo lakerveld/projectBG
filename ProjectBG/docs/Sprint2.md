@@ -2,13 +2,13 @@
 
 ## Purpose
 
-Implement the single-screen game setup flow as the first real user-facing setup feature.
+Implement the player setup screen as the first real user-facing setup feature.
 
 ## Goals
 
 - Let a table group create a new local game by adding players immediately.
 - Capture only the minimum useful player settings.
-- Persist the created game with players locally.
+- Persist the created game with players locally and route to the next setup step.
 - Keep the implementation aligned with the domain and storage boundaries from Sprint 1.
 
 ## Scope
@@ -16,8 +16,9 @@ Implement the single-screen game setup flow as the first real user-facing setup 
 - Replace the setup placeholder with a combined create-game and player form. Status: started.
 - Add domain command for `createGame`. Status: started.
 - Add validation for player names and colors. Status: started.
+- Assign a random fantasy avatar to each player during setup. Status: started.
 - Persist the created game through the existing game service/repository boundary. Status: started.
-- Keep the user on the setup screen and show a saved confirmation. Status: started.
+- Route the user to the King selection screen after a successful save. Status: started.
 - Record a `game.created` history entry. Status: started.
 - Add unit tests for game creation validation and state shape. Status: started.
 
@@ -25,6 +26,7 @@ Implement the single-screen game setup flow as the first real user-facing setup 
 
 - Player names.
 - Player colors.
+- Random player avatar.
 
 The game name, ruleset preset, and player color mode are generated or defaulted internally.
 
@@ -32,7 +34,7 @@ Avoid adding dice, event, trade, combat, or scoring configuration in this sprint
 
 ## Out of Scope
 
-- Separate player setup screen.
+- King selection and game start.
 - Player accounts.
 - Private player screens.
 - Dice and events.
@@ -48,7 +50,8 @@ Avoid adding dice, event, trade, combat, or scoring configuration in this sprint
 - The setup form validates player fields.
 - Submitting creates a typed `GameState`.
 - The created game includes players and is saved locally.
-- The user sees a saved confirmation after creation.
+- Each player has a random avatar, framed by their selected color.
+- The user advances to the King selection screen after creation.
 - A `game.created` history entry exists.
 - Unit tests cover the create-game command.
 
@@ -57,7 +60,7 @@ Avoid adding dice, event, trade, combat, or scoring configuration in this sprint
 - Should the app allow an unnamed game by generating a friendly default? Answer: yes, generate the local game name internally.
 - Should creating a new game warn if another active game exists?
 - Should ruleset preset be visible now or hidden until more than one preset exists? Answer: hidden for now.
-- Should player setup happen on a separate screen? Answer: no, game creation and player setup are one screen for now.
+- Should player setup happen on a separate screen? Answer: no, create game and player entry are one screen, then King selection is the next screen.
 
 ## Future Improvements
 

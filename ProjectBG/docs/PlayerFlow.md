@@ -15,22 +15,27 @@ Describe the expected table flow from opening the app through completing a local
 
 - **Open the app**
 - **Tap "Create Game"**
-- **Add players**
+- **Step 1: Add players**
   - Enter each player's name.
   - Choose a player color.
-- **Review players**
+  - Each added player receives a random fantasy avatar.
+  - The selected player color frames that avatar.
+- **Continue to King selection**
+- **Step 2: Review players**
   - Confirm everyone has joined.
-- **Start Game**
 - **Random King Selection**
   - The app plays a short animation.
   - One player is randomly crowned **The King**.
   - The King receives the **First Turn** marker.
+- **Continue to game**
   - The Kingdom view highlights the King's capital with a crown.
 - **Begin Round 1**
   - The King rolls the physical dice.
   - The dice result is entered into the app.
   - Sprint 4 records the dice result.
-  - Resource updates, momentum, and world events are deferred until later gameplay sprints.
+  - When every player has rolled, the app opens a full-screen world event reveal.
+  - Players read the event, then continue back to the game dashboard.
+  - Resource updates and momentum are deferred until later gameplay sprints.
   - Play continues clockwise following the normal Catan-inspired table rules.
 
 ## Later Gameplay Flow
@@ -40,6 +45,16 @@ Describe the expected table flow from opening the app through completing a local
 3. Update resources, trades, bonuses, penalties, attacks, and defenses.
 4. Review history when disputes or mistakes happen.
 5. End or archive game locally.
+
+## Screen Step Pattern
+
+Each major table action should live on its own screen:
+
+- One screen gathers the required input.
+- The next screen confirms or resolves the result.
+- The following screen begins the next step of play.
+
+This keeps the phone easy to pass around and prevents one screen from becoming a dense control panel.
 
 ## Error Recovery
 

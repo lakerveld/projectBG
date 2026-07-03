@@ -6,29 +6,25 @@ Define the first releasable product slice: a local, single-device companion for 
 
 ## MVP Outcome
 
-Players can start a local game, add players, track each player's kingdom state, enter dice rolls, resolve random events, apply bonuses and penalties, support trading, resolve simple attack/defense actions, and review game history.
+Players can start a local game, add players, crown the first player, enter dice rolls, and see lightweight world events that enhance the physical board game without replacing its tabletop bookkeeping.
 
 ## MVP Goals
 
 - Support one shared phone at the table.
 - Require no accounts, network, or login.
 - Make game state recoverable after page refresh.
-- Make every state-changing action visible in history.
-- Allow correction through undo or compensating actions.
+- Keep the on-screen flow focused enough for a shared phone on the table.
 - Keep mechanics simple enough for playtesting.
 
 ## MVP Features
 
-- Create game with name, player count, and optional ruleset settings.
+- Create a game from a single clear entry point.
 - Add players with display names and colors.
-- Track resources per player.
+- Review the player list before starting.
+- Randomly select the King when the game starts.
 - Enter dice rolls manually.
 - Trigger random events from dice outcomes.
-- Apply bonuses and penalties.
-- Show a kingdom dashboard for every player.
-- Support basic trade proposal and settlement logging.
-- Resolve attack and defense actions.
-- Display chronological game history.
+- Show a simple kingdom dashboard for every player.
 - Persist active games locally.
 
 ## MVP Constraints
@@ -45,30 +41,34 @@ Players can start a local game, add players, track each player's kingdom state, 
 The immediate implementation focus follows the updated player flow:
 
 - Sprint 2: create a local game, add players, fill in names, and pick colors on the same screen.
-- Sprint 3: review players, start the game, randomly crown the King, and mark the first turn.
+- Sprint 3: move to a dedicated King selection screen, review players, randomly crown the King, and mark the first turn.
 - Sprint 4: begin round 1 by entering physical dice results.
-- Sprint 5: trigger global world events from round-average dice results.
+- Sprint 5: trigger global world events from round-average dice results and reveal each event on its own screen.
 
-Trades, attacks, defenses, bonuses, penalties, and full event effect resolution remain future work until the world-event loop is stable.
+Resource tracking, history screens, settings, trades, attacks, defenses, bonuses, penalties, and full event effect resolution remain future work until the create-game and player loop is stable.
 
 ## Acceptance Criteria
 
 - A new group can start a game in under two minutes.
-- A player can update resources in three taps or fewer from the dashboard.
+- The home screen presents one primary action: create game.
+- Players can be added with names and unique colors.
+- The dashboard shows players without requiring resource bookkeeping.
 - Dice results can trigger deterministic or random event flows.
 - A refresh does not lose the current game.
-- The game history can explain why current state changed.
 - The app is usable on a modern iPhone viewport.
 
 ## Open Questions
 
 - Should dice rolls be entered manually only, or should the app include a roll button?
-- Should resources be generic in the MVP or themed for the initial ruleset?
+- When should resource tracking return, and should it be generic or themed for the initial ruleset?
 - What is the first attack/defense mechanic that is interesting but not too complex?
 
 ## Future Improvements
 
 - Custom ruleset editor.
+- Resource tracking.
+- Game history and corrections.
+- Settings and ruleset controls.
 - Multiple saved games.
 - Export/import game logs.
 - Optional cloud backup.

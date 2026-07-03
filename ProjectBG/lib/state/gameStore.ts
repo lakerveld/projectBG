@@ -17,7 +17,7 @@ type GameStore = {
   hydrate: () => Promise<void>;
   createLocalGame: (command: CreateGameCommand) => Promise<GameState | null>;
   startLocalGame: () => Promise<GameState | null>;
-  recordDiceTotal: (total: number) => Promise<void>;
+  recordDiceTotal: (total: number) => Promise<GameState | null>;
   adjustPlayerResource: (playerId: string, resourceId: string, delta: number) => Promise<void>;
 };
 
@@ -110,11 +110,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
       set({ game: result.state, saveStatus: "saving", error: null });
       await gameService.saveGame(result.state);
       set({ saveStatus: "saved" });
+
+      return result.state;
     } catch (error) {
       set({
         saveStatus: "error",
         error: error instanceof Error ? error.message : "Unable to record dice roll."
       });
+
+      return null;
     }
   }
 }));

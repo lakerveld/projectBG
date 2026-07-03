@@ -53,11 +53,12 @@ describe("recordDiceRoll", () => {
       idFactory: (() => {
         const ids = ["dice-history-2", "event-history"];
         return () => ids.shift() ?? "fallback";
-      })()
+      })(),
+      random: () => 0.4
     });
 
     expect(result.historyEntry.type).toBe("world_event.applied");
-    expect(result.historyEntry.message).toBe("Market Day affected the world after round 1.");
+    expect(result.historyEntry.message).toBe("Market Day affected the world for round 2.");
     expect(result.historyEntry.metadata?.averageRoll).toBe(7);
     expect(result.historyEntry.metadata?.category).toBe("neutral_world");
     expect(result.state.activeWorldEvent?.id).toBe("market-day");
@@ -67,10 +68,55 @@ describe("recordDiceRoll", () => {
     expect(result.state.history[1]?.type).toBe("dice.recorded");
   });
 
+  it("applies Great Harvest wheat gains immediately", () => {
+    const afterFirstRoll = recordDiceRoll({
+      game: createStartedGame(),
+      total: 10,
+      idFactory: () => "dice-history-1"
+    });
+
+    const result = recordDiceRoll({
+      game: afterFirstRoll.state,
+      total: 10,
+      idFactory: (() => {
+        const ids = ["dice-history-2", "event-history"];
+        return () => ids.shift() ?? "fallback";
+      })(),
+      random: () => 0
+    });
+
+    expect(result.state.activeWorldEvent?.id).toBe("great-harvest");
+    expect(result.state.players[0]?.resources.wheat).toBe(2);
+    expect(result.state.players[1]?.resources.wheat).toBe(2);
+    expect(result.historyEntry.metadata?.resourceAdjustments).toEqual([
+      { playerId: "player-ada", resourceId: "wheat", delta: 2 },
+      { playerId: "player-lin", resourceId: "wheat", delta: 2 }
+    ]);
+  });
+
+  it("can select a negative world event from low round averages", () => {
+    const afterFirstRoll = recordDiceRoll({
+      game: createStartedGame(),
+      total: 4,
+      idFactory: () => "dice-history-1"
+    });
+
+    const result = recordDiceRoll({
+      game: afterFirstRoll.state,
+      total: 4,
+      idFactory: (() => {
+        const ids = ["dice-history-2", "event-history"];
+        return () => ids.shift() ?? "fallback";
+      })(),
+      random: () => 0.5
+    });
+
+    expect(result.state.activeWorldEvent?.id).toBe("forest-fire");
+    expect(result.historyEntry.metadata?.category).toBe("negative_world");
+  });
+
   it("rejects dice totals below two", () => {
-    expect(() => recordDiceRoll({ game: createStartedGame(), total: 1 })).toThrow(
-      DiceCommandError
-    );
+    expect(() => recordDiceRoll({ game: createStartedGame(), total: 1 })).toThrow(DiceCommandError);
   });
 
   it("rejects dice totals above twelve", () => {

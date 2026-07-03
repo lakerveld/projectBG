@@ -1,6 +1,6 @@
 import { createEntityId } from "./id";
 import { calculateRoundAverage, selectWorldEventForAverage } from "./events";
-import type { CommandResult, GameState, RecordDiceRollCommand } from "./types";
+import type { CommandResult, GameState, Player, RecordDiceRollCommand, WorldEvent } from "./types";
 
 export const MIN_DICE_TOTAL = 2;
 export const MAX_DICE_TOTAL = 12;
@@ -66,21 +66,24 @@ export function recordDiceRoll(command: RecordDiceRollCommand): CommandResult<Ga
 
   if (hasCompletedRound) {
     const averageRoll = calculateRoundAverage(nextRoundRolls);
-    const worldEvent = selectWorldEventForAverage(averageRoll);
+    const worldEvent = selectWorldEventForAverage(averageRoll, command.random);
+    const effectResult = applyWorldEventEffects(game.players, worldEvent);
     const eventHistoryEntry = {
       id: idFactory(),
       type: "world_event.applied" as const,
       createdAt: now,
-      message: `${worldEvent.name} affected the world after round ${game.round}.`,
+      message: `${worldEvent.name} affected the world for round ${game.round + 1}.`,
       metadata: {
         roundNumber: game.round,
+        appliesToRound: game.round + 1,
         rolls: nextRoundRolls.map((roll) => roll.total),
         averageRoll,
         expectedAverage: 7,
         eventId: worldEvent.id,
         eventName: worldEvent.name,
         category: worldEvent.category,
-        effectsApplied: worldEvent.effectsApplied
+        effectsApplied: worldEvent.effectsApplied,
+        resourceAdjustments: effectResult.resourceAdjustments
       }
     };
 
@@ -88,6 +91,7 @@ export function recordDiceRoll(command: RecordDiceRollCommand): CommandResult<Ga
       state: {
         ...game,
         activeWorldEvent: worldEvent,
+        players: effectResult.players,
         currentRoundRolls: [],
         currentTurnPlayerId: game.kingPlayerId ?? game.players[0]?.id,
         round: game.round + 1,
@@ -109,6 +113,41 @@ export function recordDiceRoll(command: RecordDiceRollCommand): CommandResult<Ga
     },
     historyEntry,
     historyEntries: [historyEntry]
+  };
+}
+
+function applyWorldEventEffects(players: Player[], event: WorldEvent) {
+  const resourceAdjustments: Array<{ playerId: string; resourceId: string; delta: number }> = [];
+
+  const nextPlayers = players.map((player) => {
+    const nextResources = { ...player.resources };
+
+    for (const effect of event.effects) {
+      if (
+        effect.kind === "grant_resource" &&
+        effect.appliesTo === "all_players" &&
+        effect.resourceId &&
+        effect.quantity
+      ) {
+        nextResources[effect.resourceId] =
+          (nextResources[effect.resourceId] ?? 0) + effect.quantity;
+        resourceAdjustments.push({
+          playerId: player.id,
+          resourceId: effect.resourceId,
+          delta: effect.quantity
+        });
+      }
+    }
+
+    return {
+      ...player,
+      resources: nextResources
+    };
+  });
+
+  return {
+    players: nextPlayers,
+    resourceAdjustments
   };
 }
 

@@ -23,16 +23,28 @@ export const CURATED_PLAYER_COLORS = [
 
 export const DEFAULT_RESOURCES: ResourceDefinition[] = [
   {
-    id: "grain",
-    name: "Grain",
-    shortLabel: "GRN",
+    id: "wheat",
+    name: "Wheat",
+    shortLabel: "WHT",
     color: "#c8942c"
   },
   {
-    id: "timber",
-    name: "Timber",
-    shortLabel: "TMB",
+    id: "wood",
+    name: "Wood",
+    shortLabel: "WOD",
     color: "#176b4d"
+  },
+  {
+    id: "brick",
+    name: "Brick",
+    shortLabel: "BRK",
+    color: "#b4472f"
+  },
+  {
+    id: "sheep",
+    name: "Sheep",
+    shortLabel: "SHP",
+    color: "#6d9f5c"
   },
   {
     id: "ore",

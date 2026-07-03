@@ -21,8 +21,10 @@ export const sampleGame: GameState = {
       name: "North",
       color: "#b33a3a",
       resources: {
-        grain: 2,
-        timber: 1,
+        wheat: 2,
+        wood: 1,
+        brick: 0,
+        sheep: 0,
         ore: 0
       }
     },
@@ -31,8 +33,10 @@ export const sampleGame: GameState = {
       name: "South",
       color: "#2f6db3",
       resources: {
-        grain: 1,
-        timber: 2,
+        wheat: 1,
+        wood: 2,
+        brick: 0,
+        sheep: 1,
         ore: 1
       }
     }

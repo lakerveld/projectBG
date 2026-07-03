@@ -1,4 +1,14 @@
-import { Gem, Minus, Mountain, Plus, TreePine, Wheat, type LucideIcon } from "lucide-react";
+import {
+  BrickWall,
+  Fence,
+  Gem,
+  Minus,
+  Mountain,
+  Plus,
+  TreePine,
+  Wheat,
+  type LucideIcon
+} from "lucide-react";
 import { cn } from "@/lib/ui/cn";
 import type { EntityId, ResourceDefinition } from "@/lib/domain/types";
 import { ParchmentCard } from "./ParchmentCard";
@@ -18,8 +28,10 @@ type ResourceTrackerProps = {
 
 /** Best-effort iconography for the MVP resource set; falls back to a gem. */
 const RESOURCE_ICONS: Record<string, LucideIcon> = {
-  grain: Wheat,
-  timber: TreePine,
+  wheat: Wheat,
+  wood: TreePine,
+  brick: BrickWall,
+  sheep: Fence,
   ore: Mountain
 };
 

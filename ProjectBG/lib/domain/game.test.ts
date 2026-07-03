@@ -21,8 +21,14 @@ describe("createGame", () => {
     expect(result.state.round).toBe(0);
     expect(result.state.players).toHaveLength(2);
     expect(result.state.players[0]?.name).toBe("Ada");
-    expect(result.state.players[0]?.resources.grain).toBe(0);
-    expect(result.state.resources.length).toBeGreaterThan(0);
+    expect(result.state.players[0]?.resources.wheat).toBe(0);
+    expect(result.state.resources.map((resource) => resource.id)).toEqual([
+      "wheat",
+      "wood",
+      "brick",
+      "sheep",
+      "ore"
+    ]);
     expect(result.historyEntry.id).toBe("history-test");
     expect(result.historyEntry.message).toBe("Table Session created.");
   });

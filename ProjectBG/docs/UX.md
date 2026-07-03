@@ -9,7 +9,7 @@ Define user experience principles and mobile-first interaction expectations for 
 - Make the app usable at arm's length on a table.
 - Prioritize speed and clarity over dense configuration.
 - Avoid account prompts and blocking setup.
-- Support confident correction.
+- Keep the first playable flow narrow enough to test at the table.
 
 ## UX Principles
 
@@ -17,8 +17,9 @@ Define user experience principles and mobile-first interaction expectations for 
 - Large, thumb-friendly controls.
 - High contrast for table lighting.
 - Clear player colors.
-- Immediate feedback for state changes.
-- History visible enough to build trust.
+- Player identity should combine name, color, and avatar so players are not identified by color alone.
+- Immediate feedback for setup and turn state changes.
+- Defer secondary tools until they clearly support the table flow.
 
 ## Primary Screens
 
@@ -28,9 +29,12 @@ Define user experience principles and mobile-first interaction expectations for 
 - Review players.
 - Random King selection.
 - Game dashboard.
-- Player kingdom dashboard.
 - Dice entry.
 - Event resolution.
+
+Deferred screens:
+
+- Player kingdom dashboard with resources.
 - Trade flow.
 - Attack/defense flow.
 - History.
@@ -51,7 +55,7 @@ Define user experience principles and mobile-first interaction expectations for 
 - Should controls be optimized for one person operating the phone or passed-around usage?
 	- Passed around usage. 
 - Should history be a persistent panel or a separate screen?
-	- Separate screen. 
+	- Deferred until history returns to scope.
 - Should the King selection animation be skippable?
 
 ## Future Improvements

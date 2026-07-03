@@ -7,7 +7,7 @@ describe("adjustResources", () => {
     const result = adjustResources({
       game: sampleGame,
       playerId: "player-1",
-      resourceId: "grain",
+      resourceId: "wheat",
       delta: 2,
       now: "2026-07-02T10:00:00.000Z",
       idFactory: () => "history-test"
@@ -15,8 +15,8 @@ describe("adjustResources", () => {
 
     const player = result.state.players.find((candidate) => candidate.id === "player-1");
 
-    expect(player?.resources.grain).toBe(4);
-    expect(result.historyEntry.message).toBe("North gained 2 Grain.");
+    expect(player?.resources.wheat).toBe(4);
+    expect(result.historyEntry.message).toBe("North gained 2 Wheat.");
     expect(result.state.history[0]?.id).toBe("history-test");
   });
 
@@ -31,4 +31,3 @@ describe("adjustResources", () => {
     ).toThrow(ResourceCommandError);
   });
 });
-

@@ -16,6 +16,7 @@ After every player has rolled once, the app calculates the round average. Based 
 - Avoid targeting individual players.
 - Use dice results to create shared atmosphere.
 - Record event context in history.
+- Reveal each triggered event on its own screen before returning to the dashboard.
 - Keep resource, trade, and penalty effects deferred until their systems exist.
 
 ## Round Event Flow
@@ -29,7 +30,18 @@ After every player has rolled once, the app calculates the round average. Based 
    - Around average: neutral world event.
    - Below average: negative world event.
 6. The event affects all players or the shared world state.
-7. The event is added to history.
+7. The app opens the full-screen event reveal.
+8. The event is added to history.
+
+## Event Reveal Screen
+
+The event reveal is a reusable full-screen page.
+
+- The event image is used only as the screen background.
+- A graphic panel sits at the bottom of the screen.
+- The panel contains the event title and a short situation description.
+- The Continue button sits below the panel and returns players to the game dashboard.
+- New world events should provide their own background image when available.
 
 ## Average Rules
 

@@ -75,7 +75,7 @@ Consequences: Design and game documents should avoid direct copyrighted presenta
 
 ### DEC-007: Start Sprint 1 With Resource Tracking
 
-Status: Accepted
+Status: Superseded by DEC-015
 
 Decision: Use resource adjustment as the first thin vertical slice.
 
@@ -109,9 +109,9 @@ Status: Accepted
 
 Decision: The create-game screen also collects player names and colors. There is no separate player setup screen in the current build focus.
 
-Why: The desired table flow is faster and clearer: click create game, fill in the game and players on one screen, save locally, review players, then start the game with a random King selection.
+Why: The desired table flow is faster and clearer: click create game, fill in the game and players on one screen, save locally, then move to a dedicated review and random King selection step.
 
-Consequences: Sprint 3 starts after the combined setup screen and focuses on review, start game, and random King selection rather than a separate player-entry screen.
+Consequences: Sprint 3 starts after the combined setup screen and focuses on a separate review, start game, and random King selection route rather than adding more controls to player setup.
 
 ### DEC-011: Random King Starts Round One
 
@@ -152,6 +152,26 @@ Decision: World events trigger after every player has rolled once. The round ave
 Why: This keeps events global and table-focused instead of targeting one player. It also gives dice entry a clear round-level payoff without requiring full resource automation.
 
 Consequences: Game state tracks `currentRoundRolls` and `activeWorldEvent`. Individual event effects are recorded as deferred descriptions until resource, trade, and build systems exist.
+
+### DEC-015: Simplify the MVP to Game Creation and Players First
+
+Status: Accepted
+
+Decision: The current MVP UI should focus on creating a game, adding players, starting the table, and showing the active players. Resource bookkeeping, history screens, settings, trades, attacks, defenses, and detailed corrections are deferred.
+
+Why: The product needs to prove the shared-phone setup flow before adding systems that compete with physical board-game bookkeeping. A narrower loop is easier to test at the table and reduces the risk of building a heavy companion before the core ritual feels right.
+
+Consequences: The home screen has one primary action, create game. The live dashboard shows player identity and turn state without resource controls or history panels. Existing domain/history structures may remain internally as scaffolding, but they should not drive visible MVP scope until intentionally reintroduced.
+
+### DEC-016: Use One Major Table Step Per Screen
+
+Status: Accepted
+
+Decision: After player setup, major table steps move to their own screens. The current flow is home, player setup, King randomizer, then game dashboard.
+
+Why: A shared-phone tabletop app must stay readable at arm's length and easy to hand around. Separating steps keeps each screen focused on one decision or ceremony and gives future mechanics a clear place in the flow instead of accumulating in one dashboard.
+
+Consequences: Setup saves the players and routes to `/king`. The King randomizer reviews players, starts the game, and then routes to `/game`. Completed dice rounds route to `/event` so the world event owns the whole screen before players continue. Future trade or conflict steps should follow the same route-per-step pattern unless playtesting proves an inline control is faster.
 
 ## Open Questions
 

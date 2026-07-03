@@ -10,6 +10,7 @@ Implement the first world-event slice after dice entry.
 - Advance the current turn player after each dice entry.
 - Calculate the round average after every player has rolled once.
 - Apply one global world event based on the average.
+- Reveal the world event on its own screen.
 - Record the event in history.
 
 ## Scope
@@ -20,6 +21,8 @@ Implement the first world-event slice after dice entry.
 - Categorize the round as negative, neutral, or positive. Status: started.
 - Apply one MVP world event from the matching category. Status: started.
 - Store the active world event. Status: started.
+- Add `/event` as a full-screen world event reveal route. Status: started.
+- Use event artwork as a full-screen background with a bottom situation panel. Status: started.
 - Reset round rolls and advance to the next round. Status: started.
 - Add unit tests for event category and round completion. Status: started.
 
@@ -38,7 +41,8 @@ Implement the first world-event slice after dice entry.
 - The app shows round roll progress.
 - The round average is calculated when all players have rolled.
 - A global event is selected by average category.
-- The world event appears on the dashboard.
+- The world event appears by itself on a dedicated full-screen route.
+- The reveal uses a background image, title, situation text, and Continue button.
 - History includes both the final dice roll and world event entry.
 - Unit tests cover neutral event selection at average 7.
 
@@ -46,7 +50,7 @@ Implement the first world-event slice after dice entry.
 
 - Should the next round always start with the King or continue clockwise from the final player? Answer: start with the King for now.
 - Should active world events expire automatically after one round? Answer: not yet; duration countdown is future work.
-- Should world event details become a dedicated screen later?
+- Should world event details become a dedicated screen later? Answer: yes, world events use `/event`.
 
 ## Future Improvements
 
