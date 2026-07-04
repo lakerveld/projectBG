@@ -573,7 +573,12 @@ export function selectWorldEventForAverage(
   average: number,
   random: () => number = Math.random
 ): WorldEvent {
-  const events = WORLD_EVENTS[categorizeRoundAverage(average)];
+  void average;
+  return selectRandomWorldEvent(random);
+}
+
+export function selectRandomWorldEvent(random: () => number = Math.random): WorldEvent {
+  const events = Object.values(WORLD_EVENTS).flat();
   const eventIndex = Math.min(Math.floor(random() * events.length), events.length - 1);
   return prepareWorldEvent(events[eventIndex] ?? events[0], random);
 }

@@ -39,27 +39,27 @@ describe("recordDiceRoll", () => {
     expect(result.state.currentTurnPlayerId).toBe("player-lin");
   });
 
-  it("applies a tactical world event when all players have rolled around average", () => {
+  it("applies a random world event when all players have rolled", () => {
     const afterFirstRoll = recordDiceRoll({
       game: createStartedGame(),
-      total: 8,
+      total: 12,
       idFactory: () => "dice-history-1"
     });
 
     const result = recordDiceRoll({
       game: afterFirstRoll.state,
-      total: 6,
+      total: 12,
       now: "2026-07-02T13:05:00.000Z",
       idFactory: (() => {
         const ids = ["dice-history-2", "event-history"];
         return () => ids.shift() ?? "fallback";
       })(),
-      random: () => 0.2
+      random: () => 0.38
     });
 
     expect(result.historyEntry.type).toBe("world_event.applied");
     expect(result.historyEntry.message).toBe("Market Day affected the world for round 2.");
-    expect(result.historyEntry.metadata?.averageRoll).toBe(7);
+    expect(result.historyEntry.metadata?.averageRoll).toBe(12);
     expect(result.historyEntry.metadata?.category).toBe("tactical");
     expect(result.state.activeWorldEvent?.id).toBe("market-day");
     expect(result.state.currentRoundRolls).toEqual([]);
@@ -94,21 +94,21 @@ describe("recordDiceRoll", () => {
     ]);
   });
 
-  it("can select a negative world event from low round averages", () => {
+  it("can select a negative world event regardless of the round average", () => {
     const afterFirstRoll = recordDiceRoll({
       game: createStartedGame(),
-      total: 4,
+      total: 12,
       idFactory: () => "dice-history-1"
     });
 
     const result = recordDiceRoll({
       game: afterFirstRoll.state,
-      total: 4,
+      total: 12,
       idFactory: (() => {
         const ids = ["dice-history-2", "event-history"];
         return () => ids.shift() ?? "fallback";
       })(),
-      random: () => 0.2
+      random: () => 0.75
     });
 
     expect(result.state.activeWorldEvent?.id).toBe("forest-fire");

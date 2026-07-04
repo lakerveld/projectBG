@@ -1,5 +1,5 @@
 import { createEntityId } from "./id";
-import { calculateRoundAverage, selectWorldEventForAverage } from "./events";
+import { calculateRoundAverage, selectRandomWorldEvent } from "./events";
 import type { CommandResult, GameState, Player, RecordDiceRollCommand, WorldEvent } from "./types";
 
 export const MIN_DICE_TOTAL = 2;
@@ -70,7 +70,7 @@ export function recordDiceRoll(command: RecordDiceRollCommand): CommandResult<Ga
 
   if (hasCompletedRound) {
     const averageRoll = calculateRoundAverage(nextRoundRolls);
-    const worldEvent = selectWorldEventForAverage(averageRoll, command.random);
+    const worldEvent = selectRandomWorldEvent(command.random);
     const effectResult = applyWorldEventEffects(game.players, worldEvent);
     const completedRoundsSinceCrown = game.completedRoundsSinceCrown + 1;
     const isCrownSelectionPending = completedRoundsSinceCrown >= 3;
