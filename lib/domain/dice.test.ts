@@ -39,7 +39,7 @@ describe("recordDiceRoll", () => {
     expect(result.state.currentTurnPlayerId).toBe("player-lin");
   });
 
-  it("applies a neutral world event when all players have rolled around average", () => {
+  it("applies a tactical world event when all players have rolled around average", () => {
     const afterFirstRoll = recordDiceRoll({
       game: createStartedGame(),
       total: 8,
@@ -54,13 +54,13 @@ describe("recordDiceRoll", () => {
         const ids = ["dice-history-2", "event-history"];
         return () => ids.shift() ?? "fallback";
       })(),
-      random: () => 0.4
+      random: () => 0.2
     });
 
     expect(result.historyEntry.type).toBe("world_event.applied");
     expect(result.historyEntry.message).toBe("Market Day affected the world for round 2.");
     expect(result.historyEntry.metadata?.averageRoll).toBe(7);
-    expect(result.historyEntry.metadata?.category).toBe("neutral_world");
+    expect(result.historyEntry.metadata?.category).toBe("tactical");
     expect(result.state.activeWorldEvent?.id).toBe("market-day");
     expect(result.state.currentRoundRolls).toEqual([]);
     expect(result.state.round).toBe(2);
@@ -108,11 +108,55 @@ describe("recordDiceRoll", () => {
         const ids = ["dice-history-2", "event-history"];
         return () => ids.shift() ?? "fallback";
       })(),
-      random: () => 0.5
+      random: () => 0.2
     });
 
     expect(result.state.activeWorldEvent?.id).toBe("forest-fire");
-    expect(result.historyEntry.metadata?.category).toBe("negative_world");
+    expect(result.historyEntry.metadata?.category).toBe("negative");
+  });
+
+  it("flags crown selection after every third completed round", () => {
+    let game = createStartedGame();
+    let result;
+
+    for (let round = 0; round < 3; round += 1) {
+      result = recordDiceRoll({
+        game,
+        total: 8,
+        idFactory: () => `dice-history-a-${round}`
+      });
+      game = result.state;
+
+      result = recordDiceRoll({
+        game,
+        total: 6,
+        idFactory: (() => {
+          const ids = [`dice-history-b-${round}`, `event-history-${round}`];
+          return () => ids.shift() ?? "fallback";
+        })(),
+        random: () => 0.2
+      });
+      game = result.state;
+    }
+
+    expect(game.round).toBe(4);
+    expect(game.completedRoundsSinceCrown).toBe(3);
+    expect(game.isCrownSelectionPending).toBe(true);
+    expect(game.currentTurnPlayerId).toBe("player-ada");
+  });
+
+  it("rejects dice entry while crown selection is pending", () => {
+    const started = createStartedGame();
+
+    expect(() =>
+      recordDiceRoll({
+        game: {
+          ...started,
+          isCrownSelectionPending: true
+        },
+        total: 7
+      })
+    ).toThrow(DiceCommandError);
   });
 
   it("rejects dice totals below two", () => {

@@ -18,7 +18,7 @@ Implement the first world-event slice after dice entry.
 - Track current round rolls. Status: started.
 - Rotate current turn through the player list. Status: started.
 - Calculate average roll at round end. Status: started.
-- Categorize the round as negative, neutral, or positive. Status: started.
+- Categorize the round as negative, tactical, or positive. Status: started.
 - Apply one MVP world event from the matching category. Status: started.
 - Store the active world event. Status: started.
 - Add `/event` as a full-screen world event reveal route. Status: started.
@@ -44,7 +44,7 @@ Implement the first world-event slice after dice entry.
 - The world event appears by itself on a dedicated full-screen route.
 - The reveal uses a background image, title, situation text, and Continue button.
 - History includes both the final dice roll and world event entry.
-- Unit tests cover neutral event selection at average 7.
+- Unit tests cover tactical event selection at average 7.
 
 ## Open Questions
 

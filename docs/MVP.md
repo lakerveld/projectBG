@@ -19,7 +19,7 @@ Players can start a local game, add players, crown the first player, enter dice 
 ## MVP Features
 
 - Create a game from a single clear entry point.
-- Add players with display names and colors.
+- Add up to four players with display names and unique colors.
 - Review the player list before starting.
 - Randomly select the King when the game starts.
 - Enter dice rolls manually.

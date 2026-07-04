@@ -13,9 +13,9 @@ import { getWorldEventRevealVisual } from "@/lib/ui/worldEventRevealVisuals";
 import { useEventSound } from "@/lib/ui/useEventSound";
 
 const PARTICLE_TYPE_BY_CATEGORY: Record<WorldEventCategory, EventParticleType> = {
-  positive_world: "positive",
-  neutral_world: "neutral",
-  negative_world: "negative"
+  positive: "positive",
+  tactical: "tactical",
+  negative: "negative"
 };
 
 const EVENT_ACCENT_BY_CATEGORY: Record<
@@ -31,7 +31,7 @@ const EVENT_ACCENT_BY_CATEGORY: Record<
     chipLabel: string;
   }
 > = {
-  positive_world: {
+  positive: {
     border: "border-[#176b4d]/70",
     buttonBorder: "border-[#176b4d]/80",
     buttonBackground: "bg-[#0f2f23]/92",
@@ -41,17 +41,17 @@ const EVENT_ACCENT_BY_CATEGORY: Record<
     chipText: "text-[#dbf4df]",
     chipLabel: "Bonus"
   },
-  neutral_world: {
-    border: "border-[#176b4d]/70",
-    buttonBorder: "border-[#176b4d]/80",
-    buttonBackground: "bg-[#0f2f23]/92",
-    buttonText: "text-[#dbf4df]",
-    chipBorder: "border-[#176b4d]/55",
-    chipBackground: "bg-[#10281f]/92",
-    chipText: "text-[#dbf4df]",
-    chipLabel: "Neutral"
+  tactical: {
+    border: "border-[#c8942c]/75",
+    buttonBorder: "border-[#c8942c]/85",
+    buttonBackground: "bg-[#2f230d]/94",
+    buttonText: "text-[#ffefcb]",
+    chipBorder: "border-[#c8942c]/55",
+    chipBackground: "bg-[#2d230f]/94",
+    chipText: "text-[#ffefcb]",
+    chipLabel: "Tactical"
   },
-  negative_world: {
+  negative: {
     border: "border-[#b4472f]/75",
     buttonBorder: "border-[#b4472f]/85",
     buttonBackground: "bg-[#31130d]/94",
@@ -137,7 +137,7 @@ export function EventReveal() {
 
         <ActionButton
           iconRight={ArrowRight}
-          onClick={() => router.push("/game")}
+          onClick={() => router.push(game.isCrownSelectionPending ? "/crown" : "/game")}
           fullWidth
           variant="iron"
           className={`border ${accent.buttonBorder} ${accent.buttonBackground} ${accent.buttonText}`}

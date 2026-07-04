@@ -3,7 +3,7 @@
 import { create } from "zustand";
 import { gameService } from "@/lib/api/gameService";
 import { recordDiceRoll } from "@/lib/domain/dice";
-import { createGame, startGame } from "@/lib/domain/game";
+import { crownKing, createGame, startGame } from "@/lib/domain/game";
 import { adjustResources } from "@/lib/domain/resources";
 import { sampleGame } from "@/lib/domain/sampleGame";
 import type { CreateGameCommand, GameState } from "@/lib/domain/types";
@@ -18,6 +18,7 @@ type GameStore = {
   createLocalGame: (command: CreateGameCommand) => Promise<GameState | null>;
   startLocalGame: () => Promise<GameState | null>;
   recordDiceTotal: (total: number) => Promise<GameState | null>;
+  crownSelectedKing: () => Promise<GameState | null>;
   adjustPlayerResource: (playerId: string, resourceId: string, delta: number) => Promise<void>;
 };
 
@@ -116,6 +117,27 @@ export const useGameStore = create<GameStore>((set, get) => ({
       set({
         saveStatus: "error",
         error: error instanceof Error ? error.message : "Unable to record dice roll."
+      });
+
+      return null;
+    }
+  },
+
+  async crownSelectedKing() {
+    try {
+      const result = crownKing({
+        game: get().game
+      });
+
+      set({ game: result.state, saveStatus: "saving", error: null });
+      await gameService.saveGame(result.state);
+      set({ saveStatus: "saved" });
+
+      return result.state;
+    } catch (error) {
+      set({
+        saveStatus: "error",
+        error: error instanceof Error ? error.message : "Unable to crown the new King."
       });
 
       return null;

@@ -1,4 +1,5 @@
 import {
+  Crown,
   Coins,
   Dices,
   Feather,
@@ -24,6 +25,7 @@ type EventHistoryProps = {
 const ENTRY_STYLE: Record<HistoryEntryType, { icon: LucideIcon; tone: Tone }> = {
   "game.created": { icon: Sparkles, tone: "gold" },
   "game.started": { icon: Swords, tone: "arcane" },
+  "king.crowned": { icon: Crown, tone: "gold" },
   "dice.recorded": { icon: Dices, tone: "gold" },
   "world_event.applied": { icon: ScrollText, tone: "arcane" },
   "player.added": { icon: UserPlus, tone: "forest" },

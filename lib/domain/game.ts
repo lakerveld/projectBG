@@ -8,7 +8,13 @@ import {
   MIN_PLAYERS
 } from "./defaults";
 import { createEntityId } from "./id";
-import type { CommandResult, CreateGameCommand, GameState, StartGameCommand } from "./types";
+import type {
+  CommandResult,
+  CrownKingCommand,
+  CreateGameCommand,
+  GameState,
+  StartGameCommand
+} from "./types";
 
 export class CreateGameCommandError extends Error {
   constructor(message: string) {
@@ -82,6 +88,11 @@ export function createGame(command: CreateGameCommand): CommandResult<GameState>
       rulesetPreset: command.rulesetPreset ?? DEFAULT_RULESET_PRESET,
       playerColorMode: command.playerColorMode ?? DEFAULT_PLAYER_COLOR_MODE,
       setupStatus: "ready",
+      kingPlayerId: null,
+      playersWhoHaveBeenKing: [],
+      currentTurnPlayerId: null,
+      completedRoundsSinceCrown: 0,
+      isCrownSelectionPending: false,
       round: 0,
       currentRoundRolls: [],
       schemaVersion: GAME_SCHEMA_VERSION,
@@ -93,6 +104,7 @@ export function createGame(command: CreateGameCommand): CommandResult<GameState>
         name: player.name,
         color: player.color,
         avatarId: player.avatarId,
+        victoryPoints: 0,
         resources: { ...startingResources }
       })),
       history: [historyEntry]
@@ -146,12 +158,101 @@ export function startGame(command: StartGameCommand): CommandResult<GameState> {
       ...game,
       setupStatus: "in-progress",
       kingPlayerId: king.id,
+      playersWhoHaveBeenKing: [king.id],
       currentTurnPlayerId: king.id,
+      completedRoundsSinceCrown: 0,
+      isCrownSelectionPending: false,
       round: 1,
       currentRoundRolls: [],
       updatedAt: now,
       history: [historyEntry, ...game.history]
     },
     historyEntry
+  };
+}
+
+export class CrownKingCommandError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "CrownKingCommandError";
+  }
+}
+
+export function crownKing(command: CrownKingCommand): CommandResult<GameState> {
+  const { game } = command;
+
+  if (game.setupStatus !== "in-progress") {
+    throw new CrownKingCommandError("Start the game before crowning a new King.");
+  }
+
+  if (!game.isCrownSelectionPending) {
+    throw new CrownKingCommandError("A new King is not ready to be crowned.");
+  }
+
+  const now = command.now ?? new Date().toISOString();
+  const idFactory = command.idFactory ?? (() => createEntityId("history"));
+  const previousKingPlayerId = game.kingPlayerId;
+  const random = command.random ?? Math.random;
+  const selection = selectNextKing(game, random);
+  const selectedPlayer = selection.player;
+  const historyEntry = {
+    id: idFactory(),
+    type: "king.crowned" as const,
+    createdAt: now,
+    playerId: selectedPlayer.id,
+    message: `${selectedPlayer.name} was crowned as the new King.`,
+    metadata: {
+      previousKingPlayerId,
+      kingPlayerId: selectedPlayer.id,
+      round: game.round,
+      cycleReset: selection.cycleReset
+    }
+  };
+
+  return {
+    state: {
+      ...game,
+      kingPlayerId: selectedPlayer.id,
+      playersWhoHaveBeenKing: selection.playersWhoHaveBeenKing,
+      currentTurnPlayerId: selectedPlayer.id,
+      completedRoundsSinceCrown: 0,
+      isCrownSelectionPending: false,
+      updatedAt: now,
+      history: [historyEntry, ...game.history]
+    },
+    historyEntry
+  };
+}
+
+function selectNextKing(game: GameState, random: () => number) {
+  const previousKingPlayerId = game.kingPlayerId;
+  const servedPlayers = new Set(game.playersWhoHaveBeenKing);
+
+  let cycleReset = false;
+  let nextServedPlayers = [...game.playersWhoHaveBeenKing];
+  let eligiblePlayers = game.players.filter(
+    (player) => player.id !== previousKingPlayerId && !servedPlayers.has(player.id)
+  );
+
+  if (eligiblePlayers.length === 0) {
+    cycleReset = true;
+    nextServedPlayers = previousKingPlayerId ? [previousKingPlayerId] : [];
+    eligiblePlayers = game.players.filter((player) => player.id !== previousKingPlayerId);
+  }
+
+  const selectedIndex = Math.min(
+    Math.floor(random() * eligiblePlayers.length),
+    eligiblePlayers.length - 1
+  );
+  const player = eligiblePlayers[selectedIndex];
+
+  if (!player) {
+    throw new CrownKingCommandError("Unable to select the next King.");
+  }
+
+  return {
+    player,
+    cycleReset,
+    playersWhoHaveBeenKing: [...nextServedPlayers, player.id]
   };
 }

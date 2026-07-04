@@ -31,6 +31,8 @@ The app should initially provide lightweight overlays rather than enforce every 
 - Attack/defense actions that affect resources or status.
 - Trade logging and optional trade suggestions.
 
+The setup flow should stay aligned with the tabletop baseline: a single session supports up to four players, and player identity is assigned from the curated white, orange, blue, and red palette.
+
 ## Balance Direction
 
 The MVP should favor transparency over perfect balance. Every event should state:

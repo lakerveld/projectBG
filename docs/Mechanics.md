@@ -15,7 +15,9 @@ Document the initial mechanical systems the MVP should support and the boundarie
 
 ### Game Creation
 
-Players create a local session with a name, player list, and basic ruleset options.
+Players create a local session with a name, a player list of up to four people, and basic ruleset options.
+
+The current setup palette is fixed to four curated player colors: white, orange, blue, and red.
 
 ### Resource Tracking
 
@@ -75,4 +77,3 @@ Conflict actions should be simple in the MVP:
 - [Events](./Events.md)
 - [Kingdom](./Kingdom.md)
 - [State Management](./StateManagement.md)
-

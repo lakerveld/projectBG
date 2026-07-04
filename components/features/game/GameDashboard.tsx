@@ -16,6 +16,7 @@ export function GameDashboard() {
   const { game, error, hydrate } = useGameStore();
   const currentTurnPlayer = game.players.find((player) => player.id === game.currentTurnPlayerId);
   const roundRolls = game.currentRoundRolls ?? [];
+  const crownSelectionPending = game.isCrownSelectionPending;
 
   useEffect(() => {
     void hydrate();
@@ -37,7 +38,7 @@ export function GameDashboard() {
     <section className="grid h-dvh grid-rows-[auto_minmax(0,1fr)_auto] gap-3 overflow-hidden">
       <DashboardHeader
         round={game.round}
-        currentPlayerName={currentTurnPlayer?.name}
+        currentPlayerName={crownSelectionPending ? undefined : currentTurnPlayer?.name}
         activeWorldEvent={game.activeWorldEvent}
         onSettings={() => router.push("/")}
       />
@@ -46,7 +47,7 @@ export function GameDashboard() {
         <KingdomMap
           players={game.players}
           resources={game.resources}
-          currentTurnPlayerId={game.currentTurnPlayerId}
+          currentTurnPlayerId={game.currentTurnPlayerId ?? undefined}
           roundRolls={roundRolls}
         />
         <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex justify-center p-3">
@@ -58,19 +59,23 @@ export function GameDashboard() {
         <div className="flex items-center justify-between gap-3">
           <div className="min-w-0">
             <p className="font-display text-[0.68rem] uppercase tracking-[0.26em] text-sepia-muted">
-              {roundRolls.length}/{game.players.length} rolled
+              {crownSelectionPending
+                ? "Crown selection pending"
+                : `${roundRolls.length}/${game.players.length} rolled`}
             </p>
             <p className="truncate font-display text-lg font-bold text-sepia">
-              {currentTurnPlayer?.name ?? "Next player"} is ready
+              {crownSelectionPending
+                ? "A new King must be crowned"
+                : `${currentTurnPlayer?.name ?? "Next player"} is ready`}
             </p>
           </div>
           <ActionButton
             icon={Dice5}
-            onClick={() => router.push("/roll")}
+            onClick={() => router.push(crownSelectionPending ? "/crown" : "/roll")}
             size="lg"
             className="shrink-0 px-4"
           >
-            Start Rolling
+            {crownSelectionPending ? "Choose New King" : "Start Rolling"}
           </ActionButton>
         </div>
       </ParchmentCard>

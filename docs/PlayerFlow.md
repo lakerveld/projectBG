@@ -35,6 +35,10 @@ Describe the expected table flow from opening the app through completing a local
   - Sprint 4 records the dice result.
   - When every player has rolled, the app opens a full-screen world event reveal.
   - Players read the event, then continue back to the game dashboard.
+  - After every 3 completed rounds, the app pauses before the next roll and opens Crown Selection.
+  - The app automatically crowns a new King from players who have not ruled yet in the current cycle.
+  - The previous King cannot be selected immediately again.
+  - Once everyone has had one King turn, the rotation pool resets and a new cycle begins.
   - Resource updates and momentum are deferred until later gameplay sprints.
   - Play continues clockwise following the normal Catan-inspired table rules.
 

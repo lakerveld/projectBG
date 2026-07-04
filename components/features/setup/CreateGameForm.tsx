@@ -23,10 +23,12 @@ type PlayerDraft = {
 };
 
 function createPlayerDraft(index: number, existingAvatarIds: string[] = []): PlayerDraft {
+  const colorOption = CURATED_PLAYER_COLORS[index - 1] ?? CURATED_PLAYER_COLORS[0];
+
   return {
     id: `draft-player-${Date.now()}-${index}`,
     name: "",
-    color: CURATED_PLAYER_COLORS[index - 1] ?? CURATED_PLAYER_COLORS[0] ?? "#b33a3a",
+    color: colorOption?.value ?? "#f3efe7",
     avatarId: getRandomPlayerAvatar(existingAvatarIds).id
   };
 }
@@ -116,9 +118,8 @@ export function CreateGameForm() {
     markSetupDirty();
 
     const nextColor =
-      CURATED_PLAYER_COLORS.find((color) => players.every((player) => player.color !== color)) ??
-      CURATED_PLAYER_COLORS[0] ??
-      "#b33a3a";
+      CURATED_PLAYER_COLORS.find((color) => players.every((player) => player.color !== color.value))
+        ?.value ?? CURATED_PLAYER_COLORS[0]?.value ?? "#f3efe7";
 
     setPlayers((currentPlayers) => [
       ...currentPlayers,
@@ -211,27 +212,31 @@ export function CreateGameForm() {
 
                 <div>
                   <span className="sr-only">Player {index + 1} color</span>
-                  <div className="grid grid-cols-6 gap-2">
+                  <div className="grid grid-cols-4 gap-2">
                     {CURATED_PLAYER_COLORS.map((color) => {
-                      const isSelected = player.color === color;
+                      const isSelected = player.color === color.value;
                       const isUsed = players.some(
-                        (candidate) => candidate.id !== player.id && candidate.color === color
+                        (candidate) => candidate.id !== player.id && candidate.color === color.value
                       );
 
                       return (
                         <button
-                          aria-label={`Choose color ${color} for player ${index + 1}`}
+                          aria-label={`Choose ${color.label} for player ${index + 1}`}
                           className={`grid aspect-square min-h-10 place-items-center rounded-full border shadow-carved ${
                             isSelected ? "border-sepia ring-2 ring-gold" : "border-parchment-edge"
                           } ${isUsed ? "opacity-35" : ""}`}
                           disabled={isUsed}
-                          key={color}
-                          onClick={() => updatePlayer(player.id, { color })}
-                          style={{ backgroundColor: color }}
+                          key={color.value}
+                          onClick={() => updatePlayer(player.id, { color: color.value })}
+                          style={{ backgroundColor: color.value }}
                           type="button"
                         >
                           {isSelected ? (
-                            <Check size={18} className="text-white" aria-hidden="true" />
+                            <Check
+                              size={18}
+                              className={color.iconClassName}
+                              aria-hidden="true"
+                            />
                           ) : null}
                         </button>
                       );

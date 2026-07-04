@@ -23,6 +23,10 @@ export function recordDiceRoll(command: RecordDiceRollCommand): CommandResult<Ga
     throw new DiceCommandError("Dice total must be a whole number.");
   }
 
+  if (game.isCrownSelectionPending) {
+    throw new DiceCommandError("Crown a new King before entering the next dice roll.");
+  }
+
   if (total < MIN_DICE_TOTAL || total > MAX_DICE_TOTAL) {
     throw new DiceCommandError("Dice total must be between 2 and 12.");
   }
@@ -68,6 +72,8 @@ export function recordDiceRoll(command: RecordDiceRollCommand): CommandResult<Ga
     const averageRoll = calculateRoundAverage(nextRoundRolls);
     const worldEvent = selectWorldEventForAverage(averageRoll, command.random);
     const effectResult = applyWorldEventEffects(game.players, worldEvent);
+    const completedRoundsSinceCrown = game.completedRoundsSinceCrown + 1;
+    const isCrownSelectionPending = completedRoundsSinceCrown >= 3;
     const eventHistoryEntry = {
       id: idFactory(),
       type: "world_event.applied" as const,
@@ -82,6 +88,8 @@ export function recordDiceRoll(command: RecordDiceRollCommand): CommandResult<Ga
         eventId: worldEvent.id,
         eventName: worldEvent.name,
         category: worldEvent.category,
+        completedRoundsSinceCrown,
+        crownSelectionPending: isCrownSelectionPending,
         effectsApplied: worldEvent.effectsApplied,
         resourceAdjustments: effectResult.resourceAdjustments
       }
@@ -93,6 +101,8 @@ export function recordDiceRoll(command: RecordDiceRollCommand): CommandResult<Ga
         activeWorldEvent: worldEvent,
         players: effectResult.players,
         currentRoundRolls: [],
+        completedRoundsSinceCrown,
+        isCrownSelectionPending,
         currentTurnPlayerId: game.kingPlayerId ?? game.players[0]?.id,
         round: game.round + 1,
         updatedAt: now,

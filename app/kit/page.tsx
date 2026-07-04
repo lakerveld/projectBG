@@ -111,7 +111,7 @@ export default function KitPage() {
         </header>
 
         <Section eyebrow="The signature" title="World event">
-          <WorldEventCard event={MVP_WORLD_EVENTS.negative_world} round={3} />
+          <WorldEventCard event={MVP_WORLD_EVENTS.negative} round={3} />
         </Section>
 
         <Section eyebrow="Reading the bones" title="Dice roll result">

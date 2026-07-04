@@ -8,6 +8,8 @@ Players need a fast way to create a local table session and add players without 
 
 - Create a local game from `/setup`.
 - Capture player names and player colors.
+- Limit setup to four players.
+- Offer the curated player colors white, orange, blue, and red.
 - Generate the local game name internally.
 - Default ruleset preset and color mode internally.
 - Validate input before saving.
@@ -33,9 +35,11 @@ Players need a fast way to create a local table session and add players without 
 - Ruleset preset defaults to `original-mvp`.
 - Player color mode defaults to `curated`.
 - At least two players are required.
+- No more than four players are allowed.
 - Player names are required.
 - Player names must be unique.
 - Player colors must be unique.
+- Player colors come from the curated set: white, orange, blue, and red.
 - The game starts with the submitted players.
 - The game starts with setup status `ready`.
 - A `game.created` history entry is added immediately.

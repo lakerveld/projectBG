@@ -147,7 +147,7 @@ Consequences: Resource production, momentum, and world-event handling are marked
 
 Status: Accepted
 
-Decision: World events trigger after every player has rolled once. The round average determines whether the event is negative, neutral, or positive.
+Decision: World events trigger after every player has rolled once. The round average determines whether the event is negative, tactical, or positive.
 
 Why: This keeps events global and table-focused instead of targeting one player. It also gives dice entry a clear round-level payoff without requiring full resource automation.
 

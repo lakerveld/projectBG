@@ -24,12 +24,10 @@ Define an initial color strategy for player identity, resource readability, and 
 
 Use a curated set with labels and non-color identifiers:
 
-- Red.
+- White.
+- Orange.
 - Blue.
-- Green.
-- Yellow.
-- Purple.
-- Teal.
+- Red.
 
 Each player color should have accessible foreground and background combinations.
 
@@ -40,7 +38,6 @@ Resource colors should be distinct from player colors where possible. Resource i
 ## Open Questions
 
 - Should dark mode be part of MVP?
-- Should player colors be limited to four for the first ruleset?
 - Should resource colors be themed or purely functional?
 
 ## Future Improvements
@@ -55,4 +52,3 @@ Resource colors should be distinct from player colors where possible. Resource i
 - [Components](./Components.md)
 - [Resources](../docs/Resources.md)
 - [UX](../docs/UX.md)
-

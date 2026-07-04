@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "docs/Events.md",
+                "file": "specs/start-game-king-selection.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Events"
+              "title": "start-game-king-selection"
             }
           }
         ]
@@ -78,7 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 354.5
   },
   "right": {
     "id": "34fcfaf481bf08bb",
@@ -185,7 +185,20 @@
   },
   "active": "bd9d28b1c2833ae1",
   "lastOpenFiles": [
+    "components/features/game/CrownSelectionScreen.tsx",
+    "app/crown/page.tsx",
+    "app/crown",
+    "specs/world-events.md",
+    "docs/GameRules.md",
+    "docs/Events.md",
     "lib/ui/worldEventRevealVisuals.ts",
+    "lib/domain/events.ts",
+    "specs/start-game-king-selection.md",
+    "specs/README.md",
+    "specs/game-creation.md",
+    "specs/dice-entry.md",
+    "README.md",
+    "components/README.md",
     "public/events/harvest.png",
     "public/events",
     "node_modules/@img/sharp-win32-x64/versions.json",
@@ -199,10 +212,6 @@
     "public/avatars/king.png",
     "public/avatars/bishop.png",
     "public/avatars/wizard.png",
-    "public/avatars",
-    "node_modules/next/navigation.js",
-    "node_modules/next/node_modules/postcss/package.json",
-    "node_modules/next/navigation-types/compat/navigation.d.ts",
     "node_modules/is-shared-array-buffer/README.md",
     "node_modules/is-shared-array-buffer/CHANGELOG.md",
     "node_modules/is-array-buffer/README.md",
@@ -221,15 +230,6 @@
     "node_modules/resolve-from/readme.md",
     "node_modules/path-exists/readme.md",
     "node_modules/p-locate/readme.md",
-    "node_modules/ms/readme.md",
-    "node_modules/ms/license.md",
-    "node_modules/locate-path/readme.md",
-    "node_modules/json-schema-traverse/README.md",
-    "node_modules/js-tokens/README.md",
-    "node_modules/js-tokens/CHANGELOG.md",
-    "node_modules/get-symbol-description/README.md",
-    "node_modules/get-symbol-description/CHANGELOG.md",
-    "node_modules/eslint-plugin-import/memo-parser/README.md",
-    "node_modules/data-view-byte-length/README.md"
+    "node_modules/ms/readme.md"
   ]
 }

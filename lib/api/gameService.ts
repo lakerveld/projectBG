@@ -24,6 +24,11 @@ function normalizeGame(game: GameState): GameState {
   return {
     ...game,
     schemaVersion: GAME_SCHEMA_VERSION,
+    kingPlayerId: game.kingPlayerId ?? null,
+    playersWhoHaveBeenKing: game.playersWhoHaveBeenKing ?? [],
+    currentTurnPlayerId: game.currentTurnPlayerId ?? null,
+    completedRoundsSinceCrown: game.completedRoundsSinceCrown ?? 0,
+    isCrownSelectionPending: game.isCrownSelectionPending ?? false,
     resources: DEFAULT_RESOURCES,
     players: game.players.map((player) => {
       const migratedResources: Record<string, number> = {
@@ -34,6 +39,7 @@ function normalizeGame(game: GameState): GameState {
 
       return {
         ...player,
+        victoryPoints: player.victoryPoints ?? 0,
         resources: defaultResourceIds.reduce<Record<string, number>>((resources, resourceId) => {
           resources[resourceId] = migratedResources[resourceId] ?? 0;
           return resources;

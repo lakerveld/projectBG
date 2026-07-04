@@ -12,6 +12,7 @@ export type Player = {
   name: string;
   color: string;
   avatarId?: string;
+  victoryPoints: number;
   resources: Record<EntityId, number>;
 };
 
@@ -24,6 +25,7 @@ export type GameSetupStatus = "adding-players" | "ready" | "in-progress";
 export type HistoryEntryType =
   | "game.created"
   | "game.started"
+  | "king.crowned"
   | "dice.recorded"
   | "world_event.applied"
   | "player.added"
@@ -46,8 +48,11 @@ export type GameState = {
   playerColorMode: PlayerColorMode;
   setupStatus: GameSetupStatus;
   tableNote?: string;
-  kingPlayerId?: EntityId;
-  currentTurnPlayerId?: EntityId;
+  kingPlayerId: EntityId | null;
+  playersWhoHaveBeenKing: EntityId[];
+  currentTurnPlayerId?: EntityId | null;
+  completedRoundsSinceCrown: number;
+  isCrownSelectionPending: boolean;
   round: number;
   currentRoundRolls: RoundRoll[];
   activeWorldEvent?: WorldEvent;
@@ -64,7 +69,7 @@ export type RoundRoll = {
   total: number;
 };
 
-export type WorldEventCategory = "positive_world" | "neutral_world" | "negative_world";
+export type WorldEventCategory = "positive" | "tactical" | "negative";
 
 export type WorldEventSeverity = "minor" | "medium" | "major";
 
@@ -78,7 +83,8 @@ export type WorldEventEffectKind =
   | "free_bank_trade"
   | "tournament"
   | "production_block"
-  | "road_surcharge";
+  | "road_surcharge"
+  | "custom_rule";
 
 export type WorldEventEffect = {
   kind: WorldEventEffectKind;
@@ -128,6 +134,13 @@ export type CreateGamePlayerInput = {
 };
 
 export type StartGameCommand = {
+  game: GameState;
+  now?: string;
+  idFactory?: () => EntityId;
+  random?: () => number;
+};
+
+export type CrownKingCommand = {
   game: GameState;
   now?: string;
   idFactory?: () => EntityId;

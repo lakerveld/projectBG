@@ -84,7 +84,7 @@ export const RealmAvatar = memo(function RealmAvatar({
         </p>
         <div className="flex items-center gap-1.5 text-[0.68rem] uppercase tracking-[0.22em] text-parchment/72">
           <span className="rounded-full border border-gold/20 bg-night/60 px-2 py-0.5 font-bold text-gold">
-            VP 0
+            VP {player.victoryPoints}
           </span>
           <span className="rounded-full border border-parchment-edge/20 bg-night/45 px-2 py-0.5">
             {totalResources}

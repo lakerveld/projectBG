@@ -63,6 +63,23 @@ export default function RollPage() {
     );
   }
 
+  if (game.isCrownSelectionPending) {
+    return (
+      <main className="hall grid min-h-dvh place-items-center px-4">
+        <EmptyState
+          icon={ScrollText}
+          title="A new King must be crowned"
+          description="Finish Crown Selection before the next dice roll can begin."
+          action={
+            <ActionButton onClick={() => router.push("/crown")} fullWidth>
+              Open Crown Selection
+            </ActionButton>
+          }
+        />
+      </main>
+    );
+  }
+
   return (
     <main className="hall min-h-dvh overflow-hidden px-4 py-5">
       <div className="mx-auto grid min-h-[calc(100dvh-2.5rem)] w-full max-w-md grid-rows-[auto_auto_1fr] gap-5">

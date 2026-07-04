@@ -1,13 +1,21 @@
 import { describe, expect, it } from "vitest";
-import { createGame, CreateGameCommandError, startGame, StartGameCommandError } from "./game";
+import { CURATED_PLAYER_COLORS } from "./defaults";
+import {
+  crownKing,
+  CrownKingCommandError,
+  createGame,
+  CreateGameCommandError,
+  startGame,
+  StartGameCommandError
+} from "./game";
 
 describe("createGame", () => {
   it("creates a local game draft with defaults and history", () => {
     const ids = ["game-test", "history-test", "player-ada", "player-lin"];
     const result = createGame({
       players: [
-        { name: "Ada", color: "#b33a3a" },
-        { name: "Lin", color: "#2f6db3" }
+        { name: "Ada", color: CURATED_PLAYER_COLORS[3]?.value ?? "#b33a3a" },
+        { name: "Lin", color: CURATED_PLAYER_COLORS[2]?.value ?? "#2f6db3" }
       ],
       now: "2026-07-02T11:00:00.000Z",
       idFactory: () => ids.shift() ?? "fallback"
@@ -18,9 +26,14 @@ describe("createGame", () => {
     expect(result.state.rulesetPreset).toBe("original-mvp");
     expect(result.state.playerColorMode).toBe("curated");
     expect(result.state.setupStatus).toBe("ready");
+    expect(result.state.kingPlayerId).toBeNull();
+    expect(result.state.currentTurnPlayerId).toBeNull();
+    expect(result.state.completedRoundsSinceCrown).toBe(0);
+    expect(result.state.isCrownSelectionPending).toBe(false);
     expect(result.state.round).toBe(0);
     expect(result.state.players).toHaveLength(2);
     expect(result.state.players[0]?.name).toBe("Ada");
+    expect(result.state.players[0]?.victoryPoints).toBe(0);
     expect(result.state.players[0]?.resources.wheat).toBe(0);
     expect(result.state.resources.map((resource) => resource.id)).toEqual([
       "wheat",
@@ -33,13 +46,28 @@ describe("createGame", () => {
     expect(result.historyEntry.message).toBe("Table Session created.");
   });
 
+  it("requires no more than four players", () => {
+    expect(() =>
+      createGame({
+        name: "Friday Table",
+        players: [
+          { name: "Ada", color: CURATED_PLAYER_COLORS[0]?.value ?? "#f3efe7" },
+          { name: "Lin", color: CURATED_PLAYER_COLORS[1]?.value ?? "#d77a2d" },
+          { name: "Mira", color: CURATED_PLAYER_COLORS[2]?.value ?? "#2f6db3" },
+          { name: "Noah", color: CURATED_PLAYER_COLORS[3]?.value ?? "#b33a3a" },
+          { name: "Tess", color: "#7f7f7f" }
+        ]
+      })
+    ).toThrow(CreateGameCommandError);
+  });
+
   it("rejects overly long generated or supplied game names", () => {
     expect(() =>
       createGame({
         name: "x".repeat(61),
         players: [
-          { name: "Ada", color: "#b33a3a" },
-          { name: "Lin", color: "#2f6db3" }
+          { name: "Ada", color: CURATED_PLAYER_COLORS[3]?.value ?? "#b33a3a" },
+          { name: "Lin", color: CURATED_PLAYER_COLORS[2]?.value ?? "#2f6db3" }
         ]
       })
     ).toThrow(CreateGameCommandError);
@@ -49,7 +77,7 @@ describe("createGame", () => {
     expect(() =>
       createGame({
         name: "Friday Table",
-        players: [{ name: "Ada", color: "#b33a3a" }]
+        players: [{ name: "Ada", color: CURATED_PLAYER_COLORS[3]?.value ?? "#b33a3a" }]
       })
     ).toThrow(CreateGameCommandError);
   });
@@ -59,8 +87,8 @@ describe("createGame", () => {
       createGame({
         name: "Friday Table",
         players: [
-          { name: "Ada", color: "#b33a3a" },
-          { name: " ada ", color: "#2f6db3" }
+          { name: "Ada", color: CURATED_PLAYER_COLORS[3]?.value ?? "#b33a3a" },
+          { name: " ada ", color: CURATED_PLAYER_COLORS[2]?.value ?? "#2f6db3" }
         ]
       })
     ).toThrow(CreateGameCommandError);
@@ -72,9 +100,9 @@ describe("startGame", () => {
     const created = createGame({
       name: "Friday Table",
       players: [
-        { name: "Ada", color: "#b33a3a" },
-        { name: "Lin", color: "#2f6db3" },
-        { name: "Mira", color: "#176b4d" }
+        { name: "Ada", color: CURATED_PLAYER_COLORS[3]?.value ?? "#b33a3a" },
+        { name: "Lin", color: CURATED_PLAYER_COLORS[2]?.value ?? "#2f6db3" },
+        { name: "Mira", color: CURATED_PLAYER_COLORS[1]?.value ?? "#d77a2d" }
       ],
       idFactory: (() => {
         const ids = ["game-test", "created-history", "player-ada", "player-lin", "player-mira"];
@@ -101,8 +129,8 @@ describe("startGame", () => {
     const created = createGame({
       name: "Friday Table",
       players: [
-        { name: "Ada", color: "#b33a3a" },
-        { name: "Lin", color: "#2f6db3" }
+        { name: "Ada", color: CURATED_PLAYER_COLORS[3]?.value ?? "#b33a3a" },
+        { name: "Lin", color: CURATED_PLAYER_COLORS[2]?.value ?? "#2f6db3" }
       ],
       idFactory: (() => {
         const ids = ["game-test", "created-history", "player-ada", "player-lin"];
@@ -113,5 +141,134 @@ describe("startGame", () => {
     const started = startGame({ game: created.state });
 
     expect(() => startGame({ game: started.state })).toThrow(StartGameCommandError);
+  });
+});
+
+describe("crownKing", () => {
+  it("automatically crowns an eligible next king and resets the crown countdown", () => {
+    const created = createGame({
+      name: "Friday Table",
+      players: [
+        { name: "Ada", color: CURATED_PLAYER_COLORS[3]?.value ?? "#b33a3a" },
+        { name: "Lin", color: CURATED_PLAYER_COLORS[2]?.value ?? "#2f6db3" },
+        { name: "Mira", color: CURATED_PLAYER_COLORS[1]?.value ?? "#d77a2d" }
+      ],
+      idFactory: (() => {
+        const ids = ["game-test", "created-history", "player-ada", "player-lin", "player-mira"];
+        return () => ids.shift() ?? "fallback";
+      })()
+    });
+    const started = startGame({
+      game: created.state,
+      random: () => 0,
+      idFactory: () => "started-history"
+    });
+
+    const result = crownKing({
+      game: {
+        ...started.state,
+        currentTurnPlayerId: "player-ada",
+        playersWhoHaveBeenKing: ["player-ada"],
+        completedRoundsSinceCrown: 3,
+        isCrownSelectionPending: true
+      },
+      now: "2026-07-02T13:00:00.000Z",
+      idFactory: () => "king-history",
+      random: () => 0.9
+    });
+
+    expect(result.state.kingPlayerId).toBe("player-mira");
+    expect(result.state.currentTurnPlayerId).toBe("player-mira");
+    expect(result.state.playersWhoHaveBeenKing).toEqual(["player-ada", "player-mira"]);
+    expect(result.state.completedRoundsSinceCrown).toBe(0);
+    expect(result.state.isCrownSelectionPending).toBe(false);
+    expect(result.historyEntry.type).toBe("king.crowned");
+  });
+
+  it("does not repeat kings until everyone has had a turn", () => {
+    const created = createGame({
+      players: [
+        { name: "Ada", color: CURATED_PLAYER_COLORS[3]?.value ?? "#b33a3a" },
+        { name: "Lin", color: CURATED_PLAYER_COLORS[2]?.value ?? "#2f6db3" },
+        { name: "Mira", color: CURATED_PLAYER_COLORS[1]?.value ?? "#d77a2d" }
+      ],
+      idFactory: (() => {
+        const ids = ["game-test", "created-history", "player-ada", "player-lin", "player-mira"];
+        return () => ids.shift() ?? "fallback";
+      })()
+    });
+
+    const started = startGame({
+      game: created.state,
+      random: () => 0,
+      idFactory: () => "started-history"
+    });
+
+    const result = crownKing({
+      game: {
+        ...started.state,
+        playersWhoHaveBeenKing: ["player-ada", "player-lin"],
+        kingPlayerId: "player-lin",
+        currentTurnPlayerId: "player-lin",
+        completedRoundsSinceCrown: 3,
+        isCrownSelectionPending: true
+      },
+      random: () => 0
+    });
+
+    expect(result.state.kingPlayerId).toBe("player-mira");
+    expect(result.state.playersWhoHaveBeenKing).toEqual(["player-ada", "player-lin", "player-mira"]);
+  });
+
+  it("restarts the king rotation after everyone has ruled once", () => {
+    const created = createGame({
+      players: [
+        { name: "Ada", color: CURATED_PLAYER_COLORS[3]?.value ?? "#b33a3a" },
+        { name: "Lin", color: CURATED_PLAYER_COLORS[2]?.value ?? "#2f6db3" },
+        { name: "Mira", color: CURATED_PLAYER_COLORS[1]?.value ?? "#d77a2d" }
+      ],
+      idFactory: (() => {
+        const ids = ["game-test", "created-history", "player-ada", "player-lin", "player-mira"];
+        return () => ids.shift() ?? "fallback";
+      })()
+    });
+
+    const started = startGame({
+      game: created.state,
+      random: () => 0,
+      idFactory: () => "started-history"
+    });
+
+    const result = crownKing({
+      game: {
+        ...started.state,
+        playersWhoHaveBeenKing: ["player-ada", "player-lin", "player-mira"],
+        kingPlayerId: "player-mira",
+        currentTurnPlayerId: "player-mira",
+        completedRoundsSinceCrown: 3,
+        isCrownSelectionPending: true
+      },
+      random: () => 0
+    });
+
+    expect(result.state.kingPlayerId).toBe("player-ada");
+    expect(result.state.playersWhoHaveBeenKing).toEqual(["player-mira", "player-ada"]);
+    expect(result.historyEntry.metadata?.cycleReset).toBe(true);
+  });
+
+  it("requires a pending crown selection", () => {
+    const created = createGame({
+      players: [
+        { name: "Ada", color: CURATED_PLAYER_COLORS[3]?.value ?? "#b33a3a" },
+        { name: "Lin", color: CURATED_PLAYER_COLORS[2]?.value ?? "#2f6db3" }
+      ]
+    });
+    const started = startGame({ game: created.state });
+
+    expect(() =>
+      crownKing({
+        game: started.state
+      })
+    ).toThrow(CrownKingCommandError);
   });
 });

@@ -27,19 +27,19 @@ export type EventVisual = {
  * event card and the dice result always read the same mood the same way.
  */
 export const EVENT_VISUALS: Record<WorldEventCategory, EventVisual> = {
-  positive_world: {
+  positive: {
     label: "Boon",
     verdict: "Bountiful",
     tone: "forest",
     icon: Sprout
   },
-  neutral_world: {
-    label: "Portent",
-    verdict: "Steady",
+  tactical: {
+    label: "Tactic",
+    verdict: "Shifting",
     tone: "gold",
     icon: Scale
   },
-  negative_world: {
+  negative: {
     label: "Bane",
     verdict: "Grim",
     tone: "ember",

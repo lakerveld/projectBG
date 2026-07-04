@@ -6,74 +6,51 @@ Define the MVP world-event system triggered at the end of each round.
 
 ## Core Rule
 
-Events are world events, not player-specific rewards or punishments.
+Events still enter play as shared world events after every player has rolled once.
 
-After every player has rolled once, the app calculates the round average. Based on that average, one event is applied to the whole world.
+The round average decides the category:
+
+- Above average: positive event.
+- Around average: tactical event.
+- Below average: negative event.
+
+Tactical events are the middle category. They replace the older neutral bucket and are allowed to create a temporary table decision, often resolved by the King or the active player.
 
 ## Goals
 
-- Make events global and table-readable.
-- Avoid targeting individual players.
-- Use dice results to create shared atmosphere.
+- Make event outcomes readable from one shared phone.
+- Keep categories simple: positive, tactical, negative.
+- Support short, Catan-compatible rules.
+- Allow temporary King choices without blocking the round flow.
 - Record event context in history.
 - Reveal each triggered event on its own screen before returning to the dashboard.
-- Keep resource, trade, and penalty effects deferred until their systems exist.
 
 ## Round Event Flow
 
 1. Every player rolls once during the round.
 2. The app stores each dice result.
 3. When all players have rolled, the app calculates the average.
-4. The app compares the average against the expected Catan-inspired average: 7.
-5. The app triggers one world event:
-   - Above average: positive world event.
-   - Around average: neutral world event.
-   - Below average: negative world event.
-6. The event affects all players or the shared world state.
-7. The app opens the full-screen event reveal.
-8. The event is added to history.
-
-## Event Reveal Screen
-
-The event reveal is a reusable full-screen page.
-
-- The event image is used only as the screen background.
-- A graphic panel sits at the bottom of the screen.
-- The panel contains the event title and a short situation description.
-- The Continue button sits below the panel and returns players to the game dashboard.
-- New world events should provide their own background image when available.
+4. The app compares the average against the expected baseline of `7`.
+5. The app selects one event from the matching category.
+6. The event is revealed on `/event`.
+7. The event is stored as the active world event and added to history.
 
 ## Average Rules
 
-Expected dice average: 7.
+Expected dice average: `7`
 
-Configurable neutral range: 6-8.
+Configurable tactical range: `6-8`
 
 | Round Average | Result |
 | ---: | --- |
-| 2-5.99 | Negative world event |
-| 6-8 | Neutral world event |
-| 8.01-12 | Positive world event |
+| 2-5.99 | Negative event |
+| 6-8 | Tactical event |
+| 8.01-12 | Positive event |
 
-## Example
+## Event Categories
 
-| Player | Roll |
-| --- | ---: |
-| Blue | 8 |
-| Red | 6 |
-| White | 10 |
-| Orange | 4 |
-
-Average:
-
-```text
-(8 + 6 + 10 + 4) / 4 = 7
-```
-
-Result:
-
-```text
-Neutral world event
+```ts
+type EventCategory = "positive" | "tactical" | "negative";
 ```
 
 ## Event Structure
@@ -84,7 +61,7 @@ Neutral world event
   name: string;
   description: string;
   trigger: "end_of_round";
-  category: "positive_world" | "neutral_world" | "negative_world";
+  category: "positive" | "tactical" | "negative";
   targeting: "global";
   severity: "minor" | "medium" | "major";
   duration: "instant" | "1_round" | "2_rounds";
@@ -93,89 +70,131 @@ Neutral world event
 }
 ```
 
-## Positive World Events
+## Event Families
 
-Positive events should benefit the table, but not create runaway leads.
+### Bush Thief
 
-Examples:
+- `Bush Thief`
+- `Bush Thief Captured`
+- `Bribe the Bush Thief`
+- `Hidden Treasure`
+- `Night Raid`
+- `Secret Hideout`
 
-- Great Harvest: all resource production gives +1 extra resource this round.
-- Trade Boom: every player-to-player trade gives both players +1 Gold.
-- Golden Roads: road building costs 1 fewer resource this round.
-- Prosperous Season: everyone gains +2 Gold.
-- Calm Seas: harbor trades are improved for 1 round.
+These events create robber-style pressure, opportunistic rewards, and short tactical twists around stealing and terrain control.
 
-## Neutral World Events
+Newest rules:
 
-Neutral events should create interaction without strongly helping or hurting.
+- `Bush Thief`: all players roll, lowest roll receives the token, ties reroll, then the King places it on any terrain hex.
+- `Bush Thief Captured`: remove the Bush Thief; if a `7` is rolled this round it still moves, but its blocking effect waits until next round.
+- `Bribe the Bush Thief`: any player may move it once this round by paying `2 Wood`, `2 Sheep`, and `1 Wheat`.
+- `Hidden Treasure`: every player gains `1 random resource`, then remove the Bush Thief.
+- `Night Raid`: every player with more than `7 resources` loses `1 random resource`.
+- `Secret Hideout`: the King secretly chooses a terrain type; when it produces this round, the Bush Thief steals `1 resource` from one player on that hex.
 
-Examples:
+### King
 
-- Market Day: every player may make one 3:1 bank trade.
-- Traveling Merchant: one random resource becomes temporarily more valuable.
-- Royal Inspection: everyone may convert 1 resource into 1 Gold.
-- Festival: players are encouraged to trade; no penalty or bonus.
-- Changing Winds: next round's event threshold is slightly adjusted.
+- `King's Tournament`
+- `Royal Decree`
+- `Royal Taxation`
+- `Shared Wealth`
+- `Royal Celebration`
+- `Abuse of Power`
+- `Royal Favor`
 
-## Negative World Events
+When a King event asks for a choice, the King resolves it for the table unless a card or rule says otherwise.
 
-Negative events affect the shared world, not one player directly.
+After every King event, pass the Crown clockwise.
 
-Examples:
+Newest rules:
 
-- Drought: wheat produces nothing for 1 round.
-- Forest Fire: wood produces nothing for 1 round.
-- Market Crash: player-to-player trades give no Gold bonuses this round.
-- Bandit Pressure: the next 7 is stronger.
-- Heavy Storms: road building costs +1 resource this round.
+- `King's Tournament`: all players roll, highest roll wins, ties reroll, winner chooses `2 resources`, `1 free Road`, or `1 Development Card`.
+- `Royal Decree`: the King secretly chooses a number from `2-12`, excluding `7`; each time it is rolled this round, the King gains `1 resource of choice`, up to `3`.
+- `Royal Taxation`: the King chooses one resource type; until end of round, every build costs `+1` of that resource.
+- `Shared Wealth`: for the next `2 rounds`, Roads cost only `1 Brick`.
+- `Royal Celebration`: every player gains `1 resource of choice`; the King gains `2 resources of choice`.
+- `Abuse of Power`: the King chooses one player; that player discards `2 random resources`.
+- `Royal Favor`: the King chooses one player; that player may build `1 free Road`, draw `1 Development Card`, or perform `1 free bank trade`.
 
-## Important Rule
+### Settlement & City
 
-Avoid events like:
+- `Prosperous Cities`
+- `Costly Cities`
+- `Master Builders`
 
-- Player with most resources loses X.
-- Lowest player gains X.
-- King loses Gold.
-- One player is targeted.
+These events focus on city upkeep and short-lived construction advantages.
 
-For this version, events should affect:
+Newest rules:
 
-- The whole board.
-- All players equally.
-- Resource production rules.
-- Trade rules.
-- Temporary world modifiers.
-- Shared kingdom atmosphere.
+- `Prosperous Cities`: gain `1 Sheep` from the bank for every City you own, maximum `2`.
+- `Costly Cities`: pay `1 Sheep` to the bank for every City you own, maximum `2`.
+- `Master Builders`: players with `3 or more Settlements` may reduce one building action by `1 required resource` once this round.
 
-## History Entry
+## Current Event Set
 
-Each event history item should include:
+### Positive
+
+- `Great Harvest`
+- `Golden Roads`
+- `Calm Seas`
+- `Bush Thief Captured`
+- `Hidden Treasure`
+- `Shared Wealth`
+- `Royal Celebration`
+- `Prosperous Cities`
+
+### Tactical
+
+- `Traveling Merchant`
+- `Market Day`
+- `Bush Thief`
+- `Bribe the Bush Thief`
+- `Secret Hideout`
+- `King's Tournament`
+- `Royal Decree`
+- `Royal Favor`
+- `Master Builders`
+
+### Negative
+
+- `Drought`
+- `Forest Fire`
+- `Heavy Storms`
+- `Night Raid`
+- `Royal Taxation`
+- `Abuse of Power`
+- `Costly Cities`
+
+## Event Reveal Screen
+
+- The event image is used as the full-screen background.
+- The reveal panel sits near the bottom of the screen.
+- The panel shows the event title, description, and applied rule text.
+- The button below the panel returns players to the game dashboard.
+- New events may ship with placeholder art while final artwork is pending.
+
+## Placeholder Artwork Policy
+
+- Reuse an existing event image when final artwork is missing.
+- Keep the event enabled even when placeholder art is used.
+- Add this comment next to each placeholder mapping in code:
 
 ```ts
-{
-  roundNumber: number;
-  rolls: number[];
-  averageRoll: number;
-  eventId: string;
-  eventName: string;
-  category: string;
-  effectsApplied: string[];
-  timestamp: string;
-}
+// TODO: Replace with final artwork for this event
 ```
 
 ## Open Questions
 
-- Should the neutral range remain 6-8 after playtesting?
-- Should the active event last for the next round or only be recorded in history for MVP?
-- Which resource names should event examples use once the resource system is finalized?
+- Should the tactical range remain `6-8` after playtesting?
+- Which tactical events deserve real rule enforcement first?
+- Should King-choice events show a dedicated resolver screen later?
 
 ## Future Improvements
 
-- Configurable event tables.
-- Event duration countdown.
-- Real resource, trade, and build-cost effects.
-- Scenario-specific world event decks.
+- Event deck editing by ruleset.
+- Expiration countdown for multi-round effects.
+- Real resolution for build-cost and robber-style modifiers.
+- Scenario-specific event pools.
 
 ## Related Documents
 

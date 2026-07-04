@@ -10,16 +10,30 @@ export const DEFAULT_GAME_NAME = "Table Session";
 
 export const MIN_PLAYERS = 2;
 
-export const MAX_PLAYERS = 6;
+export const MAX_PLAYERS = 4;
 
 export const CURATED_PLAYER_COLORS = [
-  "#b33a3a",
-  "#2f6db3",
-  "#176b4d",
-  "#c8942c",
-  "#6d4db3",
-  "#16888a"
-];
+  {
+    label: "White",
+    value: "#f3efe7",
+    iconClassName: "text-night-deep"
+  },
+  {
+    label: "Orange",
+    value: "#d77a2d",
+    iconClassName: "text-white"
+  },
+  {
+    label: "Blue",
+    value: "#2f6db3",
+    iconClassName: "text-white"
+  },
+  {
+    label: "Red",
+    value: "#b33a3a",
+    iconClassName: "text-white"
+  }
+] as const;
 
 export const DEFAULT_RESOURCES: ResourceDefinition[] = [
   {

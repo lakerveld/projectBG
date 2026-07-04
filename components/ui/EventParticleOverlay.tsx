@@ -3,7 +3,7 @@
 import type { CSSProperties } from "react";
 import { cn } from "@/lib/ui/cn";
 
-export type EventParticleType = "positive" | "neutral" | "negative";
+export type EventParticleType = "positive" | "tactical" | "negative";
 export type EventParticleIntensity = "low" | "medium" | "high";
 
 type EventParticleOverlayProps = {
@@ -13,8 +13,8 @@ type EventParticleOverlayProps = {
 };
 
 const PARTICLE_STYLE: Record<EventParticleType, { color: string; colorSoft: string }> = {
-  positive: { color: "#F6B94B", colorSoft: "#FFD76A" },
-  neutral: { color: "#4ADE80", colorSoft: "#7CFF9B" },
+  positive: { color: "#4ADE80", colorSoft: "#7CFF9B" },
+  tactical: { color: "#F6B94B", colorSoft: "#FFD76A" },
   negative: { color: "#DC2626", colorSoft: "#FF5A4F" }
 };
 
