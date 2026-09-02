@@ -103,6 +103,16 @@ Why: A shared-phone journey app must stay readable at a glance and easy to use w
 
 Consequences: Map, active location, dice entry, and resource updates should not be merged into one overloaded dashboard unless later testing proves that necessary.
 
+### DEC-010: Start With a Static Antwerp Map Shell
+
+Status: Accepted
+
+Decision: Sprint 1 uses a curated static route shell with location pins and a mocked GPS status instead of a live map library.
+
+Why: The first risk is whether the route flow reads clearly on a phone. A static shell lets us validate mobile layout, route hierarchy, and stop labeling before adding browser geolocation or map-provider complexity.
+
+Consequences: Early route screens can use percentage-based pin positions and local route data. Real GPS integration and map APIs stay behind the shell until the activation sprint.
+
 ## Open Questions
 
 - Should organizer confirmation be mandatory for every stop or only GPS edge cases?

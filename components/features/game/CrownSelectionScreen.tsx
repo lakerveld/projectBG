@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { CheckCircle2, Crown, ScrollText, ShieldAlert, Sparkles } from "lucide-react";
@@ -19,8 +19,8 @@ export function CrownSelectionScreen() {
   const router = useRouter();
   const { game, hydrate, crownSelectedKing, saveStatus, error } = useGameStore();
   const [resolvedKingId, setResolvedKingId] = useState<string | null>(null);
-  const [hasTriggeredSelection, setHasTriggeredSelection] = useState(false);
   const [hasResolvedSelection, setHasResolvedSelection] = useState(false);
+  const hasTriggeredSelection = useRef(false);
 
   useEffect(() => {
     void hydrate();
@@ -31,11 +31,11 @@ export function CrownSelectionScreen() {
       return;
     }
 
-    if (hasTriggeredSelection || saveStatus === "saving") {
+    if (hasTriggeredSelection.current || saveStatus === "saving") {
       return;
     }
 
-    setHasTriggeredSelection(true);
+    hasTriggeredSelection.current = true;
 
     void (async () => {
       const updatedGame = await crownSelectedKing();

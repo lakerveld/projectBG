@@ -2,7 +2,6 @@
 
 import { memo, useMemo } from "react";
 import Image from "next/image";
-import { cn } from "@/lib/ui/cn";
 import type { Player, ResourceDefinition, RoundRoll } from "@/lib/domain/types";
 import { RealmAvatar } from "./RealmAvatar";
 

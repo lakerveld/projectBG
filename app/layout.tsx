@@ -3,8 +3,8 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "ProjectBG",
-  description: "A shared-phone companion app for physical board games."
+  title: "Ketanisten van Rattan",
+  description: "A mobile-first Antwerp journey app for Matthew."
 };
 
 export const viewport: Viewport = {
