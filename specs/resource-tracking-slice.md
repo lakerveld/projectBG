@@ -1,57 +1,47 @@
-# Resource Tracking Slice
+# Resource Ledger
 
 ## Problem
 
-Sprint 1 needs a thin vertical slice that proves the planned architecture without implementing full game mechanics. Resource adjustment is the smallest useful state transition because it touches domain rules, UI controls, history, state management, and persistence.
+Matthew needs a simple way to see how his resources change after a location is resolved.
 
 ## Scope
 
-- Display a sample local game.
-- Show players and resource counts.
-- Increment or decrement one resource at a time.
-- Prevent negative balances.
-- Record a history entry.
-- Save the updated game through the repository boundary.
+- Show current resource totals.
+- Update the ledger after a valid reward.
+- Prevent negative totals unless a later rule allows it.
+- Persist the updated ledger locally.
 
 ## User Flow
 
-1. Open the game dashboard.
-2. Find a player kingdom.
-3. Tap plus or minus on a resource.
-4. See the count update.
-5. See the action appear in recent history.
-6. Reload later and restore from local persistence when available.
+1. A location resolves.
+2. The app shows the resource change.
+3. Matthew sees the updated totals.
+4. The result is saved locally.
 
 ## Domain Behavior
 
-- Resource adjustments must be non-zero integers.
-- Player ID must exist.
-- Resource ID must exist.
-- Resource quantities cannot go below zero.
-- Every successful command emits one `resource.adjusted` history entry.
+- Resource IDs should be stable.
+- Resource quantities should be stored by resource ID.
+- Every committed change should create a history entry.
 
 ## Data Shape
 
-See [domain types](../lib/domain/types.ts).
+See [Feature 1 Plan](../docs/Feature1Plan.md) and [Resources](../docs/Resources.md).
 
 ## Acceptance Criteria
 
-- A resource can be incremented.
-- A resource can be decremented when the player has enough quantity.
-- A decrement below zero is rejected.
-- Successful adjustments update `updatedAt`.
-- Successful adjustments prepend a history entry.
-- The dashboard calls the local persistence service after a successful change.
+- The ledger shows current counts.
+- The counts update after a reward.
+- The updated state survives refresh.
+- The history entry matches the change.
 
 ## Test Notes
 
-- Unit tests cover increment and negative-balance rejection.
-- Later tests should cover persistence migration and UI interaction.
+- Unit tests should cover resource updates and invalid negatives.
+- End-to-end tests should cover the full resolve-to-ledger path.
 
 ## Related Docs
 
-- [Sprint 1](../docs/Sprint1.md)
-- [Architecture](../docs/Architecture.md)
+- [Feature 1 Plan](../docs/Feature1Plan.md)
 - [Resources](../docs/Resources.md)
 - [State Management](../docs/StateManagement.md)
-

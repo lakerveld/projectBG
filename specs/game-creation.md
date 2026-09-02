@@ -1,73 +1,53 @@
-# Game Creation
+# Antwerp Map and Location Activation
 
 ## Problem
 
-Players need a fast way to create a local table session and add players without a multi-screen setup flow. The flow should prove the setup architecture without introducing gameplay systems.
+The app needs a first playable slice that shows Antwerp as the board, highlights the active location, and gives Matthew a clear next step when he reaches a stop.
 
 ## Scope
 
-- Create a local game from `/setup`.
-- Capture player names and player colors.
-- Limit setup to four players.
-- Offer the curated player colors white, orange, blue, and red.
-- Generate the local game name internally.
-- Default ruleset preset and color mode internally.
-- Validate input before saving.
-- Create a typed `GameState`.
-- Save through the existing game service and IndexedDB repository boundary.
-- Keep the user on the setup screen after successful creation and show a saved state.
+- Show the Antwerp map.
+- Display the current and next location.
+- Track GPS status.
+- Mark a location as active when Matthew arrives.
+- Allow manual organizer confirmation when needed.
+- Persist the active location locally.
 
 ## User Flow
 
 1. Open the app.
-2. Tap `Create local game`.
-3. Add players.
-4. Fill in player names and pick unique colors.
-5. Submit the form.
-6. Review the saved players.
-7. Start the game.
-8. Watch the app randomly select the King.
-9. Continue to the dashboard with the King highlighted.
+2. See the map and the next location.
+3. Walk toward the stop.
+4. The app detects arrival or the organizer confirms it.
+5. The location becomes active.
+6. The active location view opens.
 
 ## Domain Behavior
 
-- Game name defaults internally to `Table Session`.
-- Ruleset preset defaults to `original-mvp`.
-- Player color mode defaults to `curated`.
-- At least two players are required.
-- No more than four players are allowed.
-- Player names are required.
-- Player names must be unique.
-- Player colors must be unique.
-- Player colors come from the curated set: white, orange, blue, and red.
-- The game starts with the submitted players.
-- The game starts with setup status `ready`.
-- A `game.created` history entry is added immediately.
-- Starting the game selects exactly one King.
-- The King becomes the first-turn player.
-- Starting the game records a `game.started` history entry.
+- Every location has a stable ID.
+- Every location has a display name.
+- Every location has activation bounds or a manual confirm path.
+- Only one location should be active at a time.
+- Activation should be recorded in the journey history.
 
 ## Data Shape
 
-See [domain types](../lib/domain/types.ts) and [create game command](../lib/domain/game.ts).
+See [Feature 1 Plan](../docs/Feature1Plan.md) and [Mechanics](../docs/Mechanics.md).
 
 ## Acceptance Criteria
 
-- Empty names are rejected.
-- Valid submission creates a local game.
-- Created game has default resources and submitted players.
-- Created game is persisted through `GameService`.
-- Successful creation shows a saved confirmation.
-- Starting the game persists `kingPlayerId`, `currentTurnPlayerId`, `round`, and `setupStatus`.
-- Unit tests cover valid creation and invalid input.
+- The app shows an Antwerp map.
+- Arrival can be detected or confirmed.
+- The active location is obvious on screen.
+- Activation state survives a refresh.
 
 ## Test Notes
 
-- Unit tests currently cover valid game creation, internal/supplied game name limits, minimum player count, and duplicate player names.
-- End-to-end tests should be added after the setup screen stabilizes.
+- Unit tests should cover activation rules and invalid double activation.
+- End-to-end tests should cover map display, arrival, activation, and reload.
 
 ## Related Docs
 
-- [Sprint 2](../docs/Sprint2.md)
+- [Feature 1 Plan](../docs/Feature1Plan.md)
 - [Player Flow](../docs/PlayerFlow.md)
-- [State Management](../docs/StateManagement.md)
+- [UX](../docs/UX.md)

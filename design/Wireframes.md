@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Describe the initial screen structure before visual design or implementation.
+Describe the screen structure for the Antwerp journey before implementation.
 
 ## Goals
 
@@ -17,100 +17,67 @@ Describe the initial screen structure before visual design or implementation.
 
 Primary actions:
 
-- Resume active game.
-- Create new game.
-- Open documentation or settings only if needed.
+- Resume active journey.
+- Start a new journey.
+- Open route notes only if needed.
 
-### Create Game
-
-Primary fields:
-
-- Game name.
-- Ruleset preset.
-- Optional event intensity.
-
-### Player Setup
-
-Primary actions:
-
-- Add player.
-- Choose color.
-- Edit or remove player before start.
-- Start game.
-
-### Game Dashboard
+### Antwerp Map
 
 Primary zones:
 
-- Current game header.
-- Dice entry.
-- Player kingdom summary.
-- Quick actions: trade, attack, history.
+- Current position.
+- Next location.
+- Completed locations.
+- GPS status.
 
-### Kingdom Detail
-
-Primary zones:
-
-- Player identity.
-- Resource controls.
-- Active bonuses.
-- Active penalties.
-- Defense status.
-- Recent player history.
-
-### Event Resolution
+### Active Location
 
 Primary zones:
 
-- Event title.
-- Trigger explanation.
-- Affected players.
-- Effects to apply.
-- Confirm or cancel if optional.
+- Location name.
+- Arrival status.
+- Dice prompt.
+- Resource outcome preview.
 
-### Trade Flow
-
-Primary steps:
-
-- Select players.
-- Select offered resources.
-- Select requested resources.
-- Confirm settlement.
-
-### Attack/Defense Flow
-
-Primary steps:
-
-- Select attacker.
-- Select target.
-- Show cost and possible result.
-- Select defense if available.
-- Resolve.
-
-### History
+### Dice Entry
 
 Primary zones:
 
-- Chronological event list.
-- Player filter.
+- Roll total.
+- Validation message.
+- Confirm button.
+
+### Resource Update
+
+Primary zones:
+
+- Resource changes.
+- Updated totals.
+- Continue button.
+
+### Journey History
+
+Primary zones:
+
+- Chronological route events.
+- Location filter.
 - Correction action.
 
 ## Open Questions
 
-- Should the dashboard use tabs or a vertically scrollable table view?
-- Should dice entry be globally fixed at the bottom?
+- Should the map be the home screen or a dedicated live route view?
+- Should dice entry be fixed at the bottom of the screen?
 - Should history be reachable from every screen?
 
 ## Future Improvements
 
-- Add low-fidelity sketches.
-- Add interactive prototype.
-- Add landscape tabletop layout.
+- Low-fidelity sketches.
+- Interactive prototype.
+- Landscape route mode.
 
 ## Related Documents
 
 - [UX](../docs/UX.md)
 - [Player Flow](../docs/PlayerFlow.md)
-- [Kingdom](../docs/Kingdom.md)
+- [Journey Overview](../docs/Kingdom.md)
 - [Design System](./DesignSystem.md)
-

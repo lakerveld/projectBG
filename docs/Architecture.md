@@ -2,13 +2,13 @@
 
 ## Purpose
 
-Define the initial technical architecture for a maintainable, testable, mobile-first Next.js application that starts local-only and can later grow into a cloud-backed product.
+Define the initial technical architecture for a maintainable, testable, mobile-first Next.js application that starts local-only and can later grow into a route-based product.
 
 ## Goals
 
 - Keep domain rules independent from React components.
 - Support local persistence with versioned migrations.
-- Make state transitions auditable through history.
+- Make journey transitions auditable through history.
 - Keep the app installable and wrapper-friendly later.
 - Avoid backend assumptions during MVP.
 
@@ -36,7 +36,7 @@ Why: localStorage is simple but weak for structured, versioned game records and 
 
 Prefer an action/history model where every meaningful mutation records an event.
 
-Why: tabletop sessions require correction and explanation. A history-first model supports undo, audit trails, debugging, and later analytics without needing to reverse-engineer state changes.
+Why: route sessions require correction and explanation. A history-first model supports undo, audit trails, debugging, and later analytics without needing to reverse-engineer state changes.
 
 ### API Layer
 
@@ -58,11 +58,11 @@ Why: this prevents React components from coupling directly to storage choices. I
 
 ### Testing Strategy
 
-- Unit test domain rules, reducers, event generation, resource math, and migrations.
-- Component test critical shared controls and dashboard states.
-- End-to-end test the golden path: create game, add players, enter roll, trigger event, trade, persist, reload.
+- Unit test domain rules, reducers, location resolution, resource math, and migrations.
+- Component test critical shared controls and map/location states.
+- End-to-end test the golden path: open map, detect arrival, enter roll, resolve reward, persist, reload.
 
-Why: the highest-risk logic is not rendering; it is state correctness during a live table session. Tests should protect that first.
+Why: the highest-risk logic is not rendering; it is state correctness during a live route session. Tests should protect that first.
 
 ### Future Scalability
 
@@ -94,4 +94,3 @@ Why: the MVP should remain fast to build, but the code should not trap future na
 - [Tech Stack](./TechStack.md)
 - [Coding Standards](./CodingStandards.md)
 - [Decisions](./Decisions.md)
-

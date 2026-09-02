@@ -2,11 +2,11 @@
 
 ## Purpose
 
-Define how UI state, domain state, and persisted game state should be managed.
+Define how UI state, domain state, and persisted journey state should be managed.
 
 ## Goals
 
-- Keep game transitions predictable.
+- Keep journey transitions predictable.
 - Make domain rules testable outside React.
 - Avoid prop drilling in shared screens.
 - Support persistence and undo/history.
@@ -19,23 +19,20 @@ Why: Zustand is small and practical for a local-first interactive app. Pure comm
 
 ## State Categories
 
-- Domain state: games, players, resources, events, effects, history.
-- UI state: selected player, open modal, active flow step, filters.
+- Domain state: journeys, locations, resources, rewards, history.
+- UI state: selected location, open sheet, active flow step, filters.
 - Persistence state: hydration status, migration status, save errors.
 
 ## Command Pattern
 
 State-changing user actions should map to explicit commands:
 
-- `createGame`
-- `addPlayer`
+- `startJourney`
+- `activateLocation`
+- `confirmArrival`
 - `recordDiceRoll`
-- `applyWorldEvent`
-- `applyEvent`
-- `adjustResources`
-- `settleTrade`
-- `resolveAttack`
-- `resolveDefense`
+- `resolveLocationReward`
+- `updateResources`
 - `addCorrection`
 
 Each command should validate input, return updated state, and emit one or more history entries.
@@ -44,8 +41,7 @@ Each command should validate input, return updated state, and emit one or more h
 
 - Should undo be implemented as inverse commands or snapshot rollback?
 - Should persistence happen after every command or through debounced saves?
-- Should event generation be synchronous in MVP?
-  - Yes for Sprint 5: world events are generated immediately when the round roll count reaches player count.
+- Should location activation be synchronous in the MVP?
 
 ## Future Improvements
 

@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "specs/start-game-king-selection.md",
+                "file": "docs/Backlog.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "start-game-king-selection"
+              "title": "Backlog"
             }
           }
         ]
@@ -41,7 +41,9 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical",
-                "autoReveal": false
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
               },
               "icon": "lucide-folder-closed",
               "title": "Files"
@@ -185,6 +187,9 @@
   },
   "active": "bd9d28b1c2833ae1",
   "lastOpenFiles": [
+    "docs/Architecture.md",
+    "specs/start-game-king-selection.md",
+    "Untitled.canvas",
     "components/features/game/CrownSelectionScreen.tsx",
     "app/crown/page.tsx",
     "app/crown",
@@ -193,7 +198,6 @@
     "docs/Events.md",
     "lib/ui/worldEventRevealVisuals.ts",
     "lib/domain/events.ts",
-    "specs/start-game-king-selection.md",
     "specs/README.md",
     "specs/game-creation.md",
     "specs/dice-entry.md",
@@ -205,7 +209,6 @@
     "node_modules/@img/sharp-win32-x64/package.json",
     "node_modules/sharp/node_modules/semver/package.json",
     "node_modules/sharp/package.json",
-    "lib/domain/avatars.ts",
     "public/avatars/queen.png",
     "public/avatars/general.png",
     "public/avatars/merchant.png",

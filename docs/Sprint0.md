@@ -2,57 +2,53 @@
 
 ## Purpose
 
-Define the foundation sprint before feature implementation begins.
+Set up the foundation for feature 1.
 
 ## Goals
 
-- Establish repository structure and documentation.
-- Make core product and architecture decisions explicit.
-- Prepare the app for implementation without rushing into screens.
-- Identify unresolved risks.
+- Align the repository with the Antwerp journey concept.
+- Finalize the first feature scope.
+- Clean up the documentation corpus.
+- Prepare the app for map, location, dice, and resource work.
 
 ## Scope
 
-- Create folders and documentation.
-- Add README, license, and gitignore.
-- Draft architecture decisions.
-- Define MVP boundaries.
-- Prepare design documents.
-- Prepare prompt folders for future assisted workflows.
+- Create and clean up the documentation structure.
+- Add the feature 1 plan.
+- Confirm architecture decisions and coding standards.
+- Update the backlog and roadmap.
+- Prepare prompt folders for assisted design and implementation workflows.
 
 ## Deliverables
 
-- Complete documentation set in `docs`.
-- Design planning documents in `design`.
-- Prompt folders for Claude, Codex, Lovable, and Midjourney.
-- Root README, MIT license, and gitignore.
-- Initial backlog.
+- Updated documentation set in `docs`.
+- Updated design planning documents in `design`.
+- Updated backlog and roadmap.
+- New feature 1 plan.
 
 ## Definition of Done
 
-- Every requested document exists.
-- Documents include purpose, goals, open questions, future improvements, and related links.
-- Architecture recommendations explain why.
-- Backlog separates Epic, Feature, Story, and Task with complexity and scope.
-- No feature implementation is started.
+- The docs consistently describe an Antwerp journey for Matthew.
+- The first playable slice is clearly scoped.
+- No old setup or multiplayer language remains in the core planning docs.
 
 ## Risks
 
-- Product scope may expand before the first playable test.
-- Game terminology may accidentally drift too close to protected IP.
-- Local persistence decisions may be revisited after implementation starts.
+- Scope may expand before the first playable route is tested.
+- GPS behavior may need field adjustment after implementation starts.
+- Local persistence decisions may need one more pass after prototyping.
 
 ## Open Questions
 
-- Which package manager will the project use?
-- Should the project initialize Next.js during Sprint 0 or Sprint 1?
-- Should issue templates be created now?
+- Which route and map data format will be easiest to maintain?
+- Should the first implementation use static map data or a small content file?
+- Should the organizer confirmation path be built from the start?
 
 ## Future Improvements
 
-- Convert Sprint 0 plan into tracked issues.
-- Add risk register.
-- Add ADR template.
+- Convert Sprint 0 into tracked issues.
+- Add a risk register.
+- Add ADR templates.
 
 ## Related Documents
 
@@ -60,4 +56,3 @@ Define the foundation sprint before feature implementation begins.
 - [Backlog](./Backlog.md)
 - [Decisions](./Decisions.md)
 - [Architecture](./Architecture.md)
-

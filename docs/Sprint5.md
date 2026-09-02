@@ -2,66 +2,47 @@
 
 ## Purpose
 
-Implement the first world-event slice after dice entry.
+Harden feature 1 and prepare the next layer of route content.
 
 ## Goals
 
-- Store one roll per player during a round.
-- Advance the current turn player after each dice entry.
-- Calculate the round average after every player has rolled once.
-- Apply one global world event based on the average.
-- Reveal the world event on its own screen.
-- Record the event in history.
+- Polish map, arrival, dice, and resource flows.
+- Tighten correction and recovery paths.
+- Prepare the docs for future story beats.
 
 ## Scope
 
-- Track current round rolls. Status: started.
-- Rotate current turn through the player list. Status: started.
-- Calculate average roll at round end. Status: started.
-- Categorize the round as negative, tactical, or positive. Status: started.
-- Apply one MVP world event from the matching category. Status: started.
-- Store the active world event. Status: started.
-- Add `/event` as a full-screen world event reveal route. Status: started.
-- Use event artwork as a full-screen background with a bottom situation panel. Status: started.
-- Reset round rolls and advance to the next round. Status: started.
-- Add unit tests for event category and round completion. Status: started.
+- Add correction notes and safe undo where appropriate.
+- Improve map readability and GPS messaging.
+- Add route-history polish.
+- Add tests for the full first-feature path.
 
 ## Out of Scope
 
-- Player-targeted events.
-- Real resource production effects.
-- Real trade effects.
-- Real build-cost effects.
-- Event deck editing.
-- Event duration countdown.
+- Multiplayer.
+- Trade, attack, or defense.
+- Cloud sync.
+- App Store work.
 
 ## Definition of Done
 
-- Every player can roll once in a round.
-- The app shows round roll progress.
-- The round average is calculated when all players have rolled.
-- A global event is selected by average category.
-- The world event appears by itself on a dedicated full-screen route.
-- The reveal uses a background image, title, situation text, and Continue button.
-- History includes both the final dice roll and world event entry.
-- Unit tests cover tactical event selection at average 7.
+- The core Antwerp journey loop is stable.
+- Error recovery is understandable.
+- Tests cover the map-to-resource flow.
 
 ## Open Questions
 
-- Should the next round always start with the King or continue clockwise from the final player? Answer: start with the King for now.
-- Should active world events expire automatically after one round? Answer: not yet; duration countdown is future work.
-- Should world event details become a dedicated screen later? Answer: yes, world events use `/event`.
+- Which hardening issues show up first in field tests?
+- Should story beats be spec'd before implementation starts?
+- What is the best next feature after the core loop works well?
 
 ## Future Improvements
 
-- Multiple event options per category.
-- Seeded event selection.
-- Event duration resolution.
-- Real effects for resources, trades, and building costs.
+- Story beats.
+- Organizer tools.
+- Route packs.
 
 ## Related Documents
 
 - [Sprint 4](./Sprint4.md)
-- [Events](./Events.md)
-- [Dice System](./DiceSystem.md)
-- [Backlog](./Backlog.md)
+- [Feature 1 Plan](./Feature1Plan.md)

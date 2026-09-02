@@ -2,93 +2,66 @@
 
 ## Purpose
 
-Describe the expected table flow from opening the app through completing a local game.
+Describe the expected flow from opening the app to completing a stop on the Antwerp route.
 
 ## Goals
 
-- Minimize setup time.
-- Keep the phone useful without becoming the center of attention.
-- Make correction and review flows obvious.
-- Support shared-device ergonomics.
+- Minimize friction while walking.
+- Keep the phone useful without becoming the main focus.
+- Make arrival, roll, and reward steps obvious.
+- Support quick correction when GPS or dice input is off.
 
 ## MVP Flow
 
-- **Open the app**
-- **Tap "Create Game"**
-- **Step 1: Add players**
-  - Enter each player's name.
-  - Choose a player color.
-  - Each added player receives a random fantasy avatar.
-  - The selected player color frames that avatar.
-- **Continue to King selection**
-- **Step 2: Review players**
-  - Confirm everyone has joined.
-- **Random King Selection**
-  - The app plays a short animation.
-  - One player is randomly crowned **The King**.
-  - The King receives the **First Turn** marker.
-- **Continue to game**
-  - The Kingdom view highlights the King's capital with a crown.
-- **Begin Round 1**
-  - The King rolls the physical dice.
-  - The dice result is entered into the app.
-  - Sprint 4 records the dice result.
-  - When every player has rolled, the app opens a full-screen world event reveal.
-  - Players read the event, then continue back to the game dashboard.
-  - After every 3 completed rounds, the app pauses before the next roll and opens Crown Selection.
-  - The app automatically crowns a new King from players who have not ruled yet in the current cycle.
-  - The previous King cannot be selected immediately again.
-  - Once everyone has had one King turn, the rotation pool resets and a new cycle begins.
-  - Resource updates and momentum are deferred until later gameplay sprints.
-  - Play continues clockwise following the normal Catan-inspired table rules.
-
-## Later Gameplay Flow
-
-1. Review starting kingdoms.
-2. During turns, enter dice rolls and apply resulting events.
-3. Update resources, trades, bonuses, penalties, attacks, and defenses.
-4. Review history when disputes or mistakes happen.
-5. End or archive game locally.
+1. Open the app.
+2. Resume the current journey or start a new one.
+3. See the Antwerp map and the next location.
+4. Walk to the location.
+5. The app detects or confirms arrival.
+6. The active location opens.
+7. Matthew rolls the physical dice.
+8. The dice total is entered in the app.
+9. The app resolves the reward or effect.
+10. The resource ledger updates.
+11. Continue to the next location.
 
 ## Screen Step Pattern
 
-Each major table action should live on its own screen:
+Each major route step should live on its own screen or sheet:
 
-- One screen gathers the required input.
-- The next screen confirms or resolves the result.
-- The following screen begins the next step of play.
+- One screen shows the map and journey state.
+- One screen confirms the active location.
+- One screen records the dice total.
+- One screen confirms the resource change.
 
-This keeps the phone easy to pass around and prevents one screen from becoming a dense control panel.
+This keeps the phone easy to use outside and avoids one overloaded dashboard.
 
 ## Error Recovery
 
-The app must assume players will make mistakes under table pressure. Recovery options should include:
+The app must assume GPS drift and table pressure. Recovery options should include:
 
-- Undo last action where technically safe.
-- Add correction entry with reason.
-- Edit player resource counts with history note.
-- View recent changes by player.
+- Confirm arrival manually.
+- Re-enter the dice total if needed.
+- Add a correction entry with a reason.
+- View the latest journey changes.
 
 ## Open Questions
 
-- Should setup include a rules explanation screen?
-- Should there be a dedicated active-player selector? Deferred until gameplay work resumes.
-- Should ending a game require confirmation?
-- Should King selection be skippable or replayable before round 1 begins?
+- Should Matthew see the entire route or only the next location?
+- Should the organizer be able to approve an arrival from a separate control?
+- Should the app pause if a location is reached too early?
 
 ## Future Improvements
 
-- Resume multiple games.
-- Onboarding for custom rule packs.
+- Route replay.
+- Extra story beats between locations.
+- Route packs for different parts of Antwerp.
 - Session recap screen.
-- Exportable game summary.
 
 ## Related Documents
 
 - [MVP](./MVP.md)
 - [UX](./UX.md)
-- [Kingdom](./Kingdom.md)
+- [Mechanics](./Mechanics.md)
 - [Game Design](./GameDesign.md)
-- [Sprint 2](./Sprint2.md)
-- [Sprint 3](./Sprint3.md)
-- [Sprint 4](./Sprint4.md)
+- [Feature 1 Plan](./Feature1Plan.md)

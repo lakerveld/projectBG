@@ -2,66 +2,49 @@
 
 ## Purpose
 
-Implement the review, start game, and random King selection flow after players are added.
+Implement manual dice entry and location resolution.
 
 ## Goals
 
-- Let players review the table before starting.
-- Start the local game from a dedicated King selection screen.
-- Randomly select one player as the King.
-- Mark the King as the first-turn player.
-- Persist the started game locally.
+- Let Matthew enter a physical dice total.
+- Resolve the active location from the roll.
+- Show the immediate result of the stop.
 
 ## Scope
 
-- Add domain command for `startGame`.
-- Add `/king` as the review and King randomizer route.
-- Randomly select a King from the saved players.
-- Store `kingPlayerId`, `currentTurnPlayerId`, `round`, and `setupStatus`.
-- Record a `game.started` history entry.
-- Add a short King selection animation.
-- Route to the game dashboard after the King is selected.
-- Highlight the King in the dashboard.
-- Add unit tests for King selection and already-started validation.
+- Add total-only dice entry from 2 to 12.
+- Resolve the active location using a reward table.
+- Record the roll and result in the journey log.
+- Add unit tests for dice validation and reward resolution.
 
 ## Out of Scope
 
-- Dice entry.
-- Resource production from dice.
-- Momentum.
-- World events.
-- Turn rotation after the first turn.
-- Trading.
-- Attack/defense.
+- Story beats.
+- Multiplayer.
+- Trade, attack, or defense.
+- App-generated rolls.
 
 ## Definition of Done
 
-- A saved setup can be reviewed.
-- Pressing Select King triggers a short King selection animation.
-- Exactly one player is selected as King.
-- The King receives the first-turn marker.
-- The game is persisted as in progress.
-- The dashboard highlights the King.
-- Unit tests cover the start-game command.
+- Matthew can enter a roll after arrival.
+- The app resolves the location reward from the roll.
+- The result is visible in the journey log.
+- Invalid rolls are rejected.
 
 ## Open Questions
 
-- Should the King selection animation be skippable?
-- Should the selected King be announced with sound later in a native wrapper?
-- Should players be able to restart King selection before round 1 begins?
-- Should the King screen eventually include a manual override before continuing?
+- Should one location allow more than one roll?
+- Should the result panel be full screen or a bottom sheet?
+- Should reward tables vary by location or by route pack?
 
 ## Future Improvements
 
-- Richer crown animation.
-- Player order and clockwise turn tracking.
-- Optional house rule for manual first-player selection.
-- Haptic feedback in native wrapper.
+- Add richer reward logic.
+- Add animation or sound for the roll result.
+- Continue with resource tracking in [Sprint 4](./Sprint4.md).
 
 ## Related Documents
 
 - [Sprint 2](./Sprint2.md)
 - [Sprint 4](./Sprint4.md)
-- [Player Flow](./PlayerFlow.md)
-- [Kingdom](./Kingdom.md)
-- [UX](./UX.md)
+- [Feature 1 Plan](./Feature1Plan.md)

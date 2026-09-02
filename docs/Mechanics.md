@@ -2,78 +2,57 @@
 
 ## Purpose
 
-Document the initial mechanical systems the MVP should support and the boundaries between app-managed companion mechanics and physical-board decisions.
+Document the first gameplay systems for the Antwerp journey.
 
 ## Goals
 
-- Keep mechanics modular and testable.
-- Make each mechanic understandable during live play.
+- Keep the location loop modular and testable.
+- Make every stop understandable during live play.
 - Avoid hidden rules that only the app knows.
-- Support fast manual correction.
+- Support quick manual correction if a GPS reading or roll is wrong.
 
 ## MVP Mechanics
 
-### Game Creation
+### Journey Map
 
-Players create a local session with a name, a player list of up to four people, and basic ruleset options.
+The app shows Antwerp as the board. Each location has a stable ID, display name, and activation state.
 
-The current setup palette is fixed to four curated player colors: white, orange, blue, and red.
+### Location Activation
 
-### Resource Tracking
-
-Each player has a resource inventory. Resource changes can come from manual edits, events, trades, attacks, defenses, bonuses, or penalties.
+A location becomes active when Matthew arrives within range or the organizer confirms the stop.
 
 ### Dice Entry
 
-Players enter dice results. Dice results can trigger events and history entries.
+Matthew rolls physical dice. The app records the total and uses it to resolve the active location.
 
-### Events
+### Resource Tracking
 
-Events are generated from dice outcomes and ruleset tables. Events should have typed effects so they can be tested and replayed. 
+Matthew has one resource ledger. Resources increase or change after location resolution.
 
-Example: 
-- Harvest Boom: Players with the most wheat get bonus gold in the app. 
+### Location Rules
 
+Each location defines which resource it uses and how the dice total maps to a reward or effect.
 
-### Bonuses
+### Story Beats
 
-Bonuses are positive temporary or immediate effects. Examples: gain one resource, prevent a penalty, improve defense, or reduce trade cost. 
-
-
-### Penalties
-
-Penalties are negative temporary or immediate effects. Examples: lose one resource, skip a bonus, become vulnerable to attack, or pay extra for a trade.
-
-### Trade Support
-
-The app should support selected players, offered resources, requested resources, accepted/declined status, and final settlement.
-
-### Attack/Defense
-
-Conflict actions should be simple in the MVP:
-
-- Attacker selects target.
-- App validates cost or cooldown.
-- Defender may use a defense option if available.
-- Result changes resources/status and records history.
+Optional between-location prompts are allowed later, but they are not part of the first playable slice.
 
 ## Open Questions
 
-- Should resource edits require confirmation?
-- Should events be purely random or weighted by player position?
-- Should conflict be opt-in per game?
+- Should every location use the same dice scale or its own reward table?
+- Should a location reward be a single resource or a bundle of resource types?
+- Should the organizer be able to override an automatic activation?
 
 ## Future Improvements
 
-- Advanced card-like effects.
-- Player-specific abilities.
-- Scenario modifiers.
-- Balance telemetry.
+- Intermission tasks.
+- Story branching.
+- Organizer tools.
+- Route-specific rule packs.
 
 ## Related Documents
 
 - [Dice System](./DiceSystem.md)
 - [Resources](./Resources.md)
 - [Events](./Events.md)
-- [Kingdom](./Kingdom.md)
-- [State Management](./StateManagement.md)
+- [Feature 1 Plan](./Feature1Plan.md)

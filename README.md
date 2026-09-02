@@ -1,8 +1,6 @@
 # ProjectBG
 
-ProjectBG is a mobile-first board game companion app for physical tabletop play. The app runs on a single shared phone placed on the table and acts as a local game master for Catan-inspired sessions.
-
-The MVP does not replace the board game. It helps players create a local game, add players, track resources, enter dice rolls, resolve random events, apply bonuses and penalties, support trades, handle attack/defense mechanics, review game history, and persist game state locally.
+ProjectBG is the working repository for **Ketanisten van Rattan**, a mobile-first Antwerp journey app for Matthew. The phone acts as a route companion: it shows the map, detects or confirms arrival at locations, accepts physical dice input, resolves location rewards, and keeps the resource ledger locally.
 
 ## Tech Stack
 
@@ -33,7 +31,7 @@ Future candidates:
 
 ## Getting Started
 
-This repository is currently in Sprint 0 foundation mode. Feature implementation has intentionally not started yet.
+This repository is currently in planning and documentation mode for feature 1. Feature implementation has intentionally not started yet.
 
 When implementation begins:
 
@@ -57,9 +55,10 @@ When implementation begins:
 Use short, descriptive branches with a type prefix:
 
 - `docs/project-foundation`
-- `feat/game-setup`
-- `feat/dice-events`
-- `fix/resource-validation`
+- `feat/antwerp-map`
+- `feat/location-activation`
+- `feat/dice-resolution`
+- `fix/location-validation`
 - `chore/tooling`
 
 Main branch should stay releasable once implementation begins. Feature branches should be merged through pull requests with test and manual verification notes.
@@ -67,6 +66,7 @@ Main branch should stay releasable once implementation begins. Feature branches 
 ## Documentation Links
 
 - [Vision](./docs/Vision.md)
+- [Feature 1 Plan](./docs/Feature1Plan.md)
 - [Roadmap](./docs/Roadmap.md)
 - [MVP](./docs/MVP.md)
 - [Architecture](./docs/Architecture.md)
@@ -74,7 +74,7 @@ Main branch should stay releasable once implementation begins. Feature branches 
 - [Mechanics](./docs/Mechanics.md)
 - [Dice System](./docs/DiceSystem.md)
 - [Resources](./docs/Resources.md)
-- [Kingdom](./docs/Kingdom.md)
+- [Journey Overview](./docs/Kingdom.md)
 - [Events](./docs/Events.md)
 - [Player Flow](./docs/PlayerFlow.md)
 - [UX](./docs/UX.md)

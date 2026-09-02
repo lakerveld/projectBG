@@ -2,52 +2,48 @@
 
 ## Problem
 
-After the King is selected and round 1 begins, the app needs to record the first physical dice result without taking over the physical board game.
+Matthew needs a fast way to enter a physical dice total after arriving at a location.
 
 ## Scope
 
-- Show the current round and first-turn player on the dashboard.
-- Let the table enter a dice total from 2 to 12.
-- Validate dice totals.
-- Record the dice total in game history.
-- Persist the updated game locally.
-- Mark resource production, momentum, and world events as deferred in metadata.
+- Accept a total-only dice result from 2 to 12.
+- Validate the entry.
+- Attach the roll to the active location.
+- Record the roll in the journey history.
 
 ## User Flow
 
-1. Start the game and crown the King.
-2. Open the dashboard.
-3. The King rolls physical dice.
-4. Tap the rolled total.
-5. Tap `Record dice total`.
-6. See the dice result in recent history.
+1. A location becomes active.
+2. Matthew rolls physical dice.
+3. The total is entered in the app.
+4. The app validates the number.
+5. The app resolves the location reward.
 
 ## Domain Behavior
 
-- Dice can only be recorded after the game has started.
-- Dice total must be a whole number.
-- Dice total must be between 2 and 12.
-- The current turn player is attached to the history entry.
-- The game `updatedAt` timestamp changes after a valid entry.
-- Resource, momentum, and world-event handling are explicitly deferred.
+- Dice entry is only allowed when a location is active.
+- Only totals from 2 to 12 are valid.
+- A valid roll should produce one history entry.
+- The roll should be linked to the active location ID.
+
+## Data Shape
+
+See [Feature 1 Plan](../docs/Feature1Plan.md) and [Dice System](../docs/DiceSystem.md).
 
 ## Acceptance Criteria
 
-- Valid totals from 2 to 12 are accepted.
-- Invalid totals are rejected by domain validation.
-- A valid dice entry creates a `dice.recorded` history entry.
-- The dashboard records dice through the store and persistence boundary.
-- The UI does not imply resources or events have been resolved.
+- Valid totals are accepted.
+- Invalid totals are rejected.
+- The active location can be resolved from the roll.
+- The journey log shows the roll and its result.
 
 ## Test Notes
 
-- Unit tests cover valid dice recording, low/high invalid totals, and pre-start rejection.
-- End-to-end testing should cover setup, start game, King selection, dice entry, and reload.
+- Unit tests should cover valid totals, invalid totals, and no-active-location rejection.
+- End-to-end tests should cover the complete arrival-to-roll path.
 
 ## Related Docs
 
-- [Sprint 4](../docs/Sprint4.md)
-- [Dice System](../docs/DiceSystem.md)
+- [Feature 1 Plan](../docs/Feature1Plan.md)
 - [Player Flow](../docs/PlayerFlow.md)
-- [State Management](../docs/StateManagement.md)
-
+- [Mechanics](../docs/Mechanics.md)

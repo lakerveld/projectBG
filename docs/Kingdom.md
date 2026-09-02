@@ -1,53 +1,49 @@
-# Kingdom
+# Journey Overview
 
 ## Purpose
 
-Define the player-facing dashboard concept used to summarize each player's state during the game.
+Define the main dashboard concept for Matthew's Antwerp journey.
 
 ## Goals
 
-- Give every player a clear status view.
-- Make resource, bonus, penalty, attack, and defense state scannable.
-- Support shared-screen use on one phone.
-- Avoid requiring private player screens in the MVP.
+- Give Matthew a clear status view.
+- Make the next location, current location, and resource state scannable.
+- Support outdoor, single-phone use.
+- Avoid private screens in the MVP.
 
-## MVP Kingdom Dashboard
+## MVP Journey Dashboard
 
-Each player dashboard should show:
+The main screen should show:
 
-- Player name and color.
-- King marker when the player is currently crowned King.
-- First-turn marker when the player starts round 1.
-- Resource counts.
-- Active bonuses.
-- Active penalties.
-- Defense status.
-- Recent history affecting that player.
-- Optional score/progress summary if the ruleset needs it.
+- Matthew's name or profile label.
+- Current location.
+- Next location.
+- GPS status.
+- Resource totals.
+- Recent journey step.
+- Active story or task hook when present.
 
 ## Interaction Model
 
-The dashboard should be optimized for quick table updates:
+The dashboard should be optimized for quick route updates:
 
-- Tap a player to focus their kingdom.
-- Use compact controls to adjust resources.
-- Show active effects with expiration or usage count.
-- Provide direct actions for trade, attack, defense, and notes.
-- Highlight the King's capital clearly without relying on color alone.
+- Tap a location to inspect it.
+- Open the active location as a bottom sheet or full screen.
+- Show resource changes with clear before and after values.
+- Highlight the active stop without relying on color alone.
 
 ## Open Questions
 
-- Should dashboards be arranged as tabs, cards, or a rotating carousel?
-- How much recent history should appear before the screen becomes crowded?
-- Should one player be designated active at all times?
-- Should the King marker persist beyond round 1 or become historical after the first turn?
+- Should the map stay visible behind the active location sheet?
+- How much history should appear before the screen becomes crowded?
+- Should the current location always be pinned at the top of the screen?
 
 ## Future Improvements
 
-- Player portraits or icons.
-- Private reveal mode.
-- Long-term kingdom progression.
-- Comparative table view.
+- Route portraits or icons.
+- Private organizer view.
+- Long-term journey progression.
+- Comparative route view for future campaigns.
 
 ## Related Documents
 

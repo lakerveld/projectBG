@@ -2,25 +2,25 @@
 
 ## Purpose
 
-Define the early visual and interaction system for the mobile-first companion app.
+Define the visual and interaction system for the Antwerp journey.
 
 ## Goals
 
-- Create a clear, table-friendly interface.
+- Create a clear route-first interface.
 - Use consistent spacing, color, type, and controls.
-- Support fast play rather than decorative complexity.
-- Leave room for a stronger brand identity later.
+- Support walking and quick glances rather than dense admin work.
+- Leave room for stronger brand expression later.
 
 ## Design Direction
 
-The interface should feel like a practical fantasy strategy dashboard: tactile, readable, and energetic without becoming visually noisy. It should avoid generic dark dashboards and avoid looking like a direct clone of any existing board game.
+The interface should feel like a practical expedition dashboard: tactile, readable, and energetic without becoming visually noisy. It should avoid generic game dashboards and should not look like a direct clone of other board-game apps.
 
 ## Typography
 
 - Use a readable sans-serif for UI.
-- Use compact headings for panels and dashboards.
+- Use compact headings for panels and route states.
 - Avoid oversized marketing typography inside the app.
-- Keep labels short because the phone is shared at table distance.
+- Keep labels short because the phone may be used outdoors.
 
 ## Spacing
 
@@ -31,25 +31,25 @@ The interface should feel like a practical fantasy strategy dashboard: tactile, 
 
 ## Interaction Patterns
 
-- Icon buttons for common actions.
-- Segmented controls for mode selection.
-- Steppers for resource counts.
-- Bottom action area for primary mobile actions.
-- Confirmation for multi-resource destructive actions.
+- Map pins for locations.
+- Bottom sheets for active locations.
+- Chips for resource counts.
+- Single-purpose confirm actions for dice and arrival.
+- Status pills for GPS and location state.
 
 ## Accessibility
 
 - Maintain strong color contrast.
-- Do not rely on color alone for player identity.
+- Do not rely on color alone for location status.
 - Support large tap targets.
 - Use clear focus states.
 - Avoid tiny labels on resource controls.
 
 ## Open Questions
 
-- Should the app support a dedicated high-contrast table mode?
-- Should player colors be customizable beyond a curated palette?
-- Should the visual style lean more medieval, neutral strategy, or modern utility?
+- Should the app support a dedicated high-contrast outdoor mode?
+- Should location colors be customizable?
+- Should the visual style lean more map-like, expedition-like, or utility-like?
 
 ## Future Improvements
 
@@ -64,4 +64,3 @@ The interface should feel like a practical fantasy strategy dashboard: tactile, 
 - [Components](./Components.md)
 - [Wireframes](./Wireframes.md)
 - [UX](../docs/UX.md)
-

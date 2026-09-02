@@ -1,28 +1,22 @@
 # Game Rules Notes
 
-## Bush Thief Events
+## Feature 1
 
-- `Bush Thief` is tactical. All players roll, lowest roll receives the token, ties reroll, and the King places it on any terrain hex.
-- `Bush Thief Captured` is positive. Remove the Bush Thief; if a `7` is rolled this round it still moves, but blocking waits until next round.
-- `Bribe the Bush Thief` is tactical. Any player may move it once this round by paying `2 Wood`, `2 Sheep`, and `1 Wheat`.
-- `Hidden Treasure` is positive. Every player gains `1 random resource`, then the Bush Thief is removed.
-- `Night Raid` is negative. Every player with more than `7 resources` loses `1 random resource`.
-- `Secret Hideout` is tactical. The King secretly chooses a terrain type; when it produces this round, the Bush Thief steals `1 resource` from one player on that hex.
+The first feature does not need a full rules catalogue. The important rules are arrival, dice entry, location activation, and resource resolution.
 
-## King Events
+## Location Rules
 
-- When a King event asks for a choice, the King resolves it for the table.
-- After every King event, pass the Crown clockwise.
-- `King's Tournament` is tactical.
-- `Royal Decree` is tactical.
-- `Royal Taxation` is negative.
-- `Shared Wealth` is positive.
-- `Royal Celebration` is positive.
-- `Abuse of Power` is negative.
-- `Royal Favor` is tactical.
+- A location becomes active when Matthew arrives or the organizer confirms it.
+- A location should define its own reward table.
+- A valid dice total resolves the active location.
+- The resource ledger updates immediately after resolution.
 
-## Settlement & City Events
+## Future Story Rules
 
-- `Prosperous Cities` is positive.
-- `Costly Cities` is negative.
-- `Master Builders` is tactical.
+- Future story beats may be positive, tactical, or negative.
+- The organizer may resolve a beat when the route calls for it.
+- Special beats should be recorded in the journey log.
+
+## Notes
+
+- This document replaces the older Catan-style rule notes for the current scope.

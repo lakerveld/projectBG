@@ -6,7 +6,7 @@ Define how data should be stored locally for the MVP and how the model can evolv
 
 ## Goals
 
-- Persist active games locally.
+- Persist the active journey locally.
 - Support versioned data migrations.
 - Keep storage implementation behind a repository boundary.
 - Avoid cloud dependencies for MVP.
@@ -15,18 +15,17 @@ Define how data should be stored locally for the MVP and how the model can evolv
 
 Use IndexedDB through a storage adapter, likely Dexie during implementation.
 
-Why: game records contain nested state, history, and future migration needs. IndexedDB is better suited than localStorage for this shape and is available in modern mobile browsers.
+Why: journey records contain nested state, history, and future migration needs. IndexedDB is better suited than localStorage for this shape and is available in modern mobile browsers.
 
 ## Suggested Data Entities
 
-- Game.
-- Player.
+- Journey.
+- Location.
 - Resource definition.
-- Player resource balance.
-- Status effect.
-- Event definition.
-- Game history entry.
-- Ruleset.
+- Resource balance.
+- Location reward.
+- Journey history entry.
+- Route pack.
 - App settings.
 
 ## Persistence Strategy
@@ -39,17 +38,16 @@ Why: rebuilding from history alone is elegant but can slow development. Snapshot
 
 Supabase can later store:
 
-- User-owned games if accounts are introduced.
-- Anonymous backups using device-generated IDs if privacy allows.
-- Ruleset libraries.
-- Event packs.
-- Shared playtest telemetry.
+- Saved route packs.
+- Optional backup copies.
+- Organizer tools if accounts are introduced.
+- Playtest telemetry if privacy allows.
 
 Domain models should remain independent from Supabase table types.
 
 ## Open Questions
 
-- Should archived games be kept indefinitely?
+- Should archived journeys be kept indefinitely?
 - Should local data include schema version per record or global version only?
 - Should export/import use JSON files?
 
@@ -66,4 +64,3 @@ Domain models should remain independent from Supabase table types.
 - [State Management](./StateManagement.md)
 - [Tech Stack](./TechStack.md)
 - [Decisions](./Decisions.md)
-

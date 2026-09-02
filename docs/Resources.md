@@ -2,18 +2,18 @@
 
 ## Purpose
 
-Define how player resources should be modeled, displayed, changed, and protected from bookkeeping errors.
+Define how Matthew's journey resources should be modeled and displayed.
 
 ## Goals
 
-- Make resource counts easy to update on a phone.
-- Keep changes traceable in game history.
-- Support trades, bonuses, penalties, attacks, and defenses.
-- Avoid direct coupling to copyrighted commercial terminology.
+- Make the current resource state easy to read on a phone.
+- Keep every change traceable in the journey log.
+- Tie resource changes back to a location and dice result.
+- Avoid terms that depend on other board games.
 
 ## MVP Resource Model
 
-Use generic or original resource names for the MVP ruleset. Each resource should have:
+Each resource should have:
 
 - Stable ID.
 - Display name.
@@ -21,42 +21,38 @@ Use generic or original resource names for the MVP ruleset. Each resource should
 - Color token.
 - Optional icon key.
 
-Each player stores resource quantities by resource ID. Quantities should never go below zero unless a specific ruleset permits debt.
+Matthew stores resource quantities by resource ID. Quantities should not go below zero unless a later rule explicitly allows that.
 
 ## Resource Change Sources
 
-- Manual adjustment.
-- Dice event.
-- Bonus.
-- Penalty.
-- Trade settlement.
-- Attack/defense resolution.
-- Admin correction.
+- Location reward.
+- Intermission task.
+- Manual correction.
+- Future story beat.
 
 ## UX Requirements
 
-- Large tap targets for increment and decrement.
+- Large tap targets for changes.
 - Clear current count.
-- Confirmation only for destructive multi-resource changes.
+- A visible total ledger.
 - Immediate history record for every committed change.
 
 ## Open Questions
 
-- Should the MVP support hidden resources?
-- Should resource limits exist?
-- Should negative resources ever be allowed as debt?
+- Should resources be generic or themed per Antwerp route?
+- Should any resource be hidden from Matthew?
+- Should the app allow temporary bonus resources?
 
 ## Future Improvements
 
-- Custom resource sets.
+- Route-specific resource sets.
 - Resource icons.
-- Bank inventory tracking.
-- Trade recommendation engine.
+- Progress summaries.
+- Future exchange or cost systems.
 
 ## Related Documents
 
-- [Kingdom](./Kingdom.md)
+- [Journey Overview](./Kingdom.md)
 - [Mechanics](./Mechanics.md)
 - [Events](./Events.md)
 - [UX](./UX.md)
-

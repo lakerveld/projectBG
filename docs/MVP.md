@@ -2,77 +2,72 @@
 
 ## Purpose
 
-Define the first releasable product slice: a local, single-device companion for Catan-inspired tabletop sessions.
+Define the first releasable product slice for Matthew's Antwerp journey.
 
 ## MVP Outcome
 
-Players can start a local game, add players, crown the first player, enter dice rolls, and see lightweight world events that enhance the physical board game without replacing its tabletop bookkeeping.
+Matthew can open the app, see the Antwerp map, arrive at a location, enter a physical dice result, and receive the resource update for that stop.
 
 ## MVP Goals
 
-- Support one shared phone at the table.
-- Require no accounts, network, or login.
-- Make game state recoverable after page refresh.
-- Keep the on-screen flow focused enough for a shared phone on the table.
-- Keep mechanics simple enough for playtesting.
+- Support one journey on one phone.
+- Require no account or network connection.
+- Recover the current journey after refresh.
+- Keep the experience focused on the next location and the current roll.
+- Keep the first slice small enough to test in the city.
 
 ## MVP Features
 
-- Create a game from a single clear entry point.
-- Add up to four players with display names and unique colors.
-- Review the player list before starting.
-- Randomly select the King when the game starts.
-- Enter dice rolls manually.
-- Trigger random events from dice outcomes.
-- Show a simple kingdom dashboard for every player.
-- Persist active games locally.
+- Show an Antwerp map with curated locations.
+- Track Matthew's journey state locally.
+- Detect or confirm arrival at a location.
+- Enter a physical dice total manually.
+- Resolve location-specific resources from the roll.
+- Update Matthew's resource ledger.
+- Persist the active journey locally.
 
 ## MVP Constraints
 
 - Browser-first web app.
 - Mobile-first layout.
-- No authentication.
+- No login.
 - No server database.
-- No copyrighted Catan assets or official terminology.
-- No full board representation unless later proven necessary.
+- No multiplayer flow.
+- No direct Catan art, names, or official rule text.
 
 ## Current Build Focus
 
-The immediate implementation focus follows the updated player flow:
+The immediate implementation focus is feature 1:
 
-- Sprint 2: create a local game, add players, fill in names, and pick colors on the same screen.
-- Sprint 3: move to a dedicated King selection screen, review players, randomly crown the King, and mark the first turn.
-- Sprint 4: begin round 1 by entering physical dice results.
-- Sprint 5: trigger global world events from round-average dice results and reveal each event on its own screen.
+- Map view with Antwerp locations.
+- GPS arrival and location activation.
+- Location-specific dice resolution.
+- Resource ledger updates.
+- Local persistence of the current journey.
 
-Resource tracking, history screens, settings, trades, attacks, defenses, bonuses, penalties, and full event effect resolution remain future work until the create-game and player loop is stable.
+Extra story beats, intermission tasks, multiplayer, trading, and conflict mechanics are future work.
 
 ## Acceptance Criteria
 
-- A new group can start a game in under two minutes.
-- The home screen presents one primary action: create game.
-- Players can be added with names and unique colors.
-- The dashboard shows players without requiring resource bookkeeping.
-- Dice results can trigger deterministic or random event flows.
-- A refresh does not lose the current game.
-- The app is usable on a modern iPhone viewport.
+- The app shows the Antwerp journey clearly.
+- Arrival at a location can be confirmed.
+- A valid dice total changes the resource ledger.
+- The current journey survives a refresh.
+- The app stays usable on a modern phone viewport.
 
 ## Open Questions
 
-- Should dice rolls be entered manually only, or should the app include a roll button?
-- When should resource tracking return, and should it be generic or themed for the initial ruleset?
-- What is the first attack/defense mechanic that is interesting but not too complex?
+- Should GPS detection be fully automatic or always paired with an organizer confirm button?
+- Should location rewards be fixed per stop or configurable in a data file?
+- Should Matthew see the full route or only the current next stop?
 
 ## Future Improvements
 
-- Custom ruleset editor.
-- Resource tracking.
-- Game history and corrections.
-- Settings and ruleset controls.
-- Multiple saved games.
-- Export/import game logs.
+- Story beats between locations.
+- Route branching.
+- Organizer override tools.
+- More detailed progress history.
 - Optional cloud backup.
-- Native app packaging.
 
 ## Related Documents
 
@@ -80,9 +75,6 @@ Resource tracking, history screens, settings, trades, attacks, defenses, bonuses
 - [Mechanics](./Mechanics.md)
 - [Dice System](./DiceSystem.md)
 - [Resources](./Resources.md)
-- [Kingdom](./Kingdom.md)
-- [Events](./Events.md)
 - [Player Flow](./PlayerFlow.md)
-- [Sprint 2](./Sprint2.md)
-- [Sprint 3](./Sprint3.md)
-- [Sprint 4](./Sprint4.md)
+- [Roadmap](./Roadmap.md)
+- [Feature 1 Plan](./Feature1Plan.md)

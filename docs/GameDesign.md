@@ -2,63 +2,62 @@
 
 ## Purpose
 
-Set the gameplay design direction for the initial Catan-inspired companion experience while avoiding a one-to-one clone of any protected commercial game.
+Set the gameplay direction for the Antwerp journey.
 
 ## Design Goals
 
-- Add meaningful table drama through events, bonuses, penalties, and conflict.
-- Preserve the physical board as the source of spatial play.
-- Support negotiation without forcing rigid app-mediated deals.
-- Make mechanics explainable at a glance.
-- Allow players to recover from mistakes without derailing the session.
+- Make the city itself feel like the board.
+- Keep Matthew's next step obvious at all times.
+- Let physical dice drive the tension.
+- Make resource changes easy to explain on the spot.
+- Allow the organizer to pace the experience without forcing the app to over-control it.
 
 ## Core Loop
 
-1. Players take turns around the physical board.
-2. The active player enters a dice result or asks the app to roll if that option is enabled.
-3. The app applies companion effects tied to the dice result.
-4. Players update resources, trades, bonuses, penalties, attacks, and defenses.
-5. Each change is recorded in history.
-6. Players review kingdom dashboards to understand relative state.
+1. Matthew moves toward a location in Antwerp.
+2. The app detects or confirms arrival.
+3. The location activates.
+4. Matthew rolls physical dice.
+5. The total is entered in the app.
+6. The app resolves the location-specific resource reward or effect.
+7. The map and resource ledger update.
+8. Matthew continues to the next location.
 
 ## Companion Mechanics
 
-The app should initially provide lightweight overlays rather than enforce every physical rule. Examples:
+The first feature should focus on location-driven progress rather than on abstract board-game turns. Good companion mechanics for this concept are:
 
-- Event outcomes tied to dice rolls.
-- Temporary bonuses for underdog players.
-- Penalties for overextension or risky actions.
-- Attack/defense actions that affect resources or status.
-- Trade logging and optional trade suggestions.
-
-The setup flow should stay aligned with the tabletop baseline: a single session supports up to four players, and player identity is assigned from the curated white, orange, blue, and red palette.
+- Location-specific resource tables.
+- Arrival state and proximity feedback.
+- Optional organizer confirmation for edge cases.
+- Clear story or challenge hooks between stops.
+- A visible resource ledger that always reflects the latest state.
 
 ## Balance Direction
 
-The MVP should favor transparency over perfect balance. Every event should state:
+The MVP should favor clarity over complexity. Every stop should answer these questions:
 
-- Who is affected.
-- What changes.
-- Why it happened.
-- Whether it is optional or mandatory.
+- Where am I?
+- What did I roll?
+- What do I gain?
+- What do I do next?
 
-## First-Turn Ceremony
+## Organizer Role
 
-After setup, the app randomly crowns one player as the King. The King receives the first-turn marker for round 1, and the dashboard highlights that player's kingdom. This gives the companion app a clear game-master moment before dice, events, or resource automation are introduced.
+Organizers act as gamemasters. They can keep the pacing on track, confirm arrivals when GPS is noisy, and decide when optional story beats or extra tasks are triggered.
 
 ## Open Questions
 
-- Should events help trailing players to reduce runaway leaders?
-- Should attacks cost resources, require dice thresholds, or use cooldowns?
-- Should there be a win condition inside the app or only companion state?
-- Should the King have any gameplay benefit beyond first turn in the MVP?
+- Should reward tables be fixed per location or adjustable in content files?
+- Should some locations require only arrival while others require arrival plus a roll?
+- Should the organizer be able to pause a location if Matthew arrives too early?
 
 ## Future Improvements
 
-- Configurable rulesets.
-- Difficulty presets.
-- Table-tested balance updates.
-- Scenario packs.
+- Story branches between locations.
+- Pacing tools for organizers.
+- Difficulty presets for different route lengths.
+- Replayable route packs.
 
 ## Related Documents
 
@@ -66,4 +65,4 @@ After setup, the app randomly crowns one player as the King. The King receives t
 - [Events](./Events.md)
 - [Dice System](./DiceSystem.md)
 - [Resources](./Resources.md)
-- [Kingdom](./Kingdom.md)
+- [Feature 1 Plan](./Feature1Plan.md)

@@ -2,43 +2,38 @@
 
 ## Purpose
 
-Define user experience principles and mobile-first interaction expectations for the shared-phone table context.
+Define the experience rules for the Antwerp journey on a phone.
 
 ## Goals
 
-- Make the app usable at arm's length on a table.
-- Prioritize speed and clarity over dense configuration.
-- Avoid account prompts and blocking setup.
-- Keep the first playable flow narrow enough to test at the table.
+- Make the app usable while walking.
+- Prioritize route clarity over dense configuration.
+- Avoid account prompts and multi-step setup.
+- Keep the first playable flow narrow enough to test outside.
 
 ## UX Principles
 
 - One decision per screen when possible.
 - Large, thumb-friendly controls.
-- High contrast for table lighting.
-- Clear player colors.
-- Player identity should combine name, color, and avatar so players are not identified by color alone.
-- Immediate feedback for setup and turn state changes.
-- Defer secondary tools until they clearly support the table flow.
+- High contrast in daylight.
+- Clear journey state at the top of the screen.
+- The map, active location, and resource change should always feel connected.
+- Defer secondary tools until they clearly support the route flow.
 
 ## Primary Screens
 
-- Home or resume screen.
-- Create game.
-- Player setup inside create game.
-- Review players.
-- Random King selection.
-- Game dashboard.
+- Resume or start journey.
+- Antwerp map.
+- Active location sheet.
 - Dice entry.
-- Event resolution.
+- Resource update confirmation.
 
 Deferred screens:
 
-- Player kingdom dashboard with resources.
-- Trade flow.
-- Attack/defense flow.
-- History.
-- Settings/ruleset summary.
+- Story beat browser.
+- Route history.
+- Organizer tools.
+- Route settings.
 
 ## Mobile-First Requirements
 
@@ -50,24 +45,20 @@ Deferred screens:
 
 ## Open Questions
 
-- Should the app use portrait only, or support landscape tabletop mode?
-	- Portrait for now
-- Should controls be optimized for one person operating the phone or passed-around usage?
-	- Passed around usage. 
-- Should history be a persistent panel or a separate screen?
-	- Deferred until history returns to scope.
-- Should the King selection animation be skippable?
+- Should the app use portrait only, or also support landscape while walking?
+- Should controls be optimized for Matthew only or for organizer handoff too?
+- Should route history be persistent or separate?
 
 ## Future Improvements
 
-- Tablet tabletop layout.
+- Tablet route mode.
 - Accessibility settings.
 - Voice prompts.
-- Haptic feedback in native wrapper.
+- Haptic feedback in a native wrapper.
 
 ## Related Documents
 
 - [Player Flow](./PlayerFlow.md)
-- [Kingdom](./Kingdom.md)
-- [Wireframes](../design/Wireframes.md)
+- [Journey Overview](./Kingdom.md)
+- [Feature 1 Plan](./Feature1Plan.md)
 - [Design System](../design/DesignSystem.md)

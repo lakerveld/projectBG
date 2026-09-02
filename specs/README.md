@@ -1,6 +1,6 @@
 # Specs
 
-Implementation-ready feature specifications will live here.
+Implementation-ready feature specifications live here.
 
 Use specs when a backlog item has enough behavior that code alone would hide important decisions. Specs should include:
 
@@ -13,17 +13,13 @@ Use specs when a backlog item has enough behavior that code alone would hide imp
 - Test notes.
 - Links to related docs.
 
-Initial candidate specs:
+Current feature 1 specs:
 
-- Game creation.
-- Player setup.
-- Start game and King selection.
+- Map and location activation.
+- GPS arrival confirmation.
 - Dice entry.
-- World events.
-- Resource tracking.
-- Dice event resolution.
-- Trade settlement.
-- Attack/defense resolution.
+- Resource ledger.
 - Local persistence.
+- Future story beats.
 
 See [Backlog](../docs/Backlog.md) and [MVP](../docs/MVP.md).

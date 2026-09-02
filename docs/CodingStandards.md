@@ -49,17 +49,18 @@ Define engineering conventions so the project remains consistent as it grows.
 Use concise conventional-style commits:
 
 - `docs: add MVP architecture plan`
-- `feat: add game creation flow`
-- `fix: prevent negative resource balances`
-- `test: cover dice event generation`
+- `feat: add location activation flow`
+- `fix: prevent invalid resource balances`
+- `test: cover dice reward resolution`
 
 ## Branches
 
 Use short branch names with a type prefix:
 
 - `docs/project-foundation`
-- `feat/game-setup`
-- `fix/resource-validation`
+- `feat/antwerp-map`
+- `feat/location-activation`
+- `fix/location-validation`
 - `chore/tooling`
 
 ## Pull Requests
@@ -104,4 +105,3 @@ Each PR should include:
 - [Tech Stack](./TechStack.md)
 - [Decisions](./Decisions.md)
 - [Sprint 1](./Sprint1.md)
-

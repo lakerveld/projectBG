@@ -2,62 +2,48 @@
 
 ## Purpose
 
-Define how dice rolls are entered, represented, resolved, and connected to random event generation.
+Define how physical dice are entered for the Antwerp journey.
 
 ## Goals
 
-- Support manual dice entry for physical dice.
-- Optionally support app-generated rolls later.
-- Make dice outcomes auditable in game history.
-- Keep event generation deterministic enough for testing.
+- Support manual entry for physical dice.
+- Make each roll auditable in the journey log.
+- Keep the dice result tied to the active location.
+- Keep validation simple enough for live use on the street.
 
 ## MVP Design
 
-The MVP should store each dice action as a history entry with:
+The first feature should store each dice action with:
 
 - Roll value.
-- Entered by or active player, if known.
+- Location ID.
 - Timestamp.
-- Triggered event IDs.
-- Applied effects.
+- Activation source.
+- Resulting reward or effect ID.
 
-Manual entry is the default because the app enhances physical play and players may already roll dice at the table.
+Manual entry is the default because the app enhances a physical journey and Matthew rolls the dice in real life.
 
-Sprint 4 uses total-only entry. Players roll physical dice and enter a total from 2 to 12. Individual die values, resource production, and momentum are deferred until the dice loop is stable.
-
-## Event Triggering
-
-Sprint 5 triggers world events from the round average after every player has rolled once.
-
-The event generator should accept:
-
-- Current game state.
-- Current round rolls.
-- Active ruleset.
-- Random seed or random provider.
-
-Returning structured event effects makes the system testable and replayable.
+The first slice uses total-only entry. Matthew rolls physical dice and enters a total from 2 to 12. Individual die values are deferred.
 
 ## Validation
 
 - Two six-sided dice imply valid totals from 2 to 12.
-- Invalid entries should be blocked with clear UI feedback.
-- Repeated accidental entries should be reversible through history correction.
-- Dice entry is only available after the game has started.
+- Invalid entries should be blocked with clear feedback.
+- Dice entry should only be available when a location is active.
+- Duplicate submissions should be safely ignored or corrected through history.
 
 ## Open Questions
 
-- Should special totals always trigger events or only roll against a probability table?
-- Should a roll of 7 have a special companion behavior?
-- Should players be able to annotate a roll?
-- Should future versions capture both individual die values instead of only the total?
+- Should a location accept more than one roll, or only one roll per arrival?
+- Should the app store individual die values in a later version?
+- Should the organizer be able to log the roll on Matthew's behalf?
 
 ## Future Improvements
 
 - Animated dice roller.
-- Seeded random sessions.
+- Seeded route sessions.
 - Probability display.
-- House-rule dice profiles.
+- Special dice profiles for future story packs.
 
 ## Related Documents
 
@@ -65,3 +51,4 @@ Returning structured event effects makes the system testable and replayable.
 - [Events](./Events.md)
 - [Game Design](./GameDesign.md)
 - [State Management](./StateManagement.md)
+- [Feature 1 Plan](./Feature1Plan.md)

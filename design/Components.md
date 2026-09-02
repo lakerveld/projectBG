@@ -2,7 +2,7 @@
 
 ## Purpose
 
-List the expected UI components for the MVP and establish early component boundaries.
+List the expected UI components for the Antwerp journey and establish early component boundaries.
 
 ## Goals
 
@@ -15,30 +15,28 @@ List the expected UI components for the MVP and establish early component bounda
 
 - Button.
 - IconButton.
-- Modal or Drawer.
 - BottomSheet.
+- Modal.
 - SegmentedControl.
-- NumberStepper.
 - ResourceBadge.
-- PlayerAvatar.
 - StatusPill.
-- TimelineItem.
+- MapPin.
+- LocationCard.
+- DiceEntry.
+- JourneyProgress.
+- ResourceLedger.
 - EmptyState.
 - ConfirmAction.
 
 ## Feature Components
 
-- CreateGameForm.
-- PlayerSetupList.
-- PlayerColorPicker.
-- GameDashboard.
-- KingdomSummary.
-- KingdomDetail.
-- DiceEntry.
-- EventResolutionPanel.
-- TradeBuilder.
-- AttackDefenseResolver.
-- GameHistoryList.
+- StartJourneyScreen.
+- AntwerpMapView.
+- CurrentLocationSheet.
+- GPSStatusPill.
+- DiceResultPanel.
+- ResourceUpdatePanel.
+- JourneyHistoryList.
 
 ## Component Rules
 
@@ -51,8 +49,8 @@ List the expected UI components for the MVP and establish early component bounda
 ## Open Questions
 
 - Should feature components live under `components/features` or colocate with routes?
-- Should a component explorer be added after Sprint 1?
-- Should modals or bottom sheets be the default mobile pattern?
+- Should a component explorer be added after the map slice stabilizes?
+- Should bottom sheets or full screens be the default pattern for active locations?
 
 ## Future Improvements
 
@@ -65,5 +63,4 @@ List the expected UI components for the MVP and establish early component bounda
 - [Design System](./DesignSystem.md)
 - [Wireframes](./Wireframes.md)
 - [UX](../docs/UX.md)
-- [Coding Standards](../docs/CodingStandards.md)
-
+- [Feature 1 Plan](../docs/Feature1Plan.md)

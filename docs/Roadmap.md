@@ -2,73 +2,67 @@
 
 ## Purpose
 
-Describe a staged delivery plan from repository setup through MVP validation and future App Store readiness.
+Describe the delivery plan from foundation work to the first playable Antwerp route.
 
 ## Goals
 
 - Keep early work focused on a usable local MVP.
-- Avoid premature cloud, account, or native complexity.
+- Avoid premature cloud or native complexity.
 - Create clear checkpoints for design, implementation, testing, and validation.
-- Maintain a backlog that separates MVP value from future expansion.
+- Maintain a backlog that separates feature 1 from future route content.
 
 ## Phase 0: Foundation
 
-- Create repository structure, documentation, and planning.
+- Keep the repository structure and documentation aligned with the new concept.
 - Define architecture decisions and coding standards.
-- Establish MVP scope and risk register.
+- Confirm the first feature scope.
 - Prepare prompt folders for assisted design and implementation workflows.
 
-## Phase 1: Static Product Skeleton
+## Phase 1: Map Shell
 
-- Initialize Next.js, TypeScript, React, and TailwindCSS.
-- Add base app shell, route structure, responsive layout primitives, and theme tokens.
-- Create non-functional UI screens for create game, players, and the shared game dashboard.
-- Add local component documentation.
+- Build the first Antwerp map screen.
+- Show Matthew's current journey state.
+- Add the route header, next location preview, and GPS status.
+- Create the design and component vocabulary for map and location states.
 
-## Phase 2: Setup MVP
+## Phase 2: Location Activation
 
-- Implement game creation and player setup on one screen.
-- Store setup progress locally through a versioned persistence layer.
-- Review players, start the game, and randomly select the King.
-- Validate the setup flow on a mobile viewport.
+- Detect or confirm arrival at a location.
+- Mark the location as active.
+- Open the location sheet or screen.
+- Show the route progress and current stop clearly.
 
-## Phase 3: Gameplay MVP
+## Phase 3: Dice and Rewards
 
-- Add dice roll entry and round-average world events.
-- Keep resource tracking, bonuses, penalties, history screens, trading, and attack/defense deferred until setup and first-turn flow are stable.
+- Enter physical dice totals manually.
+- Resolve the active location using the dice table.
+- Update Matthew's resources locally.
+- Record the result in the journey log.
 
-## Phase 4: Table Play Validation
+## Phase 4: Persistence and Hardening
 
-- Test on actual mobile devices.
-- Validate shared-screen readability and tap targets.
-- Run tabletop sessions and collect friction points.
-- Tune setup, event frequency, resource language, and correction flows.
+- Persist the current journey locally.
+- Add correction and recovery flows.
+- Test on real phone viewports.
+- Tune GPS, map readability, and resource language.
 
-## Phase 5: MVP Hardening
+## Phase 5: Future Route Content
 
-- Add automated tests for reducers, persistence, and rule logic.
-- Add accessibility pass.
-- Add import/export backup.
-- Improve performance and state migration.
-- Prepare demo build.
-
-## Phase 6: Future Platform Work
-
-- Evaluate Supabase for optional backup and analytics.
-- Evaluate Capacitor or Expo wrapper for App Store distribution.
-- Add native persistence, app icons, splash screens, and offline behavior checks.
-- Prepare privacy documentation.
+- Add intermission tasks between locations.
+- Add story beats and route branching.
+- Add organizer override tools.
+- Evaluate cloud backup and future app packaging only after the first route slice works well.
 
 ## Open Questions
 
-- What is the minimum table session length needed to validate the MVP?
-- Should local games be recoverable after browser cache clearing through export files?
-- What metrics can be collected ethically without accounts?
+- What is the minimum route length needed to validate the first playable slice?
+- Should GPS arrival be automatic only or always paired with an organizer confirmation?
+- Which map data format is easiest to maintain for future route packs?
 
 ## Future Improvements
 
+- Route packs.
 - Campaign mode.
-- Multi-game templates.
 - Shared device handoff.
 - Cloud sync with opt-in accounts.
 
@@ -83,3 +77,4 @@ Describe a staged delivery plan from repository setup through MVP validation and
 - [Sprint 5](./Sprint5.md)
 - [Architecture](./Architecture.md)
 - [Decisions](./Decisions.md)
+- [Feature 1 Plan](./Feature1Plan.md)
