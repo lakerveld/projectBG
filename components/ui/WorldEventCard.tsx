@@ -33,7 +33,13 @@ export function WorldEventCard({ event, round, className }: WorldEventCardProps)
     <ParchmentCard variant="raised" className={cn("pt-9", className)}>
       {/* Seal breaks the top edge, overlapping the card like real wax. */}
       <div className="absolute -top-4 left-5 z-10">
-        <Seal icon={visual.icon} tone={visual.tone} size="lg" pulse label={`${visual.label} omen`} />
+        <Seal
+          icon={visual.icon}
+          tone={visual.tone}
+          size="lg"
+          pulse
+          label={`${visual.label} omen`}
+        />
       </div>
 
       <div className="absolute right-4 top-4">
@@ -64,7 +70,10 @@ export function WorldEventCard({ event, round, className }: WorldEventCardProps)
                 key={effect}
                 className="flex gap-2.5 rounded-lg border border-parchment-edge/50 bg-[#e6d7b4]/50 px-3 py-2 font-body text-sm leading-5 text-sepia"
               >
-                <span className={cn("mt-1.5 size-1.5 shrink-0 rotate-45", tone.dot)} aria-hidden="true" />
+                <span
+                  className={cn("mt-1.5 size-1.5 shrink-0 rotate-45", tone.dot)}
+                  aria-hidden="true"
+                />
                 {effect}
               </li>
             ))}
@@ -94,6 +103,29 @@ export function WorldEventCard({ event, round, className }: WorldEventCardProps)
             {DURATION_LABEL[event.duration]}
           </span>
         </div>
+      </div>
+    </ParchmentCard>
+  );
+}
+
+/** A development reward uses the same seal, ribbon and parchment as event cards. */
+export function DevelopmentEventCard({ bonus }: { bonus: string }) {
+  return (
+    <ParchmentCard variant="raised" className="relative pt-9">
+      <div className="absolute -top-4 left-5 z-10">
+        <Seal icon={Hourglass} tone="gold" size="lg" label="Ontwikkelingskaart" />
+      </div>
+      <div className="absolute right-4 top-4">
+        <Ribbon tone="gold">Bonus</Ribbon>
+      </div>
+      <div className="px-5 pb-5 pt-3">
+        <p className="font-body text-xs uppercase tracking-[0.2em] text-sepia-muted">
+          Ontwikkelingskaart
+        </p>
+        <h2 className="mt-2 font-display text-2xl font-bold text-sepia">{bonus}</h2>
+        <p className="mt-2 font-body text-sm leading-6 text-sepia">
+          Beantwoord de vraag goed om deze bonus te verdienen.
+        </p>
       </div>
     </ParchmentCard>
   );

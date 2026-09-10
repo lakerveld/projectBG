@@ -7,6 +7,7 @@ import { ActionButton } from "@/components/ui/ActionButton";
 import { ParchmentCard } from "@/components/ui/ParchmentCard";
 import type { RoundRollSummary } from "@/components/features/game/RoundRollsPanel";
 import { getPlayerAvatar } from "@/lib/domain/avatars";
+import { DiceTotalPicker } from "@/components/ui/DiceTotalPicker";
 import { cn } from "@/lib/ui/cn";
 import type { Player } from "@/lib/domain/types";
 
@@ -88,23 +89,11 @@ export const DicePanel = memo(function DicePanel({
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-2.5" aria-label="Dice totals">
-          {diceTotals.map((total) => (
-            <button
-              key={total}
-              type="button"
-              onClick={() => onSelectTotal(total)}
-              className={cn(
-                "grid min-h-16 place-items-center rounded-xl border font-display text-2xl font-bold shadow-carved transition active:scale-[0.98]",
-                selectedTotal === total
-                  ? "border-gold bg-gold text-night-deep"
-                  : "border-parchment-edge bg-[#e6d7b4]/50 text-sepia hover:bg-[#f1e1bf]"
-              )}
-            >
-              {total}
-            </button>
-          ))}
-        </div>
+        <DiceTotalPicker
+          totals={diceTotals}
+          selectedTotal={selectedTotal}
+          onSelect={onSelectTotal}
+        />
 
         <ActionButton
           icon={Dice5}
