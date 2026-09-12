@@ -34,5 +34,5 @@ Thumbs.db
 .vscode/
 
 # Local app data
+.journey-data/
 *.local
-

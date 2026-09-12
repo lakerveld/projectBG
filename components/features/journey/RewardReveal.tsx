@@ -46,7 +46,11 @@ export function RewardReveal({
         <div className="relative aspect-square overflow-hidden">
           <Image
             src={`/rewards/${artwork[resource]}.png`}
-            alt={`Psychedelische illustratie van ${resource.toLowerCase()}`}
+            alt={
+              resource === "Salmiak"
+                ? "Psychedelische illustratie van een fles Salamari"
+                : `Psychedelische illustratie van ${resource.toLowerCase()}`
+            }
             fill
             sizes="(max-width: 512px) 100vw, 472px"
             priority
@@ -101,7 +105,7 @@ export function RewardReveal({
             ))}
           </ul>
           <ActionButton fullWidth size="lg" onClick={onContinue}>
-            Verder naar de quiz
+            Verder naar de kaart
           </ActionButton>
         </div>
       </div>

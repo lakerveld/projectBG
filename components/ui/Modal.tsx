@@ -51,6 +51,29 @@ export function Modal({
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") onClose();
+      if (event.key === "Tab" && cardRef.current) {
+        const controls = Array.from(
+          cardRef.current.querySelectorAll<HTMLElement>(
+            'button:not(:disabled), a[href], input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex="0"]'
+          )
+        );
+        const first = controls[0];
+        const last = controls.at(-1);
+        if (!first) {
+          event.preventDefault();
+          return;
+        }
+        if (
+          event.shiftKey &&
+          (document.activeElement === first || document.activeElement === cardRef.current)
+        ) {
+          event.preventDefault();
+          last?.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
     };
     document.addEventListener("keydown", onKeyDown);
 

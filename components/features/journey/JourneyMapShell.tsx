@@ -1,13 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Image from "next/image";
-import { Beer, Candy, Dice5, Utensils, Wheat } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import Link from "next/link";
+import { DevelopmentCardsIcon } from "@/components/ui/DevelopmentCardsIcon";
+import { useDevelopmentCards } from "@/lib/ui/useDevelopmentCards";
+import { Beer, Dice5, Utensils } from "lucide-react";
+import { PowderedSugarIcon } from "@/components/ui/PowderedSugarIcon";
+import { ShotGlassIcon } from "@/components/ui/ShotGlassIcon";
 import { DiceTotalPicker } from "@/components/ui/DiceTotalPicker";
 import { ParchmentCard } from "@/components/ui/ParchmentCard";
 import { ActionButton } from "@/components/ui/ActionButton";
 
-import { DevelopmentQuiz } from "./DevelopmentQuiz";
+import { LocationQuiz } from "./LocationQuiz";
+import { LocationMap, locationStatusLabels } from "./LocationMap";
+import { Modal } from "@/components/ui/Modal";
+import { useJourneyLocations } from "@/lib/ui/useJourneyLocations";
 import { RobberReveal } from "./RobberReveal";
 import { RewardReveal } from "./RewardReveal";
 import {
@@ -24,13 +31,24 @@ function focusHeading(node: HTMLHeadingElement | null) {
 
 const resources = [
   { name: "Bier", icon: Beer },
-  { name: "Salmiak", icon: Candy },
-  { name: "Poedersuiker", icon: Wheat },
+  { name: "Salmiak", icon: ShotGlassIcon },
+  { name: "Poedersuiker", icon: PowderedSugarIcon },
   { name: "Eten", icon: Utensils }
 ] as const;
 
 export function JourneyMapShell() {
-  const [showQuiz, setShowQuiz] = useState(false);
+  const cards = useDevelopmentCards();
+  const journey = useJourneyLocations();
+  const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
+  const closeLocation = useCallback(() => setSelectedLocation(null), []);
+  const [quizLocation, setQuizLocation] = useState<string | null>(null);
+  const location = journey.data?.locations.find((item) => item.id === selectedLocation);
+  const activeQuiz = journey.data?.locations.find((item) => item.id === quizLocation);
+  const serverCards = journey.data?.locations.filter((item) => item.result?.correct) ?? [];
+  const cardCount =
+    serverCards.length +
+    cards.filter((card) => !serverCards.some((item) => item.id === "1" && card.id === "bierpaleis"))
+      .length;
   const [enteringRoll, setEnteringRoll] = useState(false);
   const [selectedTotal, setSelectedTotal] = useState<number | null>(null);
   const [lastRoll, setLastRoll] = useState<number | null>(null);
@@ -45,7 +63,19 @@ export function JourneyMapShell() {
     setInventory(readInventory());
   }, []);
 
-  if (showQuiz) return <DevelopmentQuiz onContinue={() => setShowQuiz(false)} />;
+  if (activeQuiz?.quiz)
+    return (
+      <LocationQuiz
+        key={activeQuiz.id}
+        location={activeQuiz}
+        busy={journey.busy}
+        error={journey.error}
+        onAnswer={(answer) => {
+          void journey.command(activeQuiz.id, "answer", answer);
+        }}
+        onClose={() => setQuizLocation(null)}
+      />
+    );
 
   if (robbery !== null) {
     return (
@@ -55,7 +85,6 @@ export function JourneyMapShell() {
         storageError={storageError}
         onContinue={() => {
           setRobbery(null);
-          setShowQuiz(true);
         }}
       />
     );
@@ -69,7 +98,6 @@ export function JourneyMapShell() {
         roll={lastRoll}
         onContinue={() => {
           setReward(null);
-          setShowQuiz(true);
         }}
       />
     );
@@ -135,21 +163,21 @@ export function JourneyMapShell() {
     <section
       aria-label="Kaart van Antwerpen"
       lang="nl"
-      className="mx-auto flex min-h-dvh w-full max-w-lg items-center px-3 py-[max(0.75rem,env(safe-area-inset-top),env(safe-area-inset-bottom))] sm:px-5"
+      className="flex min-h-dvh w-full items-start pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]"
     >
       <h1 className="sr-only">Kaart van Antwerpen</h1>
-      <div className="w-full overflow-hidden rounded-3xl border-2 border-ink bg-arcane p-1.5 shadow-parchment">
-        <div className="overflow-hidden rounded-lg border-2 border-ink">
+      <div className="w-full overflow-hidden">
+        <div className="overflow-hidden">
           <ul
             aria-label="Resources"
-            className="grid grid-cols-4 divide-x divide-ink border-b-2 border-ink bg-[#ff91c4] px-2 py-4"
+            className="grid grid-cols-[repeat(4,minmax(0,1fr))_auto] divide-x divide-ink border-b-2 border-ink bg-[#ff91c4] px-2 py-4"
           >
             {resources.map(({ name, icon: Icon }) => (
               <li
                 key={name}
                 aria-label={`${name}: ${inventory[name]}`}
                 title={name}
-                className="flex items-center justify-center gap-2 text-ink"
+                className="flex items-center justify-center gap-1 text-ink sm:gap-2"
               >
                 <Icon size={22} strokeWidth={1.7} aria-hidden="true" />
                 <span
@@ -160,16 +188,86 @@ export function JourneyMapShell() {
                 </span>
               </li>
             ))}
+            <li className="pl-2">
+              <Link
+                href="/development-cards"
+                aria-label={`Ontwikkelingskaarten: ${cardCount}`}
+                title="Ontwikkelingskaarten"
+                className="trippy-button flex min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-lg bg-[#c681f5] px-2 text-ink"
+              >
+                <DevelopmentCardsIcon />
+                <span aria-hidden="true" className="text-sm font-bold">
+                  {cardCount}
+                </span>
+              </Link>
+            </li>
           </ul>
-          <Image
-            src="/maps/antwerp-journey.png"
-            alt="Geïllustreerde kaart van Antwerpen met acht genummerde locaties, de Schelde en de kathedraal."
-            width={941}
-            height={1672}
-            priority
-            sizes="(max-width: 512px) 100vw, 460px"
-            className="block h-auto w-full"
-          />
+          {journey.notice && (
+            <div
+              role="status"
+              className="flex items-center justify-between gap-3 border-b-2 border-ink bg-gold-bright p-4 font-bold text-ink"
+            >
+              <p>{journey.notice}</p>
+              <button
+                type="button"
+                onClick={journey.dismissNotice}
+                className="min-h-11 px-3 underline"
+                aria-label="Melding sluiten"
+              >
+                Sluiten
+              </button>
+            </div>
+          )}
+          {journey.error && (
+            <p role="alert" className="bg-night p-3 text-parchment">
+              {journey.error}
+            </p>
+          )}
+          {!journey.data && !journey.error && (
+            <p className="bg-night p-2 text-center text-parchment">Locaties laden…</p>
+          )}
+          <LocationMap data={journey.data} onSelect={setSelectedLocation} />
+          <Modal
+            open={selectedLocation !== null}
+            onClose={closeLocation}
+            title={location?.name ?? `Locatie ${selectedLocation}`}
+            description={
+              !location
+                ? "De locatiestatus is nog niet beschikbaar. Probeer het zo opnieuw."
+                : location.status === "locked"
+                  ? "Deze locatie is nog op slot. Jullie begeleiders geven deze vrij zodra jullie er zijn."
+                  : location.status === "completed"
+                    ? "Je hebt deze locatie al afgerond."
+                    : "Wil je deze locatie activeren en de quiz openen?"
+            }
+            footer={
+              <>
+                <ActionButton variant="iron" onClick={() => setSelectedLocation(null)}>
+                  Terug
+                </ActionButton>
+                {location && location.status !== "locked" && (
+                  <ActionButton
+                    loading={journey.busy}
+                    onClick={async () => {
+                      const next = await journey.command(location.id, "start");
+                      if (next) {
+                        setQuizLocation(location.id);
+                        setSelectedLocation(null);
+                      }
+                    }}
+                  >
+                    {location.status === "available"
+                      ? "Activeren"
+                      : location.status === "completed"
+                        ? "Bekijk resultaat"
+                        : locationStatusLabels[location.status]}
+                  </ActionButton>
+                )}
+              </>
+            }
+          >
+            {journey.error && <p role="alert">{journey.error}</p>}
+          </Modal>
           <div className="border-t-2 border-ink bg-night p-4">
             {storageError && (
               <p role="alert" className="mb-3 text-parchment">

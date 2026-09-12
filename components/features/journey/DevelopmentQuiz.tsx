@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { awardDevelopmentCard } from "@/lib/ui/useDevelopmentCards";
+import { developmentCards } from "@/lib/domain/developmentCards";
 import { ActionButton } from "@/components/ui/ActionButton";
 import { DevelopmentEventCard } from "@/components/ui/WorldEventCard";
 
@@ -15,6 +18,7 @@ const answers = [
 export function DevelopmentQuiz({ onContinue }: { onContinue: () => void }) {
   const [selected, setSelected] = useState<number | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  const [storageError, setStorageError] = useState(false);
   const correct = selected === 0;
 
   return (
@@ -43,7 +47,7 @@ export function DevelopmentQuiz({ onContinue }: { onContinue: () => void }) {
           Het Bierpaleis
         </h1>
         <div aria-hidden="true" className="min-h-40 flex-1" />
-        <DevelopmentEventCard bonus="Ruil 1 bier voor 1 poedersuiker" />
+        <DevelopmentEventCard bonus={developmentCards[0].bonus} />
         <div className="mt-5 rounded-3xl border border-gold/40 bg-night-deep/90 p-5 shadow-glow backdrop-blur-sm">
           <div className="space-y-3 font-body text-base leading-relaxed text-parchment/85">
             <p>
@@ -109,6 +113,19 @@ export function DevelopmentQuiz({ onContinue }: { onContinue: () => void }) {
                   </p>
                 )}
               </div>
+              {correct && (
+                <Link
+                  href="/development-cards"
+                  className="trippy-button flex min-h-11 items-center justify-center rounded-lg bg-[#c681f5] px-3 font-bold text-ink"
+                >
+                  Bekijk je ontwikkelingskaarten
+                </Link>
+              )}
+              {storageError && (
+                <p role="alert" className="text-sm text-parchment">
+                  Je kaart is alleen voor deze sessie bewaard. Lokale opslag is niet beschikbaar.
+                </p>
+              )}
               <ActionButton fullWidth size="lg" onClick={onContinue}>
                 Verder naar de kaart
               </ActionButton>
@@ -119,7 +136,11 @@ export function DevelopmentQuiz({ onContinue }: { onContinue: () => void }) {
               fullWidth
               size="lg"
               disabled={selected === null}
-              onClick={() => setSubmitted(true)}
+              onClick={() => {
+                if (submitted || selected === null) return;
+                if (correct) setStorageError(!awardDevelopmentCard(developmentCards[0].id));
+                setSubmitted(true);
+              }}
             >
               Bevestig antwoord
             </ActionButton>

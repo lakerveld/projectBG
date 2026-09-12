@@ -2,7 +2,9 @@
 
 import { useEffect, useState, type CSSProperties } from "react";
 import Image from "next/image";
-import { Beer, Candy, Utensils, Wheat } from "lucide-react";
+import { Beer, Utensils } from "lucide-react";
+import { PowderedSugarIcon } from "@/components/ui/PowderedSugarIcon";
+import { ShotGlassIcon } from "@/components/ui/ShotGlassIcon";
 import { ActionButton } from "@/components/ui/ActionButton";
 import {
   rewardResources,
@@ -10,7 +12,7 @@ import {
   type RewardResource
 } from "@/lib/domain/journeyRewards";
 
-const icons = { Bier: Beer, Salmiak: Candy, Poedersuiker: Wheat, Eten: Utensils };
+const icons = { Bier: Beer, Salmiak: ShotGlassIcon, Poedersuiker: PowderedSugarIcon, Eten: Utensils };
 const colors = {
   Bier: "bg-gold",
   Salmiak: "bg-[#c681f5]",
@@ -149,7 +151,7 @@ export function RobberReveal({
             </p>
           )}
           <ActionButton fullWidth size="lg" disabled={!settled} onClick={onContinue}>
-            Verder naar de quiz
+            Verder naar de kaart
           </ActionButton>
         </div>
       </div>

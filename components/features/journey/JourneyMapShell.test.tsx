@@ -3,10 +3,17 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { JourneyMapShell } from "./JourneyMapShell";
 
 describe("JourneyMapShell", () => {
-  beforeEach(() => localStorage.clear());
+  beforeEach(() => {
+    localStorage.clear();
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(() => new Promise(() => {}))
+    );
+  });
   afterEach(() => {
     vi.useRealTimers();
     vi.restoreAllMocks();
+    vi.unstubAllGlobals();
   });
   it("shows the Antwerp illustration, four starting resources and the dice button", () => {
     render(<JourneyMapShell />);
@@ -37,10 +44,6 @@ describe("JourneyMapShell", () => {
       Poedersuiker: 1,
       Eten: 0
     });
-    fireEvent.click(screen.getByRole("button", { name: "Verder naar de quiz" }));
-    expect(screen.getByRole("heading", { name: "Het Bierpaleis" })).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("radio", { name: "A. Prik & Tik, uw drankenspecialist" }));
-    fireEvent.click(screen.getByRole("button", { name: "Bevestig antwoord" }));
     fireEvent.click(screen.getByRole("button", { name: "Verder naar de kaart" }));
     expect(screen.getByRole("listitem", { name: "Poedersuiker: 1" })).toBeInTheDocument();
     expect(screen.getByRole("status")).toHaveTextContent("Laatste worp: 8 ogen");
@@ -50,7 +53,7 @@ describe("JourneyMapShell", () => {
     fireEvent.click(screen.getByRole("button", { name: "Terug naar de kaart" }));
     expect(screen.getByRole("status")).toHaveTextContent("Laatste worp: 8 ogen");
   });
-  it("spins on seven, steals one owned resource exactly once, and continues to the quiz", () => {
+  it("spins on seven, steals one owned resource exactly once, and returns to the map", () => {
     vi.useFakeTimers();
     vi.spyOn(Math, "random").mockReturnValue(0.99);
     localStorage.setItem(
@@ -63,7 +66,7 @@ describe("JourneyMapShell", () => {
     fireEvent.click(screen.getByRole("button", { name: "Bevestig worp" }));
     expect(screen.getByRole("heading", { name: "De struikrover!" })).toBeInTheDocument();
     expect(screen.getByRole("status")).toHaveTextContent("De automaat draait");
-    expect(screen.getByRole("button", { name: "Verder naar de quiz" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Verder naar de kaart" })).toBeDisabled();
     act(() => vi.advanceTimersByTime(3600));
     expect(screen.getByRole("status")).toHaveTextContent("−1 Eten");
     expect(JSON.parse(localStorage.getItem("rattan-journey-inventory")!)).toEqual({
@@ -74,8 +77,8 @@ describe("JourneyMapShell", () => {
     });
     act(() => vi.advanceTimersByTime(5000));
     expect(JSON.parse(localStorage.getItem("rattan-journey-inventory")!).Eten).toBe(0);
-    fireEvent.click(screen.getByRole("button", { name: "Verder naar de quiz" }));
-    expect(screen.getByRole("heading", { name: "Het Bierpaleis" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Verder naar de kaart" }));
+    expect(screen.getByRole("heading", { name: "Kaart van Antwerpen" })).toBeInTheDocument();
   });
   it("does not award or deduct a resource when seven is rolled with empty stock", () => {
     render(<JourneyMapShell />);
@@ -83,7 +86,7 @@ describe("JourneyMapShell", () => {
     fireEvent.click(screen.getByRole("button", { name: "7" }));
     fireEvent.click(screen.getByRole("button", { name: "Bevestig worp" }));
     expect(screen.getByRole("status")).toHaveTextContent("Niets te halen!");
-    expect(screen.getByRole("button", { name: "Verder naar de quiz" })).toBeEnabled();
+    expect(screen.getByRole("button", { name: "Verder naar de kaart" })).toBeEnabled();
     expect(JSON.parse(localStorage.getItem("rattan-journey-inventory")!)).toEqual({
       Bier: 0,
       Salmiak: 0,
