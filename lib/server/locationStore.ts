@@ -34,14 +34,12 @@ async function hydrate(raw: string | null): Promise<State> {
 }
 
 export async function locationStore(mutate?: (state: State) => void): Promise<State> {
-  if (
-    Boolean(process.env.UPSTASH_REDIS_REST_URL) !== Boolean(process.env.UPSTASH_REDIS_REST_TOKEN)
-  ) {
+  const url = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
+  if (Boolean(url) !== Boolean(token)) {
     throw new Error("Stel zowel de URL als het token van de gedeelde opslag in.");
   }
-  const hasRedis = Boolean(
-    process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
-  );
+  const hasRedis = Boolean(url && token);
   if (hasRedis) {
     const redis = redisClient();
     const key = `rattan:journey:${process.env.JOURNEY_GAME_ID || "matthew"}`;

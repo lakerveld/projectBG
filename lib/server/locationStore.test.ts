@@ -6,6 +6,8 @@ import { transition } from "@/lib/domain/locationGame";
 let saved: string | null;
 beforeEach(() => {
   saved = null;
+  vi.stubEnv("KV_REST_API_URL", "");
+  vi.stubEnv("KV_REST_API_TOKEN", "");
   vi.stubEnv("UPSTASH_REDIS_REST_URL", "https://redis.example");
   vi.stubEnv("UPSTASH_REDIS_REST_TOKEN", "test-token");
   vi.stubGlobal(
@@ -57,6 +59,24 @@ it("fails closed in production without shared storage or with partial configurat
   await expect(locationStore()).rejects.toThrow("zowel de URL als het token");
   vi.stubEnv("UPSTASH_REDIS_REST_TOKEN", "");
   await expect(locationStore()).rejects.toThrow("nog niet ingesteld");
+});
+
+it("uses Vercel KV credentials for shared storage in production", async () => {
+  vi.resetModules();
+  vi.stubEnv("NODE_ENV", "production");
+  vi.stubEnv("UPSTASH_REDIS_REST_URL", "");
+  vi.stubEnv("UPSTASH_REDIS_REST_TOKEN", "");
+  vi.stubEnv("KV_REST_API_URL", "https://vercel-redis.example");
+  vi.stubEnv("KV_REST_API_TOKEN", "vercel-test-token");
+  const { locationStore: vercelStore } = await import("./locationStore");
+  await vercelStore((state) => transition(state.locations[0], "unlock"));
+  expect((await vercelStore()).locations[0].status).toBe("available");
+  expect(fetch).toHaveBeenCalledWith(
+    "https://vercel-redis.example",
+    expect.objectContaining({
+      headers: expect.objectContaining({ authorization: "Bearer vercel-test-token" })
+    })
+  );
 });
 
 it("reports unavailable Redis instead of using a divergent local game", async () => {

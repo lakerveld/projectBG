@@ -28,6 +28,9 @@ Maak een Redis-database met een Upstash-compatible REST API en stel op de hostin
 - `UPSTASH_REDIS_REST_TOKEN` (schrijftoken, uitsluitend op de server)
 - `JOURNEY_GAME_ID` (bijvoorbeeld `matthew`; dezelfde waarde op alle serverinstanties)
 
+De Vercel-integratie mag ook `KV_REST_API_URL` en `KV_REST_API_TOKEN` gebruiken.
+Deze worden gebruikt als de overeenkomstige `UPSTASH_`-variabelen leeg zijn.
+
 De implementatie gebruikt de [Upstash Redis SDK](https://upstash.com/docs/redis/sdks/ts/overview)
 en een atomische compare-and-set via EVAL om gelijktijdige antwoorden en unlocks
 zonder verloren updates te verwerken. De inhoud van het Markdown-bestand wordt
