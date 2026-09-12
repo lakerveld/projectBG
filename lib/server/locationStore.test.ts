@@ -11,7 +11,8 @@ beforeEach(() => {
   vi.stubGlobal(
     "fetch",
     vi.fn(async (_url: string, init: RequestInit) => {
-      const [command, ...args] = JSON.parse(init.body as string);
+      const [rawCommand, ...args] = JSON.parse(init.body as string);
+      const command = rawCommand.toUpperCase();
       let result: string | number | null;
       if (command === "GET") result = saved;
       else if (command === "EVAL") {
@@ -20,7 +21,7 @@ beforeEach(() => {
           result = 1;
         } else result = 0;
       } else throw new Error("Unexpected command");
-      return { ok: true, json: async () => ({ result }) };
+      return new Response(JSON.stringify({ result }));
     })
   );
 });

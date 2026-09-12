@@ -15,6 +15,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@upstash/redis": "^1.38.4",
     "dexie": "latest",
     "lucide-react": "latest",
     "next": "latest",

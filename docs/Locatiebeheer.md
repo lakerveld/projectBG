@@ -28,7 +28,7 @@ Maak een Redis-database met een Upstash-compatible REST API en stel op de hostin
 - `UPSTASH_REDIS_REST_TOKEN` (schrijftoken, uitsluitend op de server)
 - `JOURNEY_GAME_ID` (bijvoorbeeld `matthew`; dezelfde waarde op alle serverinstanties)
 
-De implementatie gebruikt de [Upstash REST API](https://upstash.com/docs/redis/features/restapi)
+De implementatie gebruikt de [Upstash Redis SDK](https://upstash.com/docs/redis/sdks/ts/overview)
 en een atomische compare-and-set via EVAL om gelijktijdige antwoorden en unlocks
 zonder verloren updates te verwerken. De inhoud van het Markdown-bestand wordt
 via Next output file tracing meegenomen in de serverdeployment.

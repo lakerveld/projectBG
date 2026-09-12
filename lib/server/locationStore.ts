@@ -1,27 +1,18 @@
 import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
+import { Redis } from "@upstash/redis";
 import type { StoredLocation } from "@/lib/domain/locationGame";
 import { loadLocationContent } from "./locationContent";
 
 type State = { locations: StoredLocation[] };
 const globals = globalThis as typeof globalThis & { journeyQueue?: Promise<unknown> };
 
-async function redis(command: (string | number)[]) {
-  const response = await fetch(process.env.UPSTASH_REDIS_REST_URL!, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(command),
-    cache: "no-store",
-    signal: AbortSignal.timeout(8000)
-  });
-  if (!response.ok) throw new Error("Gedeelde opslag is niet bereikbaar.");
-  const data = await response.json();
-  if (data.error) throw new Error("Gedeelde opslag is niet beschikbaar.");
-  return data.result;
+let redis: Redis | undefined;
+
+function redisClient() {
+  redis ??= Redis.fromEnv({ automaticDeserialization: false, enableAutoPipelining: false });
+  return redis;
 }
 
 async function hydrate(raw: string | null): Promise<State> {
@@ -52,20 +43,18 @@ export async function locationStore(mutate?: (state: State) => void): Promise<St
     process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
   );
   if (hasRedis) {
+    const redis = redisClient();
     const key = `rattan:journey:${process.env.JOURNEY_GAME_ID || "matthew"}`;
     for (let attempt = 0; attempt < 5; attempt++) {
-      const raw: string | null = await redis(["GET", key]);
+      const raw = await redis.get<string | null>(key);
       const state = await hydrate(raw);
       if (!mutate) return state;
       mutate(state);
-      const saved = await redis([
-        "EVAL",
+      const saved = await redis.eval<unknown[], number>(
         "local old = redis.call('GET', KEYS[1]); if (old or '') ~= ARGV[1] then return 0 end; redis.call('SET', KEYS[1], ARGV[2]); return 1",
-        1,
-        key,
-        raw ?? "",
-        JSON.stringify(state)
-      ]);
+        [key],
+        [raw ?? "", JSON.stringify(state)]
+      );
       if (saved === 1) return state;
     }
     throw new Error("De status is net gewijzigd. Probeer opnieuw.");

@@ -36,3 +36,4 @@ Thumbs.db
 # Local app data
 .journey-data/
 *.local
+.vercel
