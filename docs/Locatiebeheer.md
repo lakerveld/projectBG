@@ -11,12 +11,9 @@ Lokaal leest de server wijzigingen meteen. Reeds vrijgegeven quizzen blijven gel
 
 ## Lokaal starten
 
-1. Kopieer `.env.example` naar `.env.local`.
-2. Stel `JOURNEY_ADMIN_PASSWORD` in op een uniek willekeurig wachtwoord van minimaal
-   16 tekens, bijvoorbeeld gegenereerd met `openssl rand -hex 24`.
-3. Start `npm run dev`. Open `/beheer` en meld aan met dit wachtwoord.
-4. Open `/journey` in een tweede venster. Geef locatie 1 vrij in het beheervenster.
-5. Binnen ongeveer vijf seconden verschijnt de ontgrendelmelding. Klik op hexagon 1,
+1. Start `npm run dev` en open `/beheer`. Er is geen wachtwoord nodig.
+2. Open `/journey` in een tweede venster. Geef locatie 1 vrij in het beheervenster.
+3. Binnen ongeveer vijf seconden verschijnt de ontgrendelmelding. Klik op hexagon 1,
    kies **Activeren**, beantwoord de vraag en bekijk de verdiende kaart.
 
 Zonder Redis gebruikt de ontwikkelserver `.journey-data/state.json`. Dit bestand
@@ -29,7 +26,6 @@ Maak een Redis-database met een Upstash-compatible REST API en stel op de hostin
 
 - `UPSTASH_REDIS_REST_URL`
 - `UPSTASH_REDIS_REST_TOKEN` (schrijftoken, uitsluitend op de server)
-- `JOURNEY_ADMIN_PASSWORD` (uitsluitend delen met begeleiders)
 - `JOURNEY_GAME_ID` (bijvoorbeeld `matthew`; dezelfde waarde op alle serverinstanties)
 
 De implementatie gebruikt de [Upstash REST API](https://upstash.com/docs/redis/features/restapi)
@@ -38,11 +34,10 @@ zonder verloren updates te verwerken. De inhoud van het Markdown-bestand wordt
 via Next output file tracing meegenomen in de serverdeployment.
 
 Gebruik de HTTPS-URL van dezelfde deployment voor `/beheer` en `/journey`.
-Er is één gedeelde speler: Matthew. De speler-URL heeft geen persoonlijk account;
-iedereen met toegang tot deze app kan namens deze ene speler antwoorden. Deel die
-URL dus alleen met de groep. Alleen een geauthenticeerde begeleider kan locaties
-vrijgeven. Het beheerwachtwoord blijft in het geheugen van de beheerpagina en wordt
-niet in browseropslag of in een URL gezet. Verversen vraagt opnieuw aanmelden.
+Er is één gedeelde speler: Matthew. Iedereen met toegang tot de app kan namens deze
+speler antwoorden. `/beheer` is vrij toegankelijk: iedereen die deze pagina opent
+kan locaties vrijgeven. Er is geen wachtwoord of geheime sleutel nodig.
+Een bestaande `JOURNEY_ADMIN_PASSWORD` in `.env.local` wordt niet meer gebruikt en kan weg.
 
 ## Spelgedrag
 
@@ -69,3 +64,14 @@ Dit onderdeel synchroniseert locaties, quizresultaten en de bijbehorende kaarten
 Er is bewust geen resetknop die tijdens het spel resultaten kan wissen. Gebruik voor
 een nieuwe productiegame een andere `JOURNEY_GAME_ID`; lokaal kan na stoppen van de
 server het ontwikkelbestand worden verwijderd.
+
+## Beheer laadt niet
+
+- Gebruik `http://localhost:3000/beheer` bij de lokale ontwikkelserver.
+- Het bestand moet `.env.local` heten, inclusief de eerste punt, in de projectroot.
+- Herstart `npm run dev` na het toevoegen of wijzigen van de omgevingsinstellingen.
+  Een al draaiende `npm run start` moet ook opnieuw worden gestart.
+- Redis mag lokaal bij `npm run dev` leeg blijven. Bij `npm run start` zijn de
+  Redis-instellingen verplicht omdat die opdracht de productieversie start.
+- Als de pagina blijft laden of knoppen niet reageren: herstart de ontwikkelserver,
+  open de `localhost`-URL en ververs de browser volledig.

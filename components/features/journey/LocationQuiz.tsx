@@ -7,6 +7,10 @@ import { ActionButton } from "@/components/ui/ActionButton";
 import { DevelopmentEventCard } from "@/components/ui/WorldEventCard";
 import type { LocationView } from "@/lib/domain/locationGame";
 
+function focusHeading(node: HTMLHeadingElement | null) {
+  node?.focus();
+}
+
 export function LocationQuiz({
   location,
   busy,
@@ -42,7 +46,7 @@ export function LocationQuiz({
         </p>
         <h1
           tabIndex={-1}
-          ref={(node) => node?.focus()}
+          ref={focusHeading}
           className="font-display text-4xl font-bold text-parchment outline-none"
         >
           {location.name}

@@ -1,13 +1,3 @@
-import { createHash, timingSafeEqual } from "node:crypto";
-
-export function adminAuthorized(request: Request) {
-  const password = process.env.JOURNEY_ADMIN_PASSWORD;
-  if (!password || password.length < 16) return false;
-  const supplied = request.headers.get("authorization") ?? "";
-  const hash = (value: string) => createHash("sha256").update(value).digest();
-  return timingSafeEqual(hash(supplied), hash(`Bearer ${password}`));
-}
-
 export function sameOrigin(request: Request) {
   const origin = request.headers.get("origin");
   return origin === new URL(request.url).origin;

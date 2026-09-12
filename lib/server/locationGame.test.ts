@@ -7,7 +7,6 @@ import {
   transition,
   type StoredLocation
 } from "@/lib/domain/locationGame";
-import { adminAuthorized } from "./journeyHttp";
 
 describe("location content and transitions", () => {
   afterEach(() => vi.unstubAllEnvs());
@@ -57,16 +56,6 @@ describe("location content and transitions", () => {
       "Vul eerst"
     );
   });
-
-  it("requires a configured strong admin password and an exact authorization header", () => {
-    vi.stubEnv("JOURNEY_ADMIN_PASSWORD", "test-password-long-enough");
-    const request = (secret: string) =>
-      new Request("http://localhost/api/journey/admin", { headers: { Authorization: secret } });
-    expect(adminAuthorized(request("Bearer test-password-long-enough"))).toBe(true);
-    expect(adminAuthorized(request("Bearer wrong"))).toBe(false);
-    vi.stubEnv("JOURNEY_ADMIN_PASSWORD", "");
-    expect(adminAuthorized(request("Bearer "))).toBe(false);
-  });
 });
 
 const memory = vi.hoisted(() => ({ locations: [] as StoredLocation[] }));
@@ -77,7 +66,7 @@ vi.mock("./locationStore", () => ({
   }
 }));
 import { GET, POST } from "@/app/api/journey/route";
-import { POST as adminPost } from "@/app/api/journey/admin/route";
+import { GET as adminGet, POST as adminPost } from "@/app/api/journey/admin/route";
 
 describe("journey HTTP authorization", () => {
   beforeEach(async () => {
@@ -86,7 +75,6 @@ describe("journey HTTP authorization", () => {
       quiz,
       status: "locked"
     }));
-    vi.stubEnv("JOURNEY_ADMIN_PASSWORD", "test-password-long-enough");
   });
   afterEach(() => vi.unstubAllEnvs());
   function request(action: string, admin = false, origin = "http://localhost") {
@@ -94,7 +82,6 @@ describe("journey HTTP authorization", () => {
       method: "POST",
       headers: {
         Origin: origin,
-        Authorization: "Bearer test-password-long-enough",
         "Content-Type": "application/json"
       },
       body: JSON.stringify({ id: "1", action, answer: 0 })
@@ -105,10 +92,12 @@ describe("journey HTTP authorization", () => {
     expect((await POST(request("start"))).status).toBe(409);
     expect(memory.locations[0].status).toBe("locked");
   });
-  it("rejects unauthorized and cross-origin admin writes", async () => {
-    const unauthorized = request("unlock", true);
-    unauthorized.headers.delete("authorization");
-    expect((await adminPost(unauthorized)).status).toBe(403);
+  it("opens administration and releases locations without credentials", async () => {
+    expect((await adminGet()).status).toBe(200);
+    expect((await adminPost(request("unlock", true))).status).toBe(200);
+    expect(memory.locations[0].status).toBe("available");
+  });
+  it("rejects cross-origin writes", async () => {
     expect((await adminPost(request("unlock", true, "https://other.example"))).status).toBe(403);
     expect((await POST(request("start", false, "https://other.example"))).status).toBe(403);
   });

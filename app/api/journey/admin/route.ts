@@ -1,13 +1,11 @@
 import { locationStore } from "@/lib/server/locationStore";
 import { publicLocation, transition } from "@/lib/domain/locationGame";
-import { adminAuthorized, json, readCommand, sameOrigin } from "@/lib/server/journeyHttp";
+import { json, readCommand, sameOrigin } from "@/lib/server/journeyHttp";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-export async function GET(request: Request) {
-  if (!adminAuthorized(request))
-    return json({ error: "Ongeldig beheerwachtwoord of beheer nog niet ingesteld." }, 401);
+export async function GET() {
   try {
     const state = await locationStore();
     return json({ locations: state.locations.map(publicLocation) });
@@ -17,8 +15,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  if (!sameOrigin(request) || !adminAuthorized(request))
-    return json({ error: "Geen toegang." }, 403);
+  if (!sameOrigin(request)) return json({ error: "Geen toegang." }, 403);
   try {
     const { id, action } = await readCommand(request);
     if (action !== "unlock") return json({ error: "Ongeldige actie." }, 400);

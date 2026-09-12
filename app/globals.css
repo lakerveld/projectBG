@@ -634,6 +634,32 @@ h3 {
 }
 
 /* One continuous reel decelerates onto the preselected resource. */
+/* Bright, continuously visible hexagon edge with a travelling pink highlight. */
+.location-hex-neon {
+  stroke: #c5ff30;
+  filter: drop-shadow(0 0 3px #c5ff30);
+}
+.location-hex-trail {
+  stroke: #ff39dc;
+  stroke-dasharray: 18 82;
+  filter: drop-shadow(0 0 3px #ff39dc);
+  animation: location-hex-orbit 3s linear infinite;
+}
+.location-hex:focus-visible .location-hex-outline {
+  stroke: #fff;
+  stroke-width: 4px;
+}
+@keyframes location-hex-orbit {
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .location-hex-trail {
+    animation: none;
+  }
+}
+
 @keyframes robber-spin {
   from {
     transform: translateY(0);

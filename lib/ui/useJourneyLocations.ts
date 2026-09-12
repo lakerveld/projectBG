@@ -10,6 +10,7 @@ export function useJourneyLocations() {
   const [busy, setBusy] = useState(false);
   const version = useRef(0);
   const mutating = useRef(false);
+  const reading = useRef(false);
   const mounted = useRef(false);
   const seen = useRef<Set<string> | null>(null);
 
@@ -45,7 +46,8 @@ export function useJourneyLocations() {
   }, []);
 
   const refresh = useCallback(async () => {
-    if (mutating.current) return;
+    if (mutating.current || reading.current) return;
+    reading.current = true;
     const requestVersion = ++version.current;
     try {
       const response = await fetch("/api/journey", {
@@ -58,6 +60,8 @@ export function useJourneyLocations() {
     } catch {
       if (mounted.current && requestVersion === version.current)
         setError("Geen verbinding met de locaties. We proberen het opnieuw.");
+    } finally {
+      reading.current = false;
     }
   }, [accept]);
 
