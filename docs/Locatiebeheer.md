@@ -64,9 +64,11 @@ Een bestaande `JOURNEY_ADMIN_PASSWORD` in `.env.local` wordt niet meer gebruikt 
 
 De resources na dobbelworpen blijven zoals voorheen lokaal op Matthews telefoon.
 Dit onderdeel synchroniseert locaties, quizresultaten en de bijbehorende kaarten.
-Er is bewust geen resetknop die tijdens het spel resultaten kan wissen. Gebruik voor
-een nieuwe productiegame een andere `JOURNEY_GAME_ID`; lokaal kan na stoppen van de
-server het ontwikkelbestand worden verwijderd.
+Via **Alle locaties resetten** op `/beheer` kun je na bevestiging opnieuw beginnen.
+Alle locaties gaan op slot; antwoorden en verdiende quizkaarten worden gewist voor
+iedereen. De actuele quizinhoud wordt opnieuw ingelezen. Dit kan niet ongedaan worden
+gemaakt. Lokale resources en overige kaarten blijven behouden. Iedereen met toegang
+tot `/beheer` kan deze reset uitvoeren.
 
 ## Beheer laadt niet
 

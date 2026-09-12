@@ -2,6 +2,8 @@
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { locationStore } from "./locationStore";
 import { transition } from "@/lib/domain/locationGame";
+import { POST as adminPost } from "@/app/api/journey/admin/route";
+import { POST as journeyPost } from "@/app/api/journey/route";
 
 let saved: string | null;
 beforeEach(() => {
@@ -50,6 +52,49 @@ it("does not write when a transition fails", async () => {
   await expect(locationStore((state) => transition(state.locations[0], "start"))).rejects.toThrow(
     "op slot"
   );
+  expect(saved).toBeNull();
+});
+
+it("resets all locations through admin and persists removal of answers and rewards", async () => {
+  await locationStore((state) => {
+    for (const location of state.locations) {
+      location.status = "completed";
+      location.answer = location.quiz.correct;
+      location.unlockedAt = 123;
+    }
+  });
+  const response = await adminPost(
+    new Request("https://game.example/api/journey/admin", {
+      method: "POST",
+      headers: { origin: "https://game.example" },
+      body: JSON.stringify({ action: "reset" })
+    })
+  );
+  expect(response.status).toBe(200);
+  const view = await response.json();
+  expect(view.locations).toHaveLength(8);
+  for (const location of view.locations) {
+    expect(location.status).toBe("locked");
+    expect(location.result).toBeUndefined();
+  }
+  for (const location of (await locationStore()).locations) {
+    expect(location.status).toBe("locked");
+    expect(location.answer).toBeUndefined();
+    expect(location.unlockedAt).toBeUndefined();
+  }
+  await locationStore((state) => transition(state.locations[0], "unlock"));
+  expect((await locationStore()).locations[0].status).toBe("available");
+});
+
+it("rejects reset from another origin and from the player endpoint", async () => {
+  const request = (origin: string) =>
+    new Request("https://game.example/api/journey/admin", {
+      method: "POST",
+      headers: { origin },
+      body: JSON.stringify({ action: "reset" })
+    });
+  expect((await adminPost(request("https://other.example"))).status).toBe(403);
+  expect((await journeyPost(request("https://game.example"))).status).toBe(400);
   expect(saved).toBeNull();
 });
 

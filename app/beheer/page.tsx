@@ -49,7 +49,7 @@ export default function BeheerPage() {
     };
   }, []);
 
-  async function request(id: string) {
+  async function request(id?: string, action: "unlock" | "reset" = "unlock") {
     if (mutating.current) return;
     mutating.current = true;
     ++version.current;
@@ -60,14 +60,16 @@ export default function BeheerPage() {
       const response = await fetch("/api/journey/admin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, action: "unlock" }),
+        body: JSON.stringify({ id, action }),
         cache: "no-store",
         signal: AbortSignal.timeout(10000)
       });
       const next = await response.json();
       if (!response.ok) throw new Error(next.error);
       setData(next);
-      if (id)
+      if (action === "reset")
+        setMessage("Alle locaties zijn gereset. Je kunt ze opnieuw vrijgeven.");
+      else if (id)
         setMessage(`Locatie ${id} is vrijgegeven. Matthew krijgt een melding in de geopende app.`);
     } catch (error) {
       setError(error instanceof Error ? error.message : "Verbinding mislukt.");
@@ -122,6 +124,30 @@ export default function BeheerPage() {
             </li>
           ))}
         </ul>
+        {data && (
+          <ParchmentCard className="space-y-3 p-5">
+            <h2 className="text-xl font-bold">Opnieuw beginnen</h2>
+            <p>
+              Zet alle locaties weer op slot en wis alle antwoorden en verdiende quizkaarten. Dit
+              geldt voor iedereen en kan niet ongedaan worden gemaakt.
+            </p>
+            <ActionButton
+              variant="ember"
+              fullWidth
+              disabled={busy}
+              onClick={() => {
+                if (
+                  window.confirm(
+                    "Alle locaties resetten? Alle antwoorden en verdiende quizkaarten worden gewist en alle locaties gaan weer op slot. Dit kan niet ongedaan worden gemaakt."
+                  )
+                )
+                  void request(undefined, "reset");
+              }}
+            >
+              Alle locaties resetten
+            </ActionButton>
+          </ParchmentCard>
+        )}
         {error && (
           <p role="alert" className="rounded-xl border border-ember bg-night p-4 text-parchment">
             {error}
