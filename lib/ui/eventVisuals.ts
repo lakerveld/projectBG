@@ -72,7 +72,7 @@ export const TONE_CLASSES: Record<
   { text: string; ring: string; ribbonFrom: string; ribbonTo: string; dot: string }
 > = {
   gold: {
-    text: "text-gold",
+    text: "text-[#596b13]",
     ring: "ring-gold/40",
     ribbonFrom: "from-[#8a5f18]",
     ribbonTo: "to-[#c8942c]",

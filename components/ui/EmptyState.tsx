@@ -20,7 +20,7 @@ export function EmptyState({ icon: Icon, title, description, action, className }
   return (
     <ParchmentCard className={cn("px-6 py-9 text-center", className)}>
       <span
-        className="mx-auto mb-4 grid size-16 place-items-center rounded-full border border-dashed border-parchment-edge bg-[#e6d7b4]/50 text-sepia-muted shadow-carved"
+        className="mx-auto mb-4 grid size-16 place-items-center rounded-full border border-dashed border-parchment-edge bg-[#f6d9ef]/50 text-sepia-muted shadow-carved"
         aria-hidden="true"
       >
         <Icon size={28} strokeWidth={1.8} />

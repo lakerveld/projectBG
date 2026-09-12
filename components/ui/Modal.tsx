@@ -77,7 +77,7 @@ export function Modal({
         tabIndex={-1}
         onClick={(event) => event.stopPropagation()}
         className={cn(
-          "scroll-in parchment-face illuminated relative w-full overflow-hidden rounded-3xl border border-parchment-edge/70 text-sepia shadow-parchment outline-none",
+          "scroll-in parchment-face illuminated relative w-full overflow-hidden rounded-3xl border-2 border-parchment-edge text-sepia shadow-parchment outline-none",
           size === "sm" ? "max-w-sm" : "max-w-md",
           className
         )}
@@ -86,7 +86,7 @@ export function Modal({
           type="button"
           onClick={onClose}
           aria-label="Close"
-          className="absolute right-3 top-3 z-10 grid size-9 place-items-center rounded-full border border-parchment-edge/70 bg-[#e6d7b4]/60 text-sepia-muted transition hover:text-sepia focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+          className="absolute right-3 top-3 z-10 grid size-9 place-items-center rounded-full border-2 border-parchment-edge bg-[#f6d9ef]/60 text-sepia-muted transition hover:text-sepia focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
         >
           <X size={18} aria-hidden="true" />
         </button>
@@ -110,7 +110,7 @@ export function Modal({
         </div>
 
         {footer ? (
-          <div className="flex justify-end gap-2.5 border-t border-parchment-edge/60 bg-[#e6d7b4]/40 px-6 py-4">
+          <div className="flex justify-end gap-2.5 border-t border-parchment-edge bg-[#f6d9ef]/40 px-6 py-4">
             {footer}
           </div>
         ) : null}

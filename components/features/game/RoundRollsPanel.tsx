@@ -30,7 +30,7 @@ export const RoundRollsPanel = memo(function RoundRollsPanel({
           </p>
           <h2 className="mt-1 font-display text-2xl font-bold text-sepia">This round</h2>
         </div>
-        <span className="grid size-11 place-items-center rounded-full border border-parchment-edge/70 bg-[#e6d7b4]/55 text-sepia shadow-carved">
+        <span className="grid size-11 place-items-center rounded-full border-2 border-parchment-edge bg-[#f6d9ef]/55 text-sepia shadow-carved">
           <Dices size={18} strokeWidth={2.2} aria-hidden="true" />
         </span>
       </div>
@@ -40,7 +40,7 @@ export const RoundRollsPanel = memo(function RoundRollsPanel({
           {roundRolls.map((roll) => (
             <li
               key={roll.playerId}
-              className="grid grid-cols-[auto_1fr_auto] items-center gap-2 rounded-xl border border-parchment-edge/50 bg-white/35 px-2.5 py-2"
+              className="grid grid-cols-[auto_1fr_auto] items-center gap-2 rounded-xl border-2 border-parchment-edge/50 bg-white/35 px-2.5 py-2"
             >
               <span
                 className="size-2.5 rounded-full"

@@ -47,10 +47,10 @@ export function DiceRollResult({
         )}
         style={{
           background:
-            "radial-gradient(circle at 36% 28%, #fff6e0, #e7d7b0 55%, #cbb686 100%)"
+            "radial-gradient(circle at 36% 28%, #fffdf2, #f6d9ef 55%, #171722 100%)"
         }}
       >
-        <span className="absolute inset-1.5 rounded-full border border-parchment-edge/70" aria-hidden="true" />
+        <span className="absolute inset-1.5 rounded-full border-2 border-parchment-edge" aria-hidden="true" />
         <span className="font-display text-3xl font-bold leading-none tabular-nums text-sepia">
           {display}
         </span>

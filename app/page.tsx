@@ -8,7 +8,6 @@ import { ActionButton } from "@/components/ui/ActionButton";
 const steps = [
   {
     title: "De legende van Rattan",
-    background: "radial-gradient(ellipse at 50% 20%, #71502c 0%, #241b14 45%, #0d0a06 85%)",
     content: (
       <>
         <p>
@@ -25,7 +24,6 @@ const steps = [
   },
   {
     title: "Matthew, die iemand ben jij.",
-    background: "radial-gradient(ellipse at 65% 25%, #405746 0%, #172720 45%, #0d0a06 85%)",
     content: (
       <>
         <p>Sindsdien wachten de ratten op iemand die Rattan kan herstellen.</p>
@@ -41,7 +39,6 @@ const steps = [
   },
   {
     title: "Jouw reis wordt bepaald door de dobbelsteen",
-    background: "radial-gradient(ellipse at 40% 20%, #544467 0%, #231c30 45%, #0d0a06 85%)",
     content: (
       <>
         <p>
@@ -79,16 +76,6 @@ export default function HomePage() {
 
   return (
     <main className="hall relative isolate min-h-dvh overflow-x-hidden" lang="nl">
-      {/* Replace these temporary gradients with illustration URLs when artwork is ready. */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-cover bg-center"
-        style={{ backgroundImage: current.background }}
-      />
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent via-night-deep/20 to-night-deep"
-      />
       <div className="mx-auto flex min-h-dvh w-full max-w-lg flex-col px-6 pt-[max(1.5rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))] sm:px-8">
         <header className="flex items-center justify-between gap-4">
           <p className="font-display text-xs uppercase tracking-[0.22em] text-parchment/80">
@@ -102,9 +89,11 @@ export default function HomePage() {
           </span>
         </header>
 
-        <div aria-hidden="true" className="min-h-28 flex-1 sm:min-h-44" />
+        <div aria-hidden="true" className="flex flex-1 items-center justify-center py-10">
+          <div className="trippy-orbit" />
+        </div>
 
-        <section aria-labelledby="onboarding-title" className="pt-8">
+        <section aria-labelledby="onboarding-title" className="trippy-story">
           <div className="scroll-in">
             <p className="mb-3 font-display text-xs uppercase tracking-[0.3em] text-gold-bright">
               {["De legende", "Jouw missie", "Het avontuur"][step]}
@@ -133,7 +122,7 @@ export default function HomePage() {
                 className="flex min-h-11 flex-1 items-center rounded focus-visible:outline-2 focus-visible:outline-gold-bright"
               >
                 <span
-                  className={`h-1 w-full rounded-full transition-colors ${index <= step ? "bg-gold-bright" : "bg-parchment/20"}`}
+                  className={`h-1 w-full rounded-full transition-colors ${index <= step ? "bg-gold-bright" : "bg-[#f6d9ef]"}`}
                 />
               </button>
             ))}

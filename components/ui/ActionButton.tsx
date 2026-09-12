@@ -3,7 +3,7 @@ import { Loader2, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/ui/cn";
 
 type ActionButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  /** royal = gilded primary, iron = quiet outline, ember = destructive, ghost = bare. */
+  /** Lime primary, cream secondary, pink destructive, or bare control. */
   variant?: "royal" | "iron" | "ember" | "ghost";
   size?: "sm" | "md" | "lg";
   icon?: LucideIcon;
@@ -13,12 +13,10 @@ type ActionButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 const VARIANTS = {
-  royal:
-    "border-[#8a5f18] bg-gradient-to-b from-gold-bright to-gold text-night-deep shadow-glow hover:shadow-glow-lg hover:brightness-105",
-  iron: "border-parchment-edge/40 bg-white/5 text-parchment hover:bg-white/10 hover:border-parchment-edge/70",
-  ember:
-    "border-[#6f2417] bg-gradient-to-b from-[#c85a41] to-ember text-parchment shadow-seal hover:brightness-105",
-  ghost: "border-transparent bg-transparent text-parchment/80 hover:text-parchment hover:bg-white/5"
+  royal: "trippy-button bg-gold-bright text-night-deep",
+  iron: "trippy-button bg-parchment text-sepia hover:bg-[#f6d9ef]",
+  ember: "trippy-button bg-ember text-white",
+  ghost: "border-transparent bg-transparent text-inherit hover:bg-arcane/15"
 } as const;
 
 const SIZES = {
@@ -29,10 +27,7 @@ const SIZES = {
 
 const ICON_SIZE = { sm: 15, md: 18, lg: 20 } as const;
 
-/**
- * The primary command control. Uses the display face and a carved edge so a tap
- * target feels like pressing an engraved plate rather than a flat web button.
- */
+/** Bold command control with a tactile offset shadow. */
 export function ActionButton({
   variant = "royal",
   size = "md",

@@ -103,13 +103,13 @@ export function CrownSelectionScreen() {
                 The kingdom gathers to choose its new ruler.
               </p>
             </div>
-            <div className="inline-flex items-center gap-2 rounded-2xl border border-gold/35 bg-[#e6d7b4]/55 px-3 py-2 font-body text-sm font-semibold text-sepia shadow-carved">
+            <div className="inline-flex items-center gap-2 rounded-2xl border border-gold/35 bg-[#f6d9ef]/55 px-3 py-2 font-body text-sm font-semibold text-sepia shadow-carved">
               <ShieldAlert size={16} className="text-gold" aria-hidden="true" />
               {isSaving
                 ? "Choosing the next eligible ruler automatically."
                 : "The next King was chosen from players who have not ruled this cycle."}
             </div>
-            <div className="rounded-2xl border border-parchment-edge/60 bg-[#e6d7b4]/45 px-3 py-3 shadow-carved">
+            <div className="rounded-2xl border-2 border-parchment-edge bg-[#f6d9ef]/45 px-3 py-3 shadow-carved">
               <p className="font-display text-[0.62rem] uppercase tracking-[0.24em] text-sepia-muted">
                 Crown Cycle
               </p>
@@ -137,7 +137,7 @@ export function CrownSelectionScreen() {
                 <div className="grid gap-3">
                   <div className="flex items-center gap-3">
                     <span
-                      className="grid size-14 shrink-0 place-items-center overflow-hidden rounded-full border-[3px] bg-[#e6d7b4] font-display text-xl font-bold text-white shadow-carved"
+                      className="grid size-14 shrink-0 place-items-center overflow-hidden rounded-full border-[3px] bg-[#f6d9ef] font-display text-xl font-bold text-white shadow-carved"
                       style={{
                         borderColor: player.color,
                         backgroundColor: avatar ? undefined : player.color
@@ -167,7 +167,7 @@ export function CrownSelectionScreen() {
                           <Crown
                             size={16}
                             className="shrink-0 text-gold"
-                            fill="#c8942c"
+                            fill="#d5fa55"
                             aria-label="King"
                           />
                         ) : null}
@@ -183,7 +183,7 @@ export function CrownSelectionScreen() {
                   </div>
 
                   <div className="grid grid-cols-2 gap-2">
-                    <div className="rounded-xl border border-parchment-edge/60 bg-[#e6d7b4]/45 px-3 py-2 shadow-carved">
+                    <div className="rounded-xl border-2 border-parchment-edge bg-[#f6d9ef]/45 px-3 py-2 shadow-carved">
                       <p className="font-display text-[0.62rem] uppercase tracking-[0.24em] text-sepia-muted">
                         Victory Points
                       </p>
@@ -191,7 +191,7 @@ export function CrownSelectionScreen() {
                         {player.victoryPoints}
                       </p>
                     </div>
-                    <div className="rounded-xl border border-parchment-edge/60 bg-[#e6d7b4]/45 px-3 py-2 shadow-carved">
+                    <div className="rounded-xl border-2 border-parchment-edge bg-[#f6d9ef]/45 px-3 py-2 shadow-carved">
                       <p className="font-display text-[0.62rem] uppercase tracking-[0.24em] text-sepia-muted">
                         Resources
                       </p>

@@ -50,7 +50,7 @@ export const DashboardHeader = memo(function DashboardHeader({
           icon={Settings2}
           aria-label="Settings"
           onClick={onSettings}
-          className="shrink-0 border border-parchment-edge/30 bg-white/5"
+          className="shrink-0 border-2 border-parchment-edge/30 bg-white/5"
         />
       </div>
     </header>

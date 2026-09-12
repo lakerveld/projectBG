@@ -95,8 +95,8 @@ export function KingRandomizer() {
             Crown the King
           </p>
 
-          <div className="flex min-h-16 items-center justify-center gap-2 rounded-xl border border-gold bg-[#e6d7b4]/50 px-3 text-center font-display text-base font-bold text-sepia shadow-carved">
-            <Crown size={20} className="text-gold" fill="#c8942c" aria-hidden="true" />
+          <div className="flex min-h-16 items-center justify-center gap-2 rounded-xl border border-gold bg-[#f6d9ef]/50 px-3 text-center font-display text-base font-bold text-sepia shadow-carved">
+            <Crown size={20} className="text-gold" fill="#d5fa55" aria-hidden="true" />
             {king
               ? `${king.name} is King`
               : selectionPreviewName

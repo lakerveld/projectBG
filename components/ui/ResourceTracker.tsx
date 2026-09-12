@@ -63,7 +63,7 @@ export function ResourceTracker({ resources, title, onAdjust, className }: Resou
           return (
             <li
               key={definition.id}
-              className="grid grid-cols-[1fr_auto] items-center gap-3 rounded-xl border border-parchment-edge/60 bg-[#e6d7b4]/40 p-2.5"
+              className="grid grid-cols-[1fr_auto] items-center gap-3 rounded-xl border-2 border-parchment-edge bg-[#f6d9ef]/40 p-2.5"
             >
               <div className="flex min-w-0 items-center gap-2.5">
                 <span
@@ -133,8 +133,8 @@ function Stepper({
       disabled={disabled}
       onClick={onClick}
       className={cn(
-        "grid min-h-11 place-items-center rounded-lg border border-parchment-edge bg-parchment text-sepia shadow-carved transition",
-        "hover:bg-[#f3ead2] active:scale-95",
+        "grid min-h-11 place-items-center rounded-lg border-2 border-parchment-edge bg-parchment text-sepia shadow-carved transition",
+        "hover:bg-[#fff0fa] active:scale-95",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold",
         "disabled:cursor-not-allowed disabled:opacity-40"
       )}

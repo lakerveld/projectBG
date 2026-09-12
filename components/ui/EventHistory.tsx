@@ -70,7 +70,7 @@ export function EventHistory({ entries, title = "The Chronicle", className }: Ev
             <li key={entry.id} className="relative">
               <span
                 className={cn(
-                  "absolute -left-[1.83rem] grid size-7 place-items-center rounded-full border border-parchment-edge bg-parchment text-sepia shadow-carved",
+                  "absolute -left-[1.83rem] grid size-7 place-items-center rounded-full border-2 border-parchment-edge bg-parchment text-sepia shadow-carved",
                   TONE_CLASSES[style.tone].text
                 )}
                 aria-hidden="true"

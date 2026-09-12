@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { resourceForRoll, readInventory, emptyInventory } from "./journeyRewards";
+import {
+  resourceForRoll,
+  readInventory,
+  emptyInventory,
+  stealRandomResource
+} from "./journeyRewards";
 
 describe("journey rewards", () => {
   it.each([
@@ -7,7 +12,7 @@ describe("journey rewards", () => {
     [4, "Bier"],
     [5, "Salmiak"],
     [6, "Salmiak"],
-    [7, "Poedersuiker"],
+    [7, null],
     [9, "Poedersuiker"],
     [10, "Eten"],
     [12, "Eten"]
@@ -26,5 +31,25 @@ describe("journey rewards", () => {
     );
     expect(readInventory()).toEqual({ ...emptyInventory, Eten: 2 });
     localStorage.clear();
+  });
+});
+
+describe("robber theft", () => {
+  it.each([0, 0.24, 0.5, 0.99])("only steals an owned resource for random value %s", (random) => {
+    const inventory = { ...emptyInventory, Salmiak: 2 };
+    const result = stealRandomResource(inventory, () => random);
+    expect(result).toEqual({ resource: "Salmiak", inventory: { ...emptyInventory, Salmiak: 1 } });
+    expect(inventory.Salmiak).toBe(2);
+  });
+  it("selects among available types", () => {
+    const inventory = { ...emptyInventory, Bier: 3, Eten: 1 };
+    expect(stealRandomResource(inventory, () => 0).resource).toBe("Bier");
+    expect(stealRandomResource(inventory, () => 0.99).resource).toBe("Eten");
+  });
+  it("leaves empty inventory unchanged", () => {
+    expect(stealRandomResource(emptyInventory)).toEqual({
+      resource: null,
+      inventory: emptyInventory
+    });
   });
 });

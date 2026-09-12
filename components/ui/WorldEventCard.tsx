@@ -68,7 +68,7 @@ export function WorldEventCard({ event, round, className }: WorldEventCardProps)
             {event.effectsApplied.map((effect) => (
               <li
                 key={effect}
-                className="flex gap-2.5 rounded-lg border border-parchment-edge/50 bg-[#e6d7b4]/50 px-3 py-2 font-body text-sm leading-5 text-sepia"
+                className="flex gap-2.5 rounded-lg border-2 border-parchment-edge/50 bg-[#f6d9ef]/50 px-3 py-2 font-body text-sm leading-5 text-sepia"
               >
                 <span
                   className={cn("mt-1.5 size-1.5 shrink-0 rotate-45", tone.dot)}
@@ -81,7 +81,7 @@ export function WorldEventCard({ event, round, className }: WorldEventCardProps)
         ) : null}
 
         {/* Footer: severity pips + duration */}
-        <div className="mt-4 flex items-center justify-between border-t border-parchment-edge/60 pt-3">
+        <div className="mt-4 flex items-center justify-between border-t border-parchment-edge pt-3">
           <div className="flex items-center gap-2">
             <span className="font-body text-[0.7rem] uppercase tracking-widest text-sepia-muted">
               {SEVERITY_LABEL[event.severity]}

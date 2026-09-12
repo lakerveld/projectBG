@@ -1,0 +1,4 @@
+Generated with the built-in image_gen tool.
+Asset: public/rewards/struikrover.png
+
+Use case: illustration-story. Create a polished psychedelic comic illustration for the top half of a mobile board-game app: a mischievous MONSTER RAT dressed as a highway robber, black eye mask, ragged purple hooded cloak, striped shirt, clutching a loot sack, huge ears and crooked teeth, playful menace, no gore. Centered waist-up character, fully readable silhouette. Thick black ink contours, flat vibrant lime #d5fa55, hot pink #ff91c4, electric purple, cream and midnight navy colors. Trippy concentric swirls and tiny stars behind the rat, hand-drawn underground comic aesthetic. Square image, edge-to-edge artwork. No lettering, no text, no UI, no watermark.

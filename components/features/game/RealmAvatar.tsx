@@ -54,7 +54,7 @@ export const RealmAvatar = memo(function RealmAvatar({
         ) : null}
         <span
           className={cn(
-            "relative grid size-20 place-items-center overflow-hidden rounded-full border-[3px] bg-[#e6d7b4] text-xl font-bold text-white shadow-parchment transition duration-300",
+            "relative grid size-20 place-items-center overflow-hidden rounded-full border-[3px] bg-[#f6d9ef] text-xl font-bold text-white shadow-parchment transition duration-300",
             "max-sm:size-16",
             turnActive ? "realm-avatar-active" : "shadow-carved"
           )}
@@ -86,7 +86,7 @@ export const RealmAvatar = memo(function RealmAvatar({
           <span className="rounded-full border border-gold/20 bg-night/60 px-2 py-0.5 font-bold text-gold">
             VP {player.victoryPoints}
           </span>
-          <span className="rounded-full border border-parchment-edge/20 bg-night/45 px-2 py-0.5">
+          <span className="rounded-full border-2 border-parchment-edge/20 bg-night/45 px-2 py-0.5">
             {totalResources}
           </span>
         </div>

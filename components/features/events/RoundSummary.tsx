@@ -103,7 +103,7 @@ export function RoundSummary() {
 
         <ParchmentCard className="round-summary-card overflow-hidden p-4 shadow-glow">
           <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
-            <div className="rounded-2xl border border-parchment-edge/60 bg-[#e6d7b4]/45 p-3 text-center shadow-carved">
+            <div className="rounded-2xl border-2 border-parchment-edge bg-[#f6d9ef]/45 p-3 text-center shadow-carved">
               <Sigma className="mx-auto text-sepia-muted" size={18} aria-hidden="true" />
               <p className="mt-1 font-display text-[0.65rem] uppercase tracking-[0.24em] text-sepia-muted">
                 Total
@@ -115,7 +115,7 @@ export function RoundSummary() {
               <Dices size={28} strokeWidth={2.3} aria-hidden="true" />
             </div>
 
-            <div className="rounded-2xl border border-parchment-edge/60 bg-[#e6d7b4]/45 p-3 text-center shadow-carved">
+            <div className="rounded-2xl border-2 border-parchment-edge bg-[#f6d9ef]/45 p-3 text-center shadow-carved">
               <ScrollText className="mx-auto text-sepia-muted" size={18} aria-hidden="true" />
               <p className="mt-1 font-display text-[0.65rem] uppercase tracking-[0.24em] text-sepia-muted">
                 Average
@@ -130,7 +130,7 @@ export function RoundSummary() {
             {rolls.map((roll, index) => (
               <li
                 key={`${roll}-${index}`}
-                className="round-summary-die grid aspect-square place-items-center rounded-xl border border-parchment-edge bg-[#f2e6ca] font-display text-2xl font-bold text-sepia shadow-carved"
+                className="round-summary-die grid aspect-square place-items-center rounded-xl border-2 border-parchment-edge bg-[#fff0fa] font-display text-2xl font-bold text-sepia shadow-carved"
                 style={{ animationDelay: `${index * 120}ms` }}
               >
                 {roll}

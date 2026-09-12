@@ -3,119 +3,140 @@
 
 :root {
   color-scheme: light;
-  background: #f8f5ee;
-  color: #1f2421;
-
-  /* Fantasy type roles (graceful serif fallbacks if webfonts are unavailable) */
-  --font-display: "Cinzel", "Trajan Pro", "Georgia", serif;
-  --font-body: "Spectral", "Iowan Old Style", "Georgia", serif;
+  --font-display: "Space Grotesk", "Arial Black", sans-serif;
+  --font-body: "Space Grotesk", Arial, sans-serif;
+  --trippy-ink: #171722;
+  --trippy-pink: #ff91c4;
+  --trippy-lime: #d5fa55;
 }
-
 * {
   box-sizing: border-box;
 }
-
 html {
   min-height: 100%;
 }
-
 body {
   min-height: 100%;
   margin: 0;
-  background:
-    radial-gradient(circle at top left, rgba(200, 148, 44, 0.16), transparent 34rem),
-    linear-gradient(180deg, #f8f5ee 0%, #f0eadc 100%);
-  color: #1f2421;
-  font-family: Arial, Helvetica, sans-serif;
+  background: #fff0fa;
+  color: var(--trippy-ink);
+  font-family: var(--font-body);
 }
-
 a {
   color: inherit;
   text-decoration: none;
 }
-
 button,
 input,
 select,
 textarea {
   font: inherit;
 }
-
 button {
   touch-action: manipulation;
 }
-
+button:disabled {
+  cursor: not-allowed;
+}
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 3px solid #923cdb;
+  outline-offset: 4px;
+}
+::selection {
+  background: #d5fa55;
+  color: #171722;
+}
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  letter-spacing: -0.04em;
+}
 .app-shell {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
 }
 
-/* ------------------------------------------------------------------ */
-/*  Chronicle: dark-fantasy theme surfaces                            */
-/* ------------------------------------------------------------------ */
-
-/* Candle-lit great hall backdrop. Scope the dark theme to this wrapper
-   so existing light screens are untouched. */
+/* Quiet cosmic canvas keeps the vivid controls readable. */
 .hall {
-  color: #efe4c9;
+  color: #fffdf2;
   font-family: var(--font-body);
-  background-color: #14100a;
-  background-image:
-    radial-gradient(120% 60% at 50% -10%, rgba(200, 148, 44, 0.18), transparent 60%),
-    radial-gradient(90% 50% at 12% 8%, rgba(109, 91, 176, 0.1), transparent 55%),
-    radial-gradient(90% 55% at 88% 4%, rgba(180, 71, 47, 0.08), transparent 55%),
-    linear-gradient(180deg, #1a140c 0%, #14100a 42%, #0d0a06 100%);
-  background-attachment: fixed;
+  background-color: #222c49;
+  background-image: radial-gradient(#fffdf22b 1px, transparent 1px);
+  background-size: 24px 24px;
 }
-
-/* Faint woven-linen tone for parchment faces */
 .parchment-face {
-  background-color: #efe4c9;
-  background-image:
-    radial-gradient(140% 120% at 50% -20%, rgba(255, 251, 238, 0.9), transparent 45%),
-    linear-gradient(180deg, #f3e9d2 0%, #efe4c9 55%, #e6d7b4 100%);
+  background: #fffdf2;
 }
-
-/* Deckled / illuminated top sheen used on primary cards */
-.illuminated::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(
-    160deg,
-    rgba(232, 191, 106, 0.9),
-    rgba(200, 148, 44, 0.25) 30%,
-    rgba(120, 96, 54, 0.15) 65%,
-    rgba(232, 191, 106, 0.5)
-  );
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
+.illuminated {
+  border-top: 6px solid #923cdb;
 }
-
-/* Slow breathing glow for the wax seal / active accents */
+.seal-pulse {
+  animation: seal-pulse 4.5s ease-in-out infinite;
+}
 @keyframes seal-pulse {
   0%,
   100% {
-    box-shadow:
-      0 8px 18px rgba(10, 8, 5, 0.6),
-      0 0 0 rgba(200, 148, 44, 0);
+    box-shadow: 3px 3px 0 #171722;
   }
   50% {
-    box-shadow:
-      0 8px 18px rgba(10, 8, 5, 0.6),
-      0 0 22px rgba(200, 148, 44, 0.45);
+    box-shadow: 5px 5px 0 #171722;
   }
 }
-
-.seal-pulse {
-  animation: seal-pulse 4.5s ease-in-out infinite;
+.trippy-button {
+  border: 2px solid #171722;
+  box-shadow: 4px 4px 0 #171722;
+}
+@media (hover: hover) {
+  .trippy-button:not(:disabled):hover {
+    translate: -1px -1px;
+    box-shadow: 5px 5px 0 #171722;
+  }
+}
+.trippy-button:not(:disabled):active {
+  translate: 3px 3px;
+  box-shadow: 1px 1px 0 #171722;
+}
+.trippy-button:disabled {
+  box-shadow: none;
+}
+.trippy-orbit {
+  width: min(64vw, 19rem);
+  aspect-ratio: 1;
+  border: 3px solid #171722;
+  border-radius: 50%;
+  background: repeating-radial-gradient(
+    ellipse at 40% 45%,
+    #d5fa55 0 18px,
+    #f000eb 19px 36px,
+    #b743ed 37px 42px
+  );
+  box-shadow: 8px 8px 0 #171722;
+  rotate: -12deg;
+}
+.trippy-story {
+  background: #fffdf2;
+  color: #171722;
+  border: 3px solid #171722;
+  border-top: 8px solid #ff91c4;
+  border-radius: 8px;
+  box-shadow: 7px 7px 0 #171722;
+  padding: 1.5rem;
+}
+.trippy-story h1,
+.trippy-story strong {
+  color: #171722;
+}
+.trippy-story p {
+  color: #51455e;
+}
+.trippy-story nav span {
+  border: 1px solid #171722;
+  height: 8px;
+}
+.trippy-story nav button[aria-current="step"] span {
+  background: #923cdb;
 }
 
 @keyframes dice-settle {
@@ -266,17 +287,17 @@ button {
   0% {
     opacity: 0;
     transform: scale(0.96);
-    box-shadow: 0 0 0 rgba(200, 148, 44, 0);
+    box-shadow: 0 0 0 rgba(213, 250, 85, 0);
   }
   60% {
     opacity: 1;
     transform: scale(1.02);
-    box-shadow: 0 0 28px rgba(200, 148, 44, 0.3);
+    box-shadow: 0 0 28px rgba(213, 250, 85, 0.3);
   }
   100% {
     opacity: 1;
     transform: scale(1);
-    box-shadow: 0 0 18px rgba(200, 148, 44, 0.18);
+    box-shadow: 0 0 18px rgba(213, 250, 85, 0.18);
   }
 }
 
@@ -446,7 +467,7 @@ button {
   z-index: 3;
   width: 1.05rem;
   height: 1.05rem;
-  background: #e8bf6a;
+  background: #d5fa55;
   clip-path: polygon(50% 0, 100% 38%, 100% 100%, 0 100%, 0 38%);
   box-shadow:
     inset 0 -3px 0 rgba(95, 57, 22, 0.34),
@@ -497,7 +518,7 @@ button {
   position: absolute;
   inset: 44% 38% 40% 38%;
   border-radius: 9999px;
-  background: radial-gradient(circle, rgba(200, 148, 44, 0.32), transparent 70%);
+  background: radial-gradient(circle, rgba(213, 250, 85, 0.32), transparent 70%);
   filter: blur(12px);
   pointer-events: none;
 }
@@ -508,9 +529,9 @@ button {
 
 .realm-avatar-active {
   box-shadow:
-    0 0 0 2px rgba(200, 148, 44, 0.45),
-    0 0 0 8px rgba(200, 148, 44, 0.16),
-    0 0 26px rgba(200, 148, 44, 0.55);
+    0 0 0 2px rgba(213, 250, 85, 0.45),
+    0 0 0 8px rgba(213, 250, 85, 0.16),
+    0 0 26px rgba(213, 250, 85, 0.55);
   animation: realm-pulse 2.6s ease-in-out infinite;
 }
 
@@ -520,15 +541,15 @@ button {
   top: -1.25rem;
   transform: translateX(-50%);
   border-radius: 9999px;
-  border: 1px solid rgba(200, 148, 44, 0.45);
-  background: rgba(10, 8, 5, 0.86);
+  border: 1px solid rgba(213, 250, 85, 0.45);
+  background: #171722;
   padding: 0.2rem 0.55rem;
   font-family: var(--font-display);
   font-size: 0.62rem;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #e8bf6a;
+  color: #d5fa55;
 }
 
 .realm-particles {
@@ -536,7 +557,7 @@ button {
   inset: -1.4rem;
   border-radius: 9999px;
   background:
-    radial-gradient(circle, rgba(200, 148, 44, 0.9) 0 1px, transparent 2px),
+    radial-gradient(circle, rgba(213, 250, 85, 0.9) 0 1px, transparent 2px),
     radial-gradient(circle, rgba(255, 255, 255, 0.55) 0 1px, transparent 3px);
   background-size:
     14px 14px,
@@ -607,5 +628,24 @@ button {
 @media (prefers-reduced-motion: reduce) {
   .reward-pop {
     animation: none;
+  }
+}
+
+/* One continuous reel decelerates onto the preselected resource. */
+@keyframes robber-spin {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(var(--reel-stop));
+  }
+}
+.robber-reel {
+  animation: robber-spin 3.6s cubic-bezier(0.12, 0.65, 0.15, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .robber-reel {
+    animation: none;
+    transform: translateY(var(--reel-stop));
   }
 }

@@ -32,33 +32,33 @@ const EVENT_ACCENT_BY_CATEGORY: Record<
   }
 > = {
   positive: {
-    border: "border-[#176b4d]/70",
-    buttonBorder: "border-[#176b4d]/80",
-    buttonBackground: "bg-[#0f2f23]/92",
-    buttonText: "text-[#dbf4df]",
-    chipBorder: "border-[#176b4d]/55",
-    chipBackground: "bg-[#10281f]/92",
-    chipText: "text-[#dbf4df]",
+    border: "border-[#a9dec5]/70",
+    buttonBorder: "border-[#a9dec5]/80",
+    buttonBackground: "bg-[#a9dec5]/92",
+    buttonText: "text-[#171722]",
+    chipBorder: "border-[#a9dec5]/55",
+    chipBackground: "bg-[#a9dec5]/92",
+    chipText: "text-[#171722]",
     chipLabel: "Bonus"
   },
   tactical: {
-    border: "border-[#c8942c]/75",
-    buttonBorder: "border-[#c8942c]/85",
-    buttonBackground: "bg-[#2f230d]/94",
-    buttonText: "text-[#ffefcb]",
-    chipBorder: "border-[#c8942c]/55",
-    chipBackground: "bg-[#2d230f]/94",
-    chipText: "text-[#ffefcb]",
+    border: "border-[#d5fa55]/75",
+    buttonBorder: "border-[#d5fa55]/85",
+    buttonBackground: "bg-[#d5fa55]/94",
+    buttonText: "text-[#171722]",
+    chipBorder: "border-[#d5fa55]/55",
+    chipBackground: "bg-[#d5fa55]/94",
+    chipText: "text-[#171722]",
     chipLabel: "Tactical"
   },
   negative: {
-    border: "border-[#b4472f]/75",
-    buttonBorder: "border-[#b4472f]/85",
-    buttonBackground: "bg-[#31130d]/94",
-    buttonText: "text-[#ffe4df]",
-    chipBorder: "border-[#b4472f]/55",
-    chipBackground: "bg-[#2e120d]/94",
-    chipText: "text-[#ffe4df]",
+    border: "border-[#ff91c4]/75",
+    buttonBorder: "border-[#ff91c4]/85",
+    buttonBackground: "bg-[#ff91c4]/94",
+    buttonText: "text-[#171722]",
+    chipBorder: "border-[#ff91c4]/55",
+    chipBackground: "bg-[#ff91c4]/94",
+    chipText: "text-[#171722]",
     chipLabel: "Penalty"
   }
 };

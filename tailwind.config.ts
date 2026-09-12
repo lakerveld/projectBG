@@ -9,47 +9,47 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Original light UI tokens (kept for existing screens)
-        bg: "#f8f5ee",
-        ink: "#1f2421",
-        muted: "#66706a",
-        panel: "#fffdf7",
-        line: "#ded7c8",
-        forest: "#176b4d",
-        gold: "#c8942c",
-        danger: "#b33a3a",
-        info: "#2f6db3",
+        // Trippy brutalism palette; existing token names preserve component APIs.
+        bg: "#fff0fa",
+        ink: "#171722",
+        muted: "#62576d",
+        panel: "#fffdf2",
+        line: "#171722",
+        forest: "#376b50",
+        gold: "#d5fa55",
+        danger: "#ae234b",
+        info: "#3450ac",
 
-        // Dark-fantasy "Chronicle" tokens
-        night: "#14100a",
-        "night-800": "#1d1710",
-        "night-deep": "#0a0805",
-        parchment: "#efe4c9",
-        "parchment-2": "#e6d7b4",
-        "parchment-edge": "#d1ba8c",
-        sepia: "#2a2013",
-        "sepia-muted": "#7c6b4b",
-        ember: "#b4472f",
-        arcane: "#6d5bb0",
-        "gold-bright": "#e8bf6a"
+        // Navy stage, cream cards, pink surfaces and acid-lime accents.
+        night: "#222c49",
+        "night-800": "#303958",
+        "night-deep": "#171722",
+        parchment: "#fffdf2",
+        "parchment-2": "#f6d9ef",
+        "parchment-edge": "#171722",
+        sepia: "#171722",
+        "sepia-muted": "#62576d",
+        ember: "#bc2859",
+        arcane: "#923cdb",
+        "gold-bright": "#d5fa55"
       },
       fontFamily: {
-        display: ["var(--font-display)", "Trajan Pro", "Georgia", "serif"],
-        body: ["var(--font-body)", "Iowan Old Style", "Georgia", "serif"]
+        display: ["var(--font-display)", "Arial Black", "sans-serif"],
+        body: ["var(--font-body)", "Arial", "sans-serif"]
       },
       boxShadow: {
-        soft: "0 10px 30px rgba(31, 36, 33, 0.08)",
-        parchment:
-          "0 18px 38px rgba(8, 6, 3, 0.55), 0 3px 8px rgba(8, 6, 3, 0.45)",
-        seal: "0 8px 18px rgba(10, 8, 5, 0.6)",
-        glow: "0 0 20px rgba(200, 148, 44, 0.35)",
-        "glow-lg": "0 0 36px rgba(200, 148, 44, 0.5)",
-        carved:
-          "inset 0 1px 0 rgba(255, 249, 232, 0.8), inset 0 -3px 8px rgba(120, 96, 54, 0.22)"
+        soft: "4px 4px 0 #171722",
+        parchment: "6px 6px 0 #171722",
+        seal: "3px 3px 0 #171722",
+        glow: "4px 4px 0 #171722",
+        "glow-lg": "6px 6px 0 #171722",
+        carved: "2px 2px 0 #171722"
       },
       borderRadius: {
-        "2xl": "1.1rem",
-        "3xl": "1.6rem"
+        lg: "0.25rem",
+        xl: "0.375rem",
+        "2xl": "0.5rem",
+        "3xl": "0.75rem"
       }
     }
   },

@@ -209,7 +209,7 @@ export default function KitPage() {
           </>
         }
       >
-        <p className="rounded-xl border border-parchment-edge/60 bg-[#e6d7b4]/50 px-3.5 py-3 font-body text-sm leading-6 text-sepia/90">
+        <p className="rounded-xl border-2 border-parchment-edge bg-[#f6d9ef]/50 px-3.5 py-3 font-body text-sm leading-6 text-sepia/90">
           This is body content within the scroll. Any council business — trades, alliances, or
           decrees — can be composed here.
         </p>

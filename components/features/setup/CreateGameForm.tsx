@@ -13,7 +13,7 @@ import { CURATED_PLAYER_COLORS, MAX_PLAYERS, MIN_PLAYERS } from "@/lib/domain/de
 import { useGameStore } from "@/lib/state/gameStore";
 
 const inputClassName =
-  "min-h-12 w-full rounded-xl border border-parchment-edge/70 bg-[#e6d7b4]/50 px-3 font-body text-base font-semibold text-sepia outline-none shadow-carved placeholder:text-sepia-muted/70 focus:border-gold focus:ring-2 focus:ring-gold/30";
+  "min-h-12 w-full rounded-xl border-2 border-parchment-edge bg-[#f6d9ef]/50 px-3 font-body text-base font-semibold text-sepia outline-none shadow-carved placeholder:text-sepia-muted/70 focus:border-gold focus:ring-2 focus:ring-gold/30";
 
 type PlayerDraft = {
   id: string;
@@ -171,7 +171,7 @@ export function CreateGameForm() {
               <div className="grid gap-3">
                 <div className="flex items-center gap-3">
                   <span
-                    className="grid size-16 shrink-0 place-items-center overflow-hidden rounded-full border-[4px] bg-[#e6d7b4] shadow-carved"
+                    className="grid size-16 shrink-0 place-items-center overflow-hidden rounded-full border-[4px] bg-[#f6d9ef] shadow-carved"
                     style={{ borderColor: player.color }}
                     aria-hidden="true"
                   >
@@ -201,7 +201,7 @@ export function CreateGameForm() {
                   {canRemovePlayer ? (
                     <button
                       aria-label={`Remove player ${index + 1}`}
-                      className="grid size-12 shrink-0 place-items-center rounded-full border border-[#6f2417] bg-ember text-parchment shadow-seal transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-bright"
+                      className="grid size-12 shrink-0 place-items-center rounded-full border border-ink bg-ember text-parchment shadow-seal transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-bright"
                       onClick={() => setRemoveCandidateId(player.id)}
                       type="button"
                     >

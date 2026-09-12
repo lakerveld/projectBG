@@ -18,10 +18,10 @@ export function DiceTotalPicker({ totals, selectedTotal, onSelect }: DiceTotalPi
           aria-pressed={selectedTotal === total}
           onClick={() => onSelect(total)}
           className={cn(
-            "grid min-h-16 place-items-center rounded-xl border font-display text-2xl font-bold shadow-carved transition active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-gold",
+            "trippy-button grid min-h-16 place-items-center rounded-xl border font-display text-2xl font-bold shadow-carved transition active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-gold",
             selectedTotal === total
-              ? "border-gold bg-gold text-night-deep"
-              : "border-parchment-edge bg-[#e6d7b4]/50 text-sepia hover:bg-[#f1e1bf]"
+              ? "border-ink bg-gold text-night-deep"
+              : "border-parchment-edge bg-[#f6d9ef]/50 text-sepia hover:bg-[#ff91c4]"
           )}
         >
           {total}

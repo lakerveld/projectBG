@@ -34,7 +34,7 @@ export function PlayerSummary({
   const body = (
     <div className="flex items-center gap-3.5 p-3.5">
       <span
-        className="relative grid size-14 shrink-0 place-items-center overflow-hidden rounded-full border-[3px] bg-[#e6d7b4] font-display text-xl font-bold text-white shadow-carved"
+        className="relative grid size-14 shrink-0 place-items-center overflow-hidden rounded-full border-[3px] bg-[#f6d9ef] font-display text-xl font-bold text-white shadow-carved"
         style={{ borderColor: player.color, backgroundColor: avatar ? undefined : player.color }}
         aria-hidden="true"
       >
@@ -56,7 +56,7 @@ export function PlayerSummary({
         <div className="flex items-center gap-1.5">
           <h3 className="truncate font-display text-lg font-bold text-sepia">{player.name}</h3>
           {isKing ? (
-            <Crown size={16} className="shrink-0 text-gold" fill="#c8942c" aria-label="King" />
+            <Crown size={16} className="shrink-0 text-gold" fill="#d5fa55" aria-label="King" />
           ) : null}
         </div>
         {resources.length > 0 ? (
@@ -64,7 +64,7 @@ export function PlayerSummary({
             {resources.map((resource) => (
               <li
                 key={resource.id}
-                className="inline-flex items-center gap-1 rounded-full border border-parchment-edge/70 bg-[#e6d7b4]/50 px-2 py-0.5 font-body text-xs text-sepia"
+                className="inline-flex items-center gap-1 rounded-full border-2 border-parchment-edge bg-[#f6d9ef]/50 px-2 py-0.5 font-body text-xs text-sepia"
               >
                 <span
                   className="size-2 rounded-full"

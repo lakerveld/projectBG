@@ -47,7 +47,7 @@ export const DicePanel = memo(function DicePanel({
             <p className="font-display text-xs uppercase tracking-[0.28em] text-gold/80">Dice</p>
             <h2 className="mt-1 font-display text-2xl font-bold text-sepia">Round {round}</h2>
           </div>
-          <div className="rounded-full border border-parchment-edge/70 bg-[#e6d7b4]/50 px-3 py-1 text-right">
+          <div className="rounded-full border-2 border-parchment-edge bg-[#f6d9ef]/50 px-3 py-1 text-right">
             <p className="font-display text-[0.65rem] uppercase tracking-[0.28em] text-sepia-muted">
               Progress
             </p>
@@ -57,9 +57,9 @@ export const DicePanel = memo(function DicePanel({
           </div>
         </div>
 
-        <div className="flex items-center gap-3 rounded-2xl border border-parchment-edge/60 bg-[#e6d7b4]/45 p-3 shadow-carved">
+        <div className="flex items-center gap-3 rounded-2xl border-2 border-parchment-edge bg-[#f6d9ef]/45 p-3 shadow-carved">
           <span
-            className="grid size-14 shrink-0 place-items-center overflow-hidden rounded-full border-[3px] bg-[#e6d7b4] font-display text-xl font-bold text-white"
+            className="grid size-14 shrink-0 place-items-center overflow-hidden rounded-full border-[3px] bg-[#f6d9ef] font-display text-xl font-bold text-white"
             style={{
               borderColor: currentPlayer?.color,
               backgroundColor: avatar ? undefined : currentPlayer?.color

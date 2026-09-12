@@ -8,10 +8,12 @@ import { ParchmentCard } from "@/components/ui/ParchmentCard";
 import { ActionButton } from "@/components/ui/ActionButton";
 
 import { DevelopmentQuiz } from "./DevelopmentQuiz";
+import { RobberReveal } from "./RobberReveal";
 import { RewardReveal } from "./RewardReveal";
 import {
   emptyInventory,
   readInventory,
+  stealRandomResource,
   resourceForRoll,
   type RewardResource
 } from "@/lib/domain/journeyRewards";
@@ -35,6 +37,7 @@ export function JourneyMapShell() {
 
   const [inventory, setInventory] = useState(emptyInventory);
   const [reward, setReward] = useState<RewardResource | null>(null);
+  const [robbery, setRobbery] = useState<{ resource: RewardResource | null } | null>(null);
   const [storageError, setStorageError] = useState(false);
   useEffect(() => {
     // Hydrate browser-only storage after the server-rendered initial state.
@@ -43,6 +46,20 @@ export function JourneyMapShell() {
   }, []);
 
   if (showQuiz) return <DevelopmentQuiz onContinue={() => setShowQuiz(false)} />;
+
+  if (robbery !== null) {
+    return (
+      <RobberReveal
+        resource={robbery.resource}
+        inventory={inventory}
+        storageError={storageError}
+        onContinue={() => {
+          setRobbery(null);
+          setShowQuiz(true);
+        }}
+      />
+    );
+  }
 
   if (reward !== null && lastRoll !== null) {
     return (
@@ -90,7 +107,11 @@ export function JourneyMapShell() {
             onClick={() => {
               if (selectedTotal === null) return;
               const resource = resourceForRoll(selectedTotal);
-              const next = { ...inventory, [resource]: inventory[resource] + 1 };
+              const theft = resource === null ? stealRandomResource(inventory) : null;
+              const next = resource
+                ? { ...inventory, [resource]: inventory[resource] + 1 }
+                : theft!.inventory;
+              if (theft) setRobbery({ resource: theft.resource });
               setInventory(next);
               try {
                 localStorage.setItem("rattan-journey-inventory", JSON.stringify(next));
@@ -117,23 +138,23 @@ export function JourneyMapShell() {
       className="mx-auto flex min-h-dvh w-full max-w-lg items-center px-3 py-[max(0.75rem,env(safe-area-inset-top),env(safe-area-inset-bottom))] sm:px-5"
     >
       <h1 className="sr-only">Kaart van Antwerpen</h1>
-      <div className="w-full overflow-hidden rounded-3xl border-2 border-gold/80 bg-night-deep p-1.5 shadow-[0_0_0_1px_#352719,0_16px_60px_#0009,inset_0_0_24px_#c8942c15]">
-        <div className="overflow-hidden rounded-[1.1rem] border border-gold/35">
+      <div className="w-full overflow-hidden rounded-3xl border-2 border-ink bg-arcane p-1.5 shadow-parchment">
+        <div className="overflow-hidden rounded-lg border-2 border-ink">
           <ul
             aria-label="Resources"
-            className="grid grid-cols-4 divide-x divide-gold/20 border-b border-gold/50 bg-gradient-to-b from-[#322718] to-[#17120c] px-2 py-4"
+            className="grid grid-cols-4 divide-x divide-ink border-b-2 border-ink bg-[#ff91c4] px-2 py-4"
           >
             {resources.map(({ name, icon: Icon }) => (
               <li
                 key={name}
                 aria-label={`${name}: ${inventory[name]}`}
                 title={name}
-                className="flex items-center justify-center gap-2 text-gold-bright"
+                className="flex items-center justify-center gap-2 text-ink"
               >
                 <Icon size={22} strokeWidth={1.7} aria-hidden="true" />
                 <span
                   aria-hidden="true"
-                  className="font-display text-xl font-bold tabular-nums text-parchment"
+                  className="font-display text-xl font-bold tabular-nums text-ink"
                 >
                   {inventory[name]}
                 </span>
@@ -149,7 +170,7 @@ export function JourneyMapShell() {
             sizes="(max-width: 512px) 100vw, 460px"
             className="block h-auto w-full"
           />
-          <div className="border-t border-gold/50 bg-gradient-to-b from-[#17120c] to-[#322718] p-4">
+          <div className="border-t-2 border-ink bg-night p-4">
             {storageError && (
               <p role="alert" className="mb-3 text-parchment">
                 Je score is alleen voor deze sessie bewaard. Lokale opslag is niet beschikbaar.

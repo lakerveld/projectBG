@@ -43,7 +43,7 @@ export function GameDashboard() {
         onSettings={() => router.push("/")}
       />
 
-      <div className="relative mx-3 min-h-0 overflow-hidden rounded-[1.5rem] border border-parchment-edge/50 shadow-parchment">
+      <div className="relative mx-3 min-h-0 overflow-hidden rounded-[1.5rem] border-2 border-parchment-edge/50 shadow-parchment">
         <KingdomMap
           players={game.players}
           resources={game.resources}

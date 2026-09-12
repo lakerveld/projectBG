@@ -11,13 +11,11 @@ type ButtonLinkProps = {
 
 export function ButtonLink({ href, icon: Icon, children, variant = "primary" }: ButtonLinkProps) {
   const styles =
-    variant === "primary"
-      ? "border-forest bg-forest text-white"
-      : "border-line bg-panel text-ink";
+    variant === "primary" ? "border-ink bg-gold text-ink" : "border-line bg-panel text-ink";
 
   return (
     <Link
-      className={`inline-flex min-h-14 items-center justify-center gap-3 rounded-lg border px-4 text-base font-bold shadow-soft ${styles}`}
+      className={`trippy-button inline-flex min-h-14 items-center justify-center gap-3 rounded-lg border px-4 text-base font-bold shadow-soft ${styles}`}
       href={href}
     >
       <Icon size={21} aria-hidden="true" />
