@@ -1,13 +1,14 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, ArrowRight, MapPinned } from "lucide-react";
 import { ActionButton } from "@/components/ui/ActionButton";
 
 const steps = [
   {
-    title: "De legende van Rattan",
+    title: "Ketanisten van Rattan",
     content: (
       <>
         <p>
@@ -23,10 +24,12 @@ const steps = [
     )
   },
   {
-    title: "Matthew, die iemand ben jij.",
+    title: "Jouw missie",
+    hideTitle: true,
     content: (
       <>
         <p>Sindsdien wachten de ratten op iemand die Rattan kan herstellen.</p>
+        <p>Matthew, die iemand ben jij.</p>
         <p>
           Verzamel <strong>Bier, Salmiak, Poedersuiker en Eten</strong>. Herstel de handelsroutes.
           Bouw het rijk opnieuw op en volg de sporen door Antwerpen.
@@ -64,9 +67,60 @@ const steps = [
 export default function HomePage() {
   const router = useRouter();
   const [step, setStep] = useState(0);
+  const [introDone, setIntroDone] = useState(false);
+  const [artworkReady, setArtworkReady] = useState(false);
+  const artwork = useRef<HTMLImageElement>(null);
+  const introArtwork = useRef<HTMLDivElement>(null);
   const heading = useRef<HTMLHeadingElement>(null);
   const current = steps[step];
   const isLast = step === steps.length - 1;
+
+  useEffect(() => {
+    if (introDone) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const finish = () => setIntroDone(true);
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let animation: Animation | undefined;
+    const timer = window.setTimeout(() => {
+      if (motion.matches) return finish();
+      if (!artworkReady || !artwork.current || !introArtwork.current) return;
+      const rect = artwork.current.getBoundingClientRect();
+      if (!introArtwork.current.animate) return finish();
+      animation = introArtwork.current.animate(
+        [
+          {
+            top: "0px",
+            left: "0px",
+            width: "100%",
+            height: "100%",
+            borderRadius: "0px",
+            borderWidth: "0px"
+          },
+          {
+            top: `${rect.top}px`,
+            left: `${rect.left}px`,
+            width: `${rect.width}px`,
+            height: `${rect.height}px`,
+            borderRadius: "6px",
+            borderWidth: "2px"
+          }
+        ],
+        { duration: 1000, delay: 1100, easing: "cubic-bezier(0.65, 0, 0.2, 1)", fill: "both" }
+      );
+      animation.onfinish = finish;
+    }, 0);
+    // A viewport change invalidates the measured destination: reveal the responsive layout.
+    window.addEventListener("resize", finish);
+    motion.addEventListener("change", finish);
+    return () => {
+      window.clearTimeout(timer);
+      animation?.cancel();
+      window.removeEventListener("resize", finish);
+      motion.removeEventListener("change", finish);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [artworkReady, introDone]);
 
   function goToStep(index: number) {
     setStep(index);
@@ -75,9 +129,31 @@ export default function HomePage() {
   }
 
   return (
-    <main className="hall relative isolate min-h-dvh overflow-x-hidden" lang="nl">
+    <main
+      className={`hall onboarding relative isolate min-h-dvh overflow-x-hidden ${introDone ? "onboarding-ready" : "onboarding-intro"}`}
+      lang="nl"
+    >
+      {!introDone && (
+        <div className="fixed inset-0 z-50" aria-hidden="true">
+          <div ref={introArtwork} className="absolute inset-0 overflow-hidden border-ink bg-night">
+            <Image
+              src="/onboarding/matthew-trippy.png"
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
+              onLoad={() => setArtworkReady(true)}
+              onError={() => setIntroDone(true)}
+            />
+          </div>
+        </div>
+      )}
       <div className="mx-auto flex min-h-dvh w-full max-w-lg flex-col px-6 pt-[max(1.5rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))] sm:px-8">
-        <header className="flex items-center justify-between gap-4">
+        <header
+          className="onboarding-copy flex items-center justify-between gap-4"
+          inert={!introDone}
+        >
           <p className="font-display text-xs uppercase tracking-[0.22em] text-parchment/80">
             Ketanisten van Rattan
           </p>
@@ -89,11 +165,24 @@ export default function HomePage() {
           </span>
         </header>
 
-        <div aria-hidden="true" className="flex flex-1 items-center justify-center py-10">
-          <div className="trippy-orbit" />
+        <div className="flex flex-1 items-center justify-center py-6">
+          <Image
+            ref={artwork}
+            src="/onboarding/matthew-trippy.png"
+            alt="Psychedelische illustratie van Matthew met een rat op zijn schouder, een Salmari-fles en het bord ‘Matthew is cooked tonight!’"
+            width={1086}
+            height={1448}
+            priority
+            sizes="(max-width: 512px) 80vw, 360px"
+            className={`block h-auto max-h-[48svh] w-auto max-w-full rounded-xl border-2 border-ink object-contain shadow-parchment ${introDone ? "" : "invisible"}`}
+          />
         </div>
 
-        <section aria-labelledby="onboarding-title" className="trippy-story">
+        <section
+          aria-labelledby="onboarding-title"
+          className="onboarding-copy trippy-story"
+          inert={!introDone}
+        >
           <div className="scroll-in">
             <p className="mb-3 font-display text-xs uppercase tracking-[0.3em] text-gold-bright">
               {["De legende", "Jouw missie", "Het avontuur"][step]}
@@ -102,11 +191,17 @@ export default function HomePage() {
               id="onboarding-title"
               ref={heading}
               tabIndex={-1}
-              className="font-display text-3xl font-bold leading-tight text-parchment outline-none sm:text-4xl"
+              className={
+                current.hideTitle
+                  ? "sr-only"
+                  : "font-display text-3xl font-bold leading-tight text-parchment outline-none sm:text-4xl"
+              }
             >
               {current.title}
             </h1>
-            <div className="mt-5 space-y-4 font-body text-base leading-relaxed text-parchment/80 [&_strong]:font-semibold [&_strong]:text-parchment">
+            <div
+              className={`${current.hideTitle ? "" : "mt-5"} space-y-4 font-body text-base leading-relaxed text-parchment/80 [&_strong]:font-semibold [&_strong]:text-parchment`}
+            >
               {current.content}
             </div>
           </div>

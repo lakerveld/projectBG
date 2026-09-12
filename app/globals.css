@@ -649,3 +649,27 @@ h3 {
     transform: translateY(var(--reel-stop));
   }
 }
+
+/* Keep the final layout measurable while the fullscreen artwork takes the stage. */
+.onboarding-intro .onboarding-copy {
+  visibility: hidden;
+  opacity: 0;
+}
+@keyframes onboarding-copy-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.onboarding-ready .onboarding-copy {
+  animation: onboarding-copy-in 500ms ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .onboarding-ready .onboarding-copy {
+    animation: none;
+  }
+}
