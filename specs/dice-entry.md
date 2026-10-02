@@ -50,6 +50,6 @@ See [Feature 1 Plan](../docs/Feature1Plan.md) and [Dice System](../docs/DiceSyst
 
 ## Current prototype reward flow
 
-After confirming a roll, show a dedicated illustrated reward screen. The temporary table approved for the prototype awards one resource: 2–4 Bier, 5–6 Salmiak, 7–9 Poedersuiker, 10–12 Eten. Total score is the sum of all four resource quantities. Animate the increase and display the updated inventory before returning to the map. Respect reduced-motion preferences.
+After confirming a roll, show a dedicated illustrated reward screen. The two-dice table awards one resource: 2, 4, 12 Salmiak; 3, 5, 10, 11 Sneeuw; 6, 8, 9 Pils. A 7 triggers the robber instead and awards no resource. Total score is the sum of all three resource quantities. Animate the increase and display the updated inventory before returning to the map. Respect reduced-motion preferences.
 
 The inventory persists in browser localStorage under `rattan-journey-inventory`. This prototype does not yet gate rolls by location or attach them to journey history; those remain future integration work.

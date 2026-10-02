@@ -27,7 +27,7 @@ describe("development card collection", () => {
     localStorage.setItem(DEVELOPMENT_CARDS_KEY, JSON.stringify(["bierpaleis"]));
     render(<DevelopmentCardsPage />);
     expect(
-      screen.getByRole("heading", { name: "Ruil 1 bier voor 1 poedersuiker" })
+      screen.getByRole("heading", { name: "Ruil 1 pils voor 1 sneeuw" })
     ).toBeInTheDocument();
     expect(screen.getByText("Het Bierpaleis")).toBeInTheDocument();
   });

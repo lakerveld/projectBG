@@ -9,6 +9,37 @@ voor de overige locaties; de beheerpagina laat vrijgeven pas toe als alles compl
 Houd iedere waarde op één regel. Publiceer een nieuwe deployment na een wijziging.
 Lokaal leest de server wijzigingen meteen. Reeds vrijgegeven quizzen blijven gelijk.
 
+## Quizzen bewerken in locatiebeheer
+
+Open `/beheer` en kies **Quiz bewerken** bij een van de zes locaties. Bewerk naam,
+tijd, verhaal, vraag, de vier antwoorden, het correcte antwoord en de beloning.
+Met **Quiz opslaan** bewaar je de inhoud direct op de server; een deployment is niet nodig.
+Onvolledige quizzen mogen als concept worden opgeslagen, maar kunnen nog niet worden vrijgegeven.
+
+Opslaan zet alleen de bewerkte locatie weer op slot en wist het eventuele antwoord
+met de bijbehorende quizkaart. Bij een vrijgegeven locatie vraagt het formulier hiervoor bevestiging.
+Bewerkingen via beheer krijgen voorrang op het Markdown-bestand en blijven behouden
+bij **Alle locaties resetten**. Markdown blijft de bron voor locaties die nog niet via beheer zijn bewerkt.
+
+## Route met zes locaties
+
+1. Café Rood/Wit — 12:30
+2. Brouwerij De Koninck — 13:30 / 13:45–14:45
+3. Only Cheese — 15:00–15:15
+4. Den Botaniek — 16:30
+5. Skins — 17:00
+6. Petanque bij Escape Room Café — 18:30–19:30
+
+`Tijd` en `Verhaal` staan per locatie in het inhoudsbestand. De eerste quiz is
+gebaseerd op de aanwijzing naar De Koninck; de overige vijf quizzen moeten nog worden ingevuld.
+De verhaalopdrachten en artefacten zijn begeleiding voor het fysieke spel, geen nieuwe automatische mechanics.
+De bestaande drie resources en dobbelverdeling blijven gelden.
+
+Deze route gebruikt een eigen Redis-sleutel met suffix `:six-locations` en lokaal
+`state-six-locations.json`. Daardoor starten alle zes locaties op slot zonder oude
+antwoorden aan nieuwe locaties te koppelen. De oude routeopslag blijft bewaard.
+Lokale resourcevoorraden blijven behouden.
+
 ## Lokaal starten
 
 1. Start `npm run dev` en open `/beheer`. Er is geen wachtwoord nodig.
@@ -16,7 +47,7 @@ Lokaal leest de server wijzigingen meteen. Reeds vrijgegeven quizzen blijven gel
 3. Binnen ongeveer vijf seconden verschijnt de ontgrendelmelding. Klik op hexagon 1,
    kies **Activeren**, beantwoord de vraag en bekijk de verdiende kaart.
 
-Zonder Redis gebruikt de ontwikkelserver `.journey-data/state.json`. Dit bestand
+Zonder Redis gebruikt de ontwikkelserver `.journey-data/state-six-locations.json`. Dit bestand
 staat buiten Git en overleeft het herstarten. Deze fallback is alleen voor één lokale
 Next-server; productie weigert verzoeken als de gedeelde opslag ontbreekt.
 
@@ -53,7 +84,7 @@ Een bestaande `JOURNEY_ADMIN_PASSWORD` in `.env.local` wordt niet meer gebruikt 
 - Antwoorden en beloningen worden op de server gecontroleerd en opgeslagen.
   Een herhaald verzoek geeft hetzelfde resultaat en kan geen extra kaart verdienen.
 - De verzameling ontwikkelingskaarten toont deze serverkaarten plus bestaande lokale
-  kaarten; de oude Bierpaleis-kaart wordt niet dubbel getoond.
+  kaarten; de oude Bierpaleis-kaart staat los van de nieuwe route.
 - Dobbelworpen en de struikrover keren terug naar de kaart. Quizzen starten via locaties.
 - De geopende app ververst iedere vijf seconden en bij terugkeer naar het tabblad of
   herstel van de verbinding. Nieuwe unlocks geven een melding en, indien ondersteund,
@@ -61,6 +92,26 @@ Een bestaande `JOURNEY_ADMIN_PASSWORD` in `.env.local` wordt niet meer gebruikt 
 - Bij verbindingsverlies blijven bekende statussen zichtbaar, maar activeren en een
   antwoord bevestigen vereisen een geslaagde serveropslag. Een melding geeft aan dat
   de verbinding weg is; verzoeken kunnen veilig opnieuw worden geprobeerd.
+
+Het spel gebruikt maximaal drie resources: **Pils**, **Salmiak** en **Sneeuw**.
+De verdeling bij twee dobbelstenen is:
+
+| Getal | Stippen    | Combinaties (uit 36) | Kans   | Resource / actie           |
+| ----- | ---------- | -------------------- | ------ | -------------------------- |
+| 2     | 1          | 1                    | 2,78%  | Salmiak                    |
+| 3     | 2          | 2                    | 5,56%  | Sneeuw                     |
+| 4     | 3          | 3                    | 8,33%  | Salmiak                    |
+| 5     | 4          | 4                    | 11,11% | Sneeuw                     |
+| 6     | 5 (rood)   | 5                    | 13,89% | Pils                       |
+| 7     | Geen fiche | 6                    | 16,67% | Struikrover, geen resource |
+| 8     | 5 (rood)   | 5                    | 13,89% | Pils                       |
+| 9     | 4          | 4                    | 11,11% | Pils                       |
+| 10    | 3          | 3                    | 8,33%  | Sneeuw                     |
+| 11    | 2          | 2                    | 5,56%  | Sneeuw                     |
+| 12    | 1          | 1                    | 2,78%  | Salmiak                    |
+
+Een 7 activeert de struikrover. Bestaande lokale voorraden Bier/Gerst en Poedersuiker/Sneeuwvlokje worden
+gelezen als Pils en Sneeuw; de vervallen resource Eten telt niet meer mee.
 
 De resources na dobbelworpen blijven zoals voorheen lokaal op Matthews telefoon.
 Dit onderdeel synchroniseert locaties, quizresultaten en de bijbehorende kaarten.

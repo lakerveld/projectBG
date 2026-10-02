@@ -28,7 +28,7 @@ async function hydrate(raw: string | null): Promise<State> {
       };
   // Once released, keep the question and reward stable across content deployments.
   state.locations.forEach((location, index) => {
-    if (location.status === "locked") location.quiz = content[index];
+    if (location.status === "locked" && !location.contentOverride) location.quiz = content[index];
   });
   return state;
 }
@@ -42,7 +42,7 @@ export async function locationStore(mutate?: (state: State) => void): Promise<St
   const hasRedis = Boolean(url && token);
   if (hasRedis) {
     const redis = redisClient();
-    const key = `rattan:journey:${process.env.JOURNEY_GAME_ID || "matthew"}`;
+    const key = `rattan:journey:${process.env.JOURNEY_GAME_ID || "matthew"}:six-locations`;
     for (let attempt = 0; attempt < 5; attempt++) {
       const raw = await redis.get<string | null>(key);
       const state = await hydrate(raw);
@@ -61,7 +61,7 @@ export async function locationStore(mutate?: (state: State) => void): Promise<St
     throw new Error("De gedeelde opslag is nog niet ingesteld.");
   // One local Next server; a durable file and process-wide queue for development.
   const operation = async () => {
-    const file = path.join(process.cwd(), ".journey-data", "state.json");
+    const file = path.join(process.cwd(), ".journey-data", "state-six-locations.json");
     let raw: string | null = null;
     try {
       raw = await readFile(file, "utf8");

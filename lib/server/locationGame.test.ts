@@ -11,11 +11,20 @@ import {
 describe("location content and transitions", () => {
   afterEach(() => vi.unstubAllEnvs());
 
-  it("loads all eight real map locations and only enables the completed quiz", async () => {
+  it("loads all six real map locations and only enables the completed quiz", async () => {
     const quizzes = await loadLocationContent();
-    expect(quizzes).toHaveLength(8);
-    expect(quizzes[0].name).toBe("Het Bierpaleis");
-    expect(quizzes.map(quizReady)).toEqual([true, false, false, false, false, false, false, false]);
+    expect(quizzes).toHaveLength(6);
+    expect(quizzes.map((quiz) => quiz.name)).toEqual([
+      "Café Rood/Wit",
+      "Brouwerij De Koninck",
+      "Only Cheese",
+      "Den Botaniek",
+      "Skins",
+      "Petanque bij Escape Room Café"
+    ]);
+    expect(quizzes[0].time).toBe("12:30");
+    expect(quizzes[0].story).toContain("De Verloren Handelsroute");
+    expect(quizzes.map(quizReady)).toEqual([true, false, false, false, false, false]);
     expect(quizzes[1].question).toBe("");
     expect(quizzes[1].correct).toBe(-1);
     expect(() => parseLocationContent("## 1 | Incomplete")).toThrow("Locatie 2 ontbreekt");

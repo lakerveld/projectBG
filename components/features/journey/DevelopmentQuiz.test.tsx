@@ -9,7 +9,7 @@ describe("DevelopmentQuiz", () => {
     render(<DevelopmentQuiz onContinue={onContinue} />);
     expect(screen.getAllByRole("radio")).toHaveLength(4);
     expect(
-      screen.getByRole("heading", { name: "Ruil 1 bier voor 1 poedersuiker" })
+      screen.getByRole("heading", { name: "Ruil 1 pils voor 1 sneeuw" })
     ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Bevestig antwoord" })).toBeDisabled();
     expect(screen.queryByRole("status")).not.toBeInTheDocument();
@@ -25,7 +25,7 @@ describe("DevelopmentQuiz", () => {
       "/development-cards"
     );
     for (const option of screen.getAllByRole("radio")) expect(option).toBeDisabled();
-    fireEvent.click(screen.getByRole("button", { name: "Verder naar de kaart" }));
+    fireEvent.click(screen.getByRole("button", { name: "Naar de map" }));
     expect(onContinue).toHaveBeenCalledOnce();
   });
   it.each(["B", "C", "D"])("shows the correct answer after an incorrect %s", (letter) => {

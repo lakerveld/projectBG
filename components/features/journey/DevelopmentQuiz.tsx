@@ -104,7 +104,7 @@ export function DevelopmentQuiz({ onContinue }: { onContinue: () => void }) {
                 </p>
                 <p className="mt-2">
                   {correct
-                    ? "Je hebt de ontwikkelingskaart verdiend: ruil 1 bier voor 1 poedersuiker."
+                    ? "Je hebt de ontwikkelingskaart verdiend: ruil 1 pils voor 1 sneeuw."
                     : "Het juiste antwoord is A: Prik & Tik, uw drankenspecialist."}
                 </p>
                 {correct && (
@@ -127,7 +127,7 @@ export function DevelopmentQuiz({ onContinue }: { onContinue: () => void }) {
                 </p>
               )}
               <ActionButton fullWidth size="lg" onClick={onContinue}>
-                Verder naar de kaart
+                Naar de map
               </ActionButton>
             </div>
           ) : (

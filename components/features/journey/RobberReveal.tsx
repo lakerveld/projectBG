@@ -2,9 +2,9 @@
 
 import { useEffect, useState, type CSSProperties } from "react";
 import Image from "next/image";
-import { Beer, Utensils } from "lucide-react";
-import { PowderedSugarIcon } from "@/components/ui/PowderedSugarIcon";
-import { ShotGlassIcon } from "@/components/ui/ShotGlassIcon";
+import { Wheat, Snowflake, TestTube, Dice5, ShieldAlert, ArrowRight } from "lucide-react";
+import { ResourceInventory } from "./ResourceInventory";
+import styles from "./ResourceReveal.module.css";
 import { ActionButton } from "@/components/ui/ActionButton";
 import {
   rewardResources,
@@ -12,12 +12,11 @@ import {
   type RewardResource
 } from "@/lib/domain/journeyRewards";
 
-const icons = { Bier: Beer, Salmiak: ShotGlassIcon, Poedersuiker: PowderedSugarIcon, Eten: Utensils };
+const icons = { Gerst: Wheat, Salmari: TestTube, Sneeuw: Snowflake };
 const colors = {
-  Bier: "bg-gold",
-  Salmiak: "bg-[#c681f5]",
-  Poedersuiker: "bg-[#ff91c4]",
-  Eten: "bg-[#a9dec5]"
+  Gerst: "bg-gold",
+  Salmari: "bg-[#c681f5]",
+  Sneeuw: "bg-[#ff91c4]"
 };
 const SPIN_MS = 3600;
 
@@ -44,116 +43,112 @@ export function RobberReveal({
   }, []);
 
   // The outcome is committed by the roll handler, never by animation events or effects.
-  const stop = 32 + (resource ? rewardResources.indexOf(resource) : 0);
-  const reel = Array.from({ length: stop + 2 }, (_, index) => rewardResources[index % 4]);
+  const stop = rewardResources.length * 11 + (resource ? rewardResources.indexOf(resource) : 0);
+  const reel = Array.from(
+    { length: stop + 2 },
+    (_, index) => rewardResources[index % rewardResources.length]
+  );
   return (
     <section
       lang="nl"
-      className="mx-auto flex min-h-dvh w-full max-w-lg flex-col justify-center px-4 py-6"
+      className={styles.scene}
+      style={{ "--reward-accent": "#ff91c4" } as CSSProperties}
     >
-      <div className="overflow-hidden rounded-3xl border-2 border-ink bg-parchment text-ink shadow-parchment">
-        <div className="relative aspect-[6/5] border-b-2 border-ink">
-          <Image
-            src="/rewards/struikrover.png"
-            alt="Monsterrat in een paarse roversmantel, met zwart oogmasker en een zak buit"
-            fill
-            priority
-            sizes="(max-width: 512px) 100vw, 480px"
-            className="object-cover object-top"
-          />
-          <span className="absolute left-4 top-4 rotate-[-4deg] rounded-sm border-2 border-ink bg-gold px-3 py-2 font-bold shadow-seal">
-            7 OGEN — PECH!
-          </span>
-        </div>
-        <div className="space-y-4 p-5 text-center">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-widest text-ember">
-              Je bent overvallen
+      <Image
+        src="/rewards/struikrover.png"
+        alt="Monsterrat in een paarse roversmantel, met zwart oogmasker en een zak buit"
+        fill
+        priority
+        sizes="(max-width: 640px) 100vw, 640px"
+        className={styles.art}
+      />
+      <div className={styles.shade} aria-hidden="true" />
+      <header className={styles.header}>
+        <span className={styles.badge}>
+          <Dice5 size={18} aria-hidden="true" />7 OGEN — PECH!
+        </span>
+        <span className={styles.badge}>
+          <ShieldAlert size={18} aria-hidden="true" />
+          OVERVAL
+        </span>
+      </header>
+      <div className={styles.spacer} aria-hidden="true" />
+      <div className={styles.content}>
+        <p className={styles.eyebrow}>Je bent overvallen</p>
+        <h1
+          ref={focusHeading}
+          tabIndex={-1}
+          className={`font-display ${styles.title}`}
+          style={{ fontSize: "clamp(2rem, 9vw, 3.5rem)" }}
+        >
+          De struikrover!
+        </h1>
+        {resource && (
+          <div className={styles.reel} aria-hidden="true">
+            <p className="bg-[#100b24] py-2 text-xs font-bold uppercase tracking-widest text-parchment">
+              {settled ? "Dit is de buit" : "Wat pikt de rover?"}
             </p>
-            <h1
-              ref={focusHeading}
-              tabIndex={-1}
-              className="mt-1 font-display text-3xl font-bold outline-none"
-            >
-              De struikrover!
-            </h1>
-            <p className="mt-2 text-sm text-sepia-muted">
-              Matthew, één van ons pikt een resource uit je voorraad.
-            </p>
-          </div>
-          {resource && (
-            <div
-              className="rounded-xl border-2 border-ink bg-arcane p-3 shadow-seal"
-              aria-hidden="true"
-            >
-              <p className="mb-2 text-xs font-bold uppercase tracking-widest text-white">
-                {settled ? "Dit is de buit" : "Wat pikt de rover?"}
-              </p>
-              <div className="relative h-24 overflow-hidden rounded-lg border-2 border-ink bg-panel">
-                <div
-                  className="robber-reel"
-                  style={{ "--reel-stop": `-${stop * 6}rem` } as CSSProperties}
-                >
-                  {reel.map((name, index) => {
-                    const Icon = icons[name];
-                    return (
-                      <div
-                        key={index}
-                        className={`flex h-24 items-center justify-center gap-3 ${colors[name]}`}
-                      >
-                        <Icon size={32} strokeWidth={2.5} />
-                        <span className="text-xl font-bold">{name}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-                <span className="absolute left-1 top-1/2 -translate-y-1/2 text-xl">▸</span>
-                <span className="absolute right-1 top-1/2 -translate-y-1/2 text-xl">◂</span>
+            <div className="relative h-24 overflow-hidden bg-panel">
+              <div
+                className="robber-reel"
+                style={{ "--reel-stop": `-${stop * 6}rem` } as CSSProperties}
+              >
+                {reel.map((name, index) => {
+                  const Icon = icons[name];
+                  return (
+                    <div
+                      key={index}
+                      className={`flex h-24 items-center justify-center gap-3 ${colors[name]}`}
+                    >
+                      <Icon size={32} strokeWidth={2.5} />
+                      <span className="text-xl font-bold">{name}</span>
+                    </div>
+                  );
+                })}
               </div>
+              <span className="absolute left-1 top-1/2 -translate-y-1/2 text-xl">▸</span>
+              <span className="absolute right-1 top-1/2 -translate-y-1/2 text-xl">◂</span>
             </div>
-          )}
-          <div role="status" aria-live="polite" aria-atomic="true" className="min-h-16">
-            {!settled ? (
-              <p className="py-3 font-bold">De automaat draait…</p>
-            ) : resource ? (
-              <>
-                <p className="reward-pop text-3xl font-bold text-ember">−1 {resource}</p>
-                <p className="mt-1 text-sm">
-                  Geef 1 {resource.toLowerCase()} aan de rover. Je hebt er nog {inventory[resource]}
-                  .
-                </p>
-              </>
-            ) : (
-              <>
-                <p className="text-xl font-bold">Niets te halen!</p>
-                <p className="mt-1 text-sm">
-                  Je voorraad is leeg. De rover vertrekt met lege handen.
-                </p>
-              </>
-            )}
           </div>
-          {settled && (
-            <ul aria-label="Nieuwe voorraad" className="grid grid-cols-2 gap-2">
-              {rewardResources.map((name) => (
-                <li
-                  key={name}
-                  className={`rounded-lg border-2 border-ink p-2 text-sm ${name === resource ? "bg-[#ff91c4] font-bold" : "bg-panel"}`}
-                >
-                  {name}: {inventory[name]}
-                  {name === resource && " (−1)"}
-                </li>
-              ))}
-            </ul>
+        )}
+        <div role="status" aria-live="polite" aria-atomic="true" className="min-h-16">
+          {!settled ? (
+            <p className="py-3 font-bold">De automaat draait…</p>
+          ) : resource ? (
+            <>
+              <p className="reward-pop text-3xl font-bold text-[#ff91c4]">−1 {resource}</p>
+              <p className="mt-1 text-sm">
+                Geef 1 {resource.toLowerCase()} aan de rover. Je hebt er nog {inventory[resource]}.
+              </p>
+            </>
+          ) : (
+            <>
+              <p className="text-xl font-bold">Niets te halen!</p>
+              <p className="mt-1 text-sm">
+                Je voorraad is leeg. De rover vertrekt met lege handen.
+              </p>
+            </>
           )}
-          {storageError && (
-            <p role="alert" className="text-sm text-ember">
-              Je voorraad is alleen voor deze sessie aangepast. Lokale opslag is niet beschikbaar.
-            </p>
-          )}
-          <ActionButton fullWidth size="lg" disabled={!settled} onClick={onContinue}>
-            Verder naar de kaart
-          </ActionButton>
         </div>
+        {settled && <ResourceInventory inventory={inventory} resource={resource} delta="−1" />}
+        {storageError && (
+          <p
+            role="alert"
+            className="mb-4 rounded-xl border border-[#ff91c4]/40 bg-[#100b24]/90 p-3 text-sm text-[#ffb9d9]"
+          >
+            Je voorraad is alleen voor deze sessie aangepast. Lokale opslag is niet beschikbaar.
+          </p>
+        )}
+        <ActionButton
+          className="mt-3"
+          fullWidth
+          size="lg"
+          iconRight={ArrowRight}
+          disabled={!settled}
+          onClick={onContinue}
+        >
+          Naar de map
+        </ActionButton>
       </div>
     </section>
   );

@@ -72,7 +72,7 @@ it("resets all locations through admin and persists removal of answers and rewar
   );
   expect(response.status).toBe(200);
   const view = await response.json();
-  expect(view.locations).toHaveLength(8);
+  expect(view.locations).toHaveLength(6);
   for (const location of view.locations) {
     expect(location.status).toBe("locked");
     expect(location.result).toBeUndefined();
@@ -127,4 +127,35 @@ it("uses Vercel KV credentials for shared storage in production", async () => {
 it("reports unavailable Redis instead of using a divergent local game", async () => {
   vi.mocked(fetch).mockRejectedValue(new Error("offline"));
   await expect(locationStore()).rejects.toThrow("offline");
+});
+
+it("saves admin quiz edits, preserves them across reads and resets, and hides correct answers", async () => {
+  const original = (await locationStore()).locations[0].quiz;
+  const content = { ...original, name: "Nieuwe locatie", question: "Nieuwe vraag?", correct: 2 };
+  const save = (value: unknown) => adminPost(new Request("https://game.example/api/journey/admin", {
+    method: "POST", headers: { origin: "https://game.example" },
+    body: JSON.stringify({ id: "2", action: "save", content: value })
+  }));
+  expect((await save(content)).status).toBe(200);
+  expect((await locationStore()).locations[1].quiz).toEqual(content);
+  await locationStore((state) => {
+    transition(state.locations[1], "unlock");
+    transition(state.locations[1], "start");
+    transition(state.locations[1], "answer", 2);
+  });
+  expect((await save(content)).status).toBe(200);
+  const edited = (await locationStore()).locations[1];
+  expect(edited.status).toBe("locked");
+  expect(edited.answer).toBeUndefined();
+  expect(edited.unlockedAt).toBeUndefined();
+  await adminPost(new Request("https://game.example/api/journey/admin", {
+    method: "POST", headers: { origin: "https://game.example" }, body: JSON.stringify({ action: "reset" })
+  }));
+  expect((await locationStore()).locations[1].quiz).toEqual(content);
+  const { GET } = await import("@/app/api/journey/route");
+  const player = await (await GET()).json();
+  expect(player.locations[1].content).toBeUndefined();
+  expect(player.locations[1].quiz).toBeUndefined();
+  expect((await save({ ...content, correct: 8 })).status).toBe(409);
+  expect((await locationStore()).locations[1].quiz).toEqual(content);
 });

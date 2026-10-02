@@ -29,7 +29,7 @@ export function LocationQuiz({
   return (
     <section lang="nl" className="relative isolate min-h-dvh overflow-hidden">
       <Image
-        src={location.id === "1" ? "/rewards/bierpaleis.png" : "/maps/antwerp-journey.png"}
+        src="/maps/antwerp-six-locations.png"
         alt=""
         fill
         priority
@@ -51,6 +51,8 @@ export function LocationQuiz({
         >
           {location.name}
         </h1>
+        {location.time && <p className="text-gold-bright">{location.time}</p>}
+        {location.story && <p className="text-parchment">{location.story}</p>}
         <div className="min-h-16 flex-1" />
         <DevelopmentEventCard bonus={quiz.bonus} />
         <div className="space-y-5 rounded-3xl border border-gold/40 bg-night-deep/95 p-5 text-parchment">
@@ -75,7 +77,7 @@ export function LocationQuiz({
                 </Link>
               )}
               <ActionButton fullWidth onClick={onClose}>
-                Verder naar de kaart
+                Naar de map
               </ActionButton>
             </>
           ) : (

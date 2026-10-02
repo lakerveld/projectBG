@@ -1,16 +1,21 @@
-export const rewardResources = ["Bier", "Salmiak", "Poedersuiker", "Eten"] as const;
+export const rewardResources = ["Gerst", "Salmari", "Sneeuw"] as const;
+export const resourceExchangeLabels = {
+  Gerst: "3 gerst = 1 biertje",
+  Salmari: "1 Salmari = 1 shotje",
+  Sneeuw: "2 sneeuw = 1 nakje"
+} as const;
+
 export type RewardResource = (typeof rewardResources)[number];
 export type JourneyInventory = Record<RewardResource, number>;
-export const emptyInventory: JourneyInventory = { Bier: 0, Salmiak: 0, Poedersuiker: 0, Eten: 0 };
+export const emptyInventory: JourneyInventory = { Gerst: 0, Salmari: 0, Sneeuw: 0 };
 
-// Temporary reward table approved for the journey prototype.
+// Two-dice resource table; seven activates the robber without a reward.
 export function resourceForRoll(total: number): RewardResource | null {
   if (!Number.isInteger(total) || total < 2 || total > 12) throw new Error("Ongeldige worp");
   if (total === 7) return null;
-  if (total <= 4) return "Bier";
-  if (total <= 6) return "Salmiak";
-  if (total <= 9) return "Poedersuiker";
-  return "Eten";
+  if ([2, 4, 12].includes(total)) return "Salmari";
+  if ([3, 5, 10, 11].includes(total)) return "Sneeuw";
+  return "Gerst";
 }
 
 export function readInventory(): JourneyInventory {
@@ -19,7 +24,10 @@ export function readInventory(): JourneyInventory {
     if (typeof saved !== "object" || saved === null) return { ...emptyInventory };
     const result = { ...emptyInventory };
     for (const name of rewardResources) {
-      const value = (saved as Record<string, unknown>)[name];
+      const stored = saved as Record<string, unknown>;
+      const legacyName = name === "Gerst" ? "Bier" : name === "Sneeuw" ? "Poedersuiker" : name;
+      const previousName = name === "Gerst" ? "Pils" : name === "Salmari" ? "Salmiak" : "Sneeuwvlokje";
+      const value = stored[name] ?? stored[previousName] ?? stored[legacyName];
       if (typeof value === "number" && Number.isSafeInteger(value) && value >= 0)
         result[name] = value;
     }

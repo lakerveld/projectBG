@@ -31,7 +31,7 @@ const steps = [
         <p>Sindsdien wachten de ratten op iemand die Rattan kan herstellen.</p>
         <p>Matthew, die iemand ben jij.</p>
         <p>
-          Verzamel <strong>Bier, Salmiak, Poedersuiker en Eten</strong>. Herstel de handelsroutes.
+          Verzamel <strong>Gerst, Salmari en Sneeuw</strong>. Herstel de handelsroutes.
           Bouw het rijk opnieuw op en volg de sporen door Antwerpen.
         </p>
         <p>

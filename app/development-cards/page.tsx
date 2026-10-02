@@ -18,9 +18,7 @@ export default function DevelopmentCardsPage() {
       bonus: item.result!.bonus,
       description: `Verdiend bij locatie ${item.id}: ${item.name}.`
     })),
-    ...legacyCards.filter(
-      (card) => !earned.some((item) => item.id === "1" && card.id === "bierpaleis")
-    )
+    ...legacyCards
   ];
   return (
     <main lang="nl" className="hall min-h-dvh px-5 py-8">

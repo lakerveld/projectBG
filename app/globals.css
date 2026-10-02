@@ -701,3 +701,157 @@ h3 {
     animation: none;
   }
 }
+
+/* Psychedelic dice reveal: slow colour movement, no flashing. */
+.dice-portal {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  padding: 0;
+  width: min(94vw, 560px);
+  max-width: none;
+  max-height: 94dvh;
+  border: 1px solid #d5fa5580;
+  border-radius: 32px;
+  background: #130b29;
+  color: white;
+  box-shadow:
+    0 0 70px #ae36ff60,
+    0 0 120px #ff41b530;
+}
+.dice-portal::backdrop {
+  background: #0b061be8;
+  backdrop-filter: blur(12px);
+}
+.dice-stage {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.dice-vortex {
+  position: absolute;
+  inset: -60%;
+  opacity: 0.5;
+  background: repeating-conic-gradient(
+    from 20deg,
+    #170d33 0deg 20deg,
+    #6824c4 25deg 35deg,
+    #f038aa 40deg 45deg,
+    #170d33 50deg 60deg
+  );
+  mask-image: radial-gradient(ellipse, black, transparent 65%);
+  animation: dice-vortex 24s linear infinite;
+}
+.dice-orbit {
+  position: absolute;
+  top: 26%;
+  left: 10%;
+  width: 80%;
+  aspect-ratio: 1;
+  border: 2px solid #d5fa5570;
+  border-radius: 50%;
+  box-shadow:
+    0 0 25px #d5fa5530,
+    inset 0 0 25px #d5fa5530;
+  transform: rotateX(55deg) rotate(-25deg);
+}
+.dice-orbit-two {
+  transform: rotateY(55deg) rotate(30deg);
+  border-color: #ff91c490;
+}
+.dice-pair {
+  display: flex;
+  gap: 26px;
+  padding: 58px 0 42px;
+  perspective: 700px;
+}
+.neon-die {
+  display: grid;
+  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+  gap: 10px;
+  width: clamp(90px, 25vw, 125px);
+  aspect-ratio: 1;
+  padding: 18px;
+  border: 2px solid #ffffffb0;
+  border-radius: 25px;
+  background: linear-gradient(135deg, #f5d8ff, #c681f5 60%, #8b44c4);
+  box-shadow:
+    6px 9px 0 #66318a,
+    0 0 40px #c681f590;
+  transform: rotate(-12deg);
+}
+.neon-die-1 {
+  background: linear-gradient(135deg, #f6ffc5, #d5fa55 60%, #9cac37);
+  box-shadow:
+    6px 9px 0 #76832d,
+    0 0 40px #d5fa5570;
+  transform: rotate(12deg);
+}
+.die-pip {
+  border-radius: 50%;
+  background: #221435;
+  box-shadow: inset 1px 2px 2px #0008;
+}
+.dice-rolling .neon-die {
+  animation: dice-tumble 0.65s ease-in-out infinite;
+}
+.dice-rolling .neon-die-1 {
+  animation-delay: -0.32s;
+  animation-direction: reverse;
+}
+.dice-settled .neon-die {
+  animation: dice-land 0.45s ease-out both;
+}
+.dice-total {
+  margin: 0;
+  font-size: clamp(76px, 20vw, 108px);
+  font-weight: 950;
+  line-height: 1;
+  color: #d5fa55;
+  text-shadow:
+    4px 4px 0 #652cab,
+    0 0 35px #d5fa5590;
+  animation: dice-land 0.45s ease-out both;
+}
+@keyframes dice-vortex {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes dice-tumble {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-15deg) rotateY(-25deg);
+  }
+  50% {
+    transform: translateY(-28px) rotate(25deg) rotateY(35deg) scale(1.08);
+  }
+}
+@keyframes dice-land {
+  from {
+    scale: 1.3;
+    translate: 0 -18px;
+  }
+  to {
+    scale: 1;
+    translate: 0 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dice-portal *,
+  .dice-portal *::before {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+.finale-stars {
+  background-image: radial-gradient(circle at 12% 20%, #ffe6a4 0 1px, transparent 2px), radial-gradient(circle at 85% 32%, #ff91c4 0 2px, transparent 3px), radial-gradient(circle at 35% 65%, #ffe6a4 0 1px, transparent 2px), radial-gradient(circle at 72% 78%, #8cf8ee 0 1px, transparent 2px);
+  background-size: 240px 320px;
+  opacity: .65;
+  animation: finale-drift 18s linear infinite;
+}
+.finale-arrival { animation: finale-arrival 1.2s ease-out both; }
+@keyframes finale-drift { to { background-position: 0 -320px; } }
+@keyframes finale-arrival { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .finale-scene * { animation: none !important; } }

@@ -1,16 +1,16 @@
 export const locationPins = [
-  { x: 48.3, y: 22.8, w: 18.3, h: 11.5 },
-  { x: 27, y: 34.3, w: 20.5, h: 12.5 },
-  { x: 79.4, y: 34.4, w: 20, h: 12.5 },
-  { x: 47.8, y: 45.1, w: 20.5, h: 12.4 },
-  { x: 27.4, y: 62.2, w: 20, h: 12.5 },
-  { x: 75.7, y: 60.5, w: 20.5, h: 13 },
-  { x: 33, y: 77.4, w: 20, h: 13.5 },
-  { x: 70.2, y: 77.2, w: 20, h: 13.5 }
+  { x: 30.4, y: 32.2, w: 24, h: 15 },
+  { x: 72, y: 32.2, w: 24, h: 15 },
+  { x: 30.4, y: 55.2, w: 24, h: 15 },
+  { x: 72, y: 55.2, w: 24, h: 15 },
+  { x: 30.4, y: 75.7, w: 24, h: 15 },
+  { x: 72, y: 75.7, w: 24, h: 15 }
 ];
 
 export type LocationQuizContent = {
   name: string;
+  story?: string;
+  time?: string;
   question: string;
   answers: string[];
   correct: number;
@@ -21,6 +21,7 @@ export type StoredLocation = {
   id: string;
   status: LocationState;
   quiz: LocationQuizContent;
+  contentOverride?: boolean;
   answer?: number;
   unlockedAt?: number;
 };
@@ -29,6 +30,8 @@ export type LocationView = {
   name: string;
   status: LocationState;
   ready: boolean;
+  story?: string;
+  time?: string;
   unlockedAt?: number;
   quiz?: Omit<LocationQuizContent, "correct">;
   result?: { correct: boolean; correctAnswer: string; bonus: string };
@@ -53,6 +56,8 @@ export function publicLocation(location: StoredLocation): LocationView {
   return {
     id: location.id,
     name: quiz.name,
+    story: quiz.story,
+    time: quiz.time,
     status: location.status,
     ready: quizReady(location.quiz),
     unlockedAt: location.unlockedAt,
@@ -88,3 +93,7 @@ export function transition(location: StoredLocation, action: string, answer?: un
     location.status = "completed";
   } else throw new Error("Onbekende actie.");
 }
+
+export type AdminJourneyView = {
+  locations: (LocationView & { content: LocationQuizContent })[];
+};

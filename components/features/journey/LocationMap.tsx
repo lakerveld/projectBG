@@ -21,8 +21,8 @@ export function LocationMap({
   return (
     <div className="relative">
       <Image
-        src="/maps/antwerp-journey.png"
-        alt="Geïllustreerde kaart van Antwerpen met acht genummerde locaties, de Schelde en de kathedraal."
+        src="/maps/antwerp-six-locations.png"
+        alt="Geïllustreerde kaart van Antwerpen met zes genummerde locaties, de Schelde en de kathedraal."
         width={941}
         height={1672}
         priority
@@ -33,7 +33,6 @@ export function LocationMap({
         const location = data?.locations[index];
         const status = location?.status ?? "locked";
         const unlocked = status === "available" || status === "started";
-        const artwork = status === "completed" && index === 0 ? "/locations/bierpaleis.png" : null;
         const Icon = {
           locked: LockKeyhole,
           available: UnlockKeyhole,
@@ -55,26 +54,17 @@ export function LocationMap({
               clipPath: "polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)"
             }}
           >
-            {artwork ? (
-              <>
-                <Image src={artwork} alt="" fill sizes="20vw" className="-z-10 object-cover" />
-                <span
-                  aria-hidden="true"
-                  className="absolute top-[9%] rounded-full bg-night-deep/85 px-1.5 text-xs font-bold text-gold-bright sm:text-lg"
-                >
-                  {index + 1}
-                </span>
-                <span className="absolute bottom-[12%] rounded-full border border-emerald-200 bg-night-deep/90 p-1">
-                  <Check className="size-3 sm:size-4" aria-hidden="true" />
-                </span>
-              </>
-            ) : (
-              <span
-                className={`mt-3 rounded-full border bg-night-deep/90 p-2 shadow-lg ${unlocked ? "border-lime-200 shadow-[0_0_14px_#c5ff30]" : "border-current"}`}
-              >
-                <Icon className="size-5 sm:size-7" aria-hidden="true" />
-              </span>
-            )}
+            <span
+              aria-hidden="true"
+              className="absolute top-[10%] font-display text-xl font-bold text-gold-bright sm:text-3xl"
+            >
+              {index + 1}
+            </span>
+            <span
+              className={`mt-3 rounded-full border bg-night-deep/90 p-2 shadow-lg ${unlocked ? "border-lime-200 shadow-[0_0_14px_#c5ff30]" : "border-current"}`}
+            >
+              <Icon className="size-5 sm:size-7" aria-hidden="true" />
+            </span>
             <svg
               aria-hidden="true"
               viewBox="0 0 100 100"
