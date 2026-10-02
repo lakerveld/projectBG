@@ -33,7 +33,7 @@ it.each([
 ])("completes two eight-second spins with draws %s and %s", (who, what, name, treat) => {
   const random = vi.spyOn(Math, "random").mockReturnValue(who as number);
   render(<RattenradPage />);
-  fireEvent.click(screen.getByRole("button", { name: "Draai voor wie" }));
+  fireEvent.click(screen.getByRole("button", { name: "RATATATATATA" }));
   expect(screen.getByRole("button")).toBeDisabled();
   act(() => vi.advanceTimersByTime(7999));
   expect(screen.queryByText(`${name} trakteert!`)).not.toBeInTheDocument();
@@ -47,7 +47,7 @@ it.each([
   act(() => vi.advanceTimersByTime(1));
   expect(screen.getByRole("status")).toHaveTextContent(`${name} trakteert op ${treat}!`);
   fireEvent.click(screen.getByRole("button", { name: "Nog een ronde" }));
-  expect(screen.getByRole("button", { name: "Draai voor wie" })).toBeEnabled();
+  expect(screen.getByRole("button", { name: "RATATATATATA" })).toBeEnabled();
 });
 
 it("skips both waits for reduced motion", () => {
@@ -56,14 +56,14 @@ it("skips both waits for reduced motion", () => {
     vi.fn(() => ({ matches: true }))
   );
   render(<RattenradPage />);
-  fireEvent.click(screen.getByRole("button", { name: "Draai voor wie" }));
+  fireEvent.click(screen.getByRole("button", { name: "RATATATATATA" }));
   act(() => vi.advanceTimersByTime(0));
   expect(screen.getByRole("button", { name: "Nog een ronde" })).toBeEnabled();
 });
 
 it.each([4000, 8000, 12000])("clears the active spin timer when leaving after %s ms", (elapsed) => {
   const { unmount } = render(<RattenradPage />);
-  fireEvent.click(screen.getByRole("button", { name: "Draai voor wie" }));
+  fireEvent.click(screen.getByRole("button", { name: "RATATATATATA" }));
   act(() => vi.advanceTimersByTime(elapsed));
   unmount();
   expect(vi.getTimerCount()).toBe(0);
@@ -74,7 +74,7 @@ it("uses only one draw for the treat when Matthew answered incorrectly", () => {
   const done = vi.fn();
   render(<TreatWheel onDone={done} />);
   expect(screen.getByText("Matthew trakteert!")).toBeInTheDocument();
-  expect(screen.queryByRole("button", { name: "Draai voor wie" })).not.toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "RATATATATATA" })).not.toBeInTheDocument();
   fireEvent.click(screen.getByRole("button", { name: "Draai voor de traktatie" }));
   expect(random).toHaveBeenCalledTimes(1);
   act(() => vi.advanceTimersByTime(8000));

@@ -5,6 +5,7 @@ import {
   type RewardResource
 } from "@/lib/domain/journeyRewards";
 import styles from "./ResourceReveal.module.css";
+import { resourceColors } from "@/lib/ui/resourceColors";
 
 const icons = { Gerst: Wheat, Salmari: TestTube, Sneeuw: Snowflake };
 
@@ -25,15 +26,20 @@ export function ResourceInventory({
           <li
             key={name}
             aria-label={`${name}: ${inventory[name]}${name === resource ? ` (${delta})` : ""}`}
-            className={`${styles.slot} ${name === resource ? styles.active : ""}`}
+            className={styles.slot}
           >
-            {name === resource && (
-              <span className={styles.delta} aria-hidden="true">
-                {delta}
-              </span>
-            )}
-            <Icon size={20} aria-hidden="true" />
-            <strong>{inventory[name]}</strong>
+            <div
+              className={`${styles.pill} ${name === resource ? styles.active : ""}`}
+              style={{ backgroundColor: resourceColors[name] }}
+            >
+              {name === resource && (
+                <span className={styles.delta} aria-hidden="true">
+                  {delta}
+                </span>
+              )}
+              <Icon size={18} strokeWidth={1.7} aria-hidden="true" />
+              <strong>{inventory[name]}</strong>
+            </div>
             <span>{name}</span>
           </li>
         );

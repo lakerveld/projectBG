@@ -14,11 +14,12 @@
 }
 html {
   min-height: 100%;
+  background: #222c49;
 }
 body {
   min-height: 100%;
   margin: 0;
-  background: #fff0fa;
+  background: #222c49;
   color: var(--trippy-ink);
   font-family: var(--font-body);
 }

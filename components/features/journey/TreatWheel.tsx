@@ -97,19 +97,6 @@ export function Rattenrad({
       className={forcedMatthew ? "text-parchment" : "hall min-h-dvh px-4 py-6 text-parchment"}
     >
       <div className="mx-auto max-w-2xl space-y-6">
-        {!forcedMatthew && (
-          <Link href="/journey" className="inline-flex min-h-11 items-center font-bold">
-            ← Naar de map
-          </Link>
-        )}
-        <header className="text-center">
-          <p className="text-sm font-bold uppercase tracking-widest text-gold-bright">
-            {forcedMatthew ? "Fout antwoord? Matthew trakteert." : "Twee draaien. Het lot beslist."}
-          </p>
-          <h1 className="mt-2 text-4xl font-black uppercase tracking-tight sm:text-6xl">
-            Het rattenrad
-          </h1>
-        </header>
         <section
           className={`ratten-stage ${spinning ? "ratten-spinning" : ""} ${phase === "done" ? "ratten-settled" : ""} px-3 py-7 text-center text-white sm:p-8`}
         >
@@ -117,13 +104,9 @@ export function Rattenrad({
           <p className="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-[#d5fa55]">
             🐀 Rattan rat club
           </p>
-          <h2 className="text-2xl font-black uppercase tracking-tight sm:text-3xl">
-            {phase === "done"
-              ? "Het lot heeft gesproken"
-              : phase === "who"
-                ? "Wie ontsnapt aan het rad?"
-                : "Wat wordt de traktatie?"}
-          </h2>
+          <h1 className="text-4xl font-black uppercase tracking-tight sm:text-6xl">
+            Het rattenrad
+          </h1>
           {phase === "who" ? (
             <>
               <div
@@ -246,13 +229,21 @@ export function Rattenrad({
             </ActionButton>
           ) : phase === "who" ? (
             <ActionButton fullWidth size="lg" disabled={spinning} onClick={spin}>
-              {spinning ? "Even geduld…" : "Draai voor wie"}
+              {spinning ? "Even geduld…" : "RATATATATATA"}
             </ActionButton>
           ) : forcedMatthew ? (
             <ActionButton fullWidth size="lg" disabled={spinning} onClick={spin}>
               {spinning ? "Even geduld…" : "Draai voor de traktatie"}
             </ActionButton>
           ) : null}
+          {!forcedMatthew && (
+            <Link
+              href="/journey"
+              className="mt-3 flex min-h-11 w-full items-center justify-center rounded-xl border border-parchment/30 px-5 py-3 font-bold"
+            >
+              ← Naar de map
+            </Link>
+          )}
         </section>
       </div>
     </Container>
