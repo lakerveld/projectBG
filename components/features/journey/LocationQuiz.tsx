@@ -71,7 +71,11 @@ export function LocationQuiz({
   return (
     <section lang="nl" className="relative isolate min-h-dvh overflow-hidden">
       <Image
-        src={location.image ?? "/maps/antwerp-six-locations.png"}
+        src={
+          location.status === "completed" && location.image
+            ? location.image
+            : "/maps/antwerp-six-locations.png"
+        }
         alt=""
         fill
         priority

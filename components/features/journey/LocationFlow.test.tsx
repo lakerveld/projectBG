@@ -135,8 +135,10 @@ it("keeps locked hexagons closed, notices an unlock and completes the location q
   fireEvent.click(screen.getByRole("button", { name: /1. Café Rood\/Wit — Beschikbaar/ }));
   expect(screen.getByRole("heading", { name: "Café Rood/Wit" })).toBeInTheDocument();
   expect(screen.getByRole("dialog")).toHaveTextContent("Het spoor begint in Café Rood/Wit.");
+  expect(document.querySelector('img[src*="cafe-rood-wit"]')).not.toBeInTheDocument();
   fireEvent.click(screen.getByRole("button", { name: "Activeren" }));
   await screen.findByRole("group", { name: "Welke spreuk is echt?" });
+  expect(document.querySelector('img[src*="cafe-rood-wit"]')).not.toBeInTheDocument();
   expect(screen.getByText("Lees meer over deze locatie").closest("details")).not.toHaveAttribute(
     "open"
   );
@@ -146,6 +148,7 @@ it("keeps locked hexagons closed, notices an unlock and completes the location q
   fireEvent.click(screen.getByRole("radio", { name: "A. Prik & Tik" }));
   fireEvent.click(screen.getByRole("button", { name: "Bevestig antwoord" }));
   await screen.findByText("Goed geantwoord!");
+  expect(document.querySelector('img[src*="cafe-rood-wit"]')).toBeInTheDocument();
   expect(screen.queryByText("Lees meer over deze locatie")).not.toBeInTheDocument();
   expect(screen.queryByRole("img", { name: "Ontwikkelingskaart" })).not.toBeInTheDocument();
   fireEvent.click(screen.getByRole("button", { name: "Naar de map" }));
