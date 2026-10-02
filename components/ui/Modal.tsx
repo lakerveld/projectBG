@@ -12,6 +12,7 @@ type ModalProps = {
   title: string;
   description?: string;
   icon?: LucideIcon;
+  iconColor?: string;
   tone?: Tone;
   children?: ReactNode;
   /** Action row pinned to the foot of the dialog. */
@@ -30,6 +31,7 @@ export function Modal({
   title,
   description,
   icon,
+  iconColor,
   tone = "gold",
   children,
   footer,
@@ -116,7 +118,7 @@ export function Modal({
 
         <div className="px-6 pb-6 pt-7">
           <div className="flex items-start gap-3.5">
-            {icon ? <Seal icon={icon} tone={tone} size="md" /> : null}
+            {icon ? <Seal icon={icon} tone={tone} color={iconColor} size="md" /> : null}
             <div className="min-w-0 flex-1 pr-6">
               <h2 id={titleId} className="font-display text-xl font-bold leading-tight text-sepia">
                 {title}

@@ -36,13 +36,31 @@ describe("JourneyMapShell", () => {
     expect(screen.queryByRole("button", { name: /^7\. / })).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "DICE" })).toBeInTheDocument();
   });
+  it("opens only the selected resource options and closes with Escape", () => {
+    render(<JourneyMapShell />);
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /Salmari: .*bekijk opties/ }));
+    expect(screen.getByRole("dialog", { name: "Salmari · 0 in voorraad" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Gebruik 1 salmari voor 1 shotje" })).toBeDisabled();
+    expect(screen.queryByRole("button", { name: /Gebruik 3 gerst/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /Ruil/ })).not.toBeInTheDocument();
+    fireEvent.keyDown(document, { key: "Escape" });
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /Sneeuw: .*bekijk opties/ }));
+    expect(screen.getByRole("button", { name: "Gebruik 2 sneeuw voor 1 nakkie" })).toBeDisabled();
+    expect(screen.queryByRole("button", { name: /Gebruik 1 salmari/ })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Ontwikkelingskaarten: 0" })).toHaveAttribute(
+      "href",
+      "/development-cards"
+    );
+  });
   it("trades both rewards, persists the stock and prevents overspending", () => {
     localStorage.setItem(
       "rattan-journey-inventory",
       JSON.stringify({ Gerst: 15, Salmari: 2, Sneeuw: 1 })
     );
     const view = render(<JourneyMapShell />);
-    fireEvent.click(screen.getByText("Wat zijn je resources waard?"));
+    fireEvent.click(screen.getByRole("button", { name: /Gerst: .*bekijk opties/ }));
     fireEvent.click(screen.getByRole("button", { name: "Ruil 10 gerst voor 1 nakkie" }));
     expect(screen.getByRole("listitem", { name: "Sneeuw: 3" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Ruil 10 gerst voor 1 nakkie" })).toBeDisabled();
@@ -65,7 +83,7 @@ describe("JourneyMapShell", () => {
       JSON.stringify({ Gerst: 5, Salmari: 0, Sneeuw: 0 })
     );
     render(<JourneyMapShell />);
-    fireEvent.click(screen.getByText("Wat zijn je resources waard?"));
+    fireEvent.click(screen.getByRole("button", { name: /Gerst: .*bekijk opties/ }));
     vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
       throw new Error("Storage full");
     });
@@ -80,14 +98,19 @@ describe("JourneyMapShell", () => {
       JSON.stringify({ Gerst: 4, Salmari: 1, Sneeuw: 3 })
     );
     const view = render(<JourneyMapShell />);
-    fireEvent.click(screen.getByText("Wat zijn je resources waard?"));
-    for (const name of [
-      "Gebruik 3 gerst voor 1 biertje",
-      "Gebruik 1 salmari voor 1 shotje",
-      "Gebruik 2 sneeuw voor 1 nakkie"
+    fireEvent.click(screen.getByRole("button", { name: /Gerst: .*bekijk opties/ }));
+    fireEvent.click(screen.getByRole("button", { name: "Close" }));
+    for (const [resource, name] of [
+      ["Gerst", "Gebruik 3 gerst voor 1 biertje"],
+      ["Salmari", "Gebruik 1 salmari voor 1 shotje"],
+      ["Sneeuw", "Gebruik 2 sneeuw voor 1 nakkie"]
     ]) {
+      fireEvent.click(
+        screen.getByRole("button", { name: new RegExp(`${resource}: .*bekijk opties`) })
+      );
       fireEvent.click(screen.getByRole("button", { name }));
       expect(screen.getByRole("button", { name })).toBeDisabled();
+      fireEvent.click(screen.getByRole("button", { name: "Close" }));
     }
     expect(JSON.parse(localStorage.getItem("rattan-journey-inventory")!)).toEqual({
       Gerst: 1,
@@ -106,7 +129,7 @@ describe("JourneyMapShell", () => {
       JSON.stringify({ Gerst: 3, Salmari: 0, Sneeuw: 0 })
     );
     render(<JourneyMapShell />);
-    fireEvent.click(screen.getByText("Wat zijn je resources waard?"));
+    fireEvent.click(screen.getByRole("button", { name: /Gerst: .*bekijk opties/ }));
     vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
       throw new Error("Storage full");
     });

@@ -1,4 +1,10 @@
-# Completed location artwork
+# Location artwork
+
+Six new illustrations are generated for all locations. Their filenames and exact
+generation prompts are documented in [prompts.md](prompts.md). They appear only
+after a location is released, in its map hexagon, dialog and quiz background.
+
+## Earlier Bierpaleis artwork (preserved)
 
 `bierpaleis.png` is generated with the built-in image_gen tool, using
 `public/rewards/bierpaleis.png` as the style reference. It fills hexagon 1 after

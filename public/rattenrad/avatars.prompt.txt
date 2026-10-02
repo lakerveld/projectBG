@@ -1,0 +1,37 @@
+Tool: built-in image_gen (separate avatar edits).
+Targets: argyle-avatar.png, levi-avatar.png, jordi-avatar.png, dennis-avatar.png,
+matthew-avatar.png.
+Style reference and Matthew avatar: ../onboarding/matthew-trippy.png.
+
+Shared prompt: Preserve each character's recognizable human identity, hairstyle,
+clothes and accessories. Make the expression visibly happier with a broad joyful
+toothy grin and lifted cheeks. Replace the human nose tip with a cute rounded pink
+rat nose with small nostrils and thin whiskers on both sides. Match the reference's
+cheerful cartoon drawing, thick black ink outlines, hand-drawn hatching and neon
+pink/lime/purple psychedelic palette. Keep centered square head-and-shoulders
+framing and swirling background. No text, extra characters or bottles.
+
+Argyle: preserve huge curly hair, black aviator sunglasses and bead necklace.
+Levi: preserve short curly brown hair, blue eyes and light beard; replace the
+tongue-out expression with an exuberant friendly toothy smile.
+Jordi: preserve swept-back dark hair, blue eyes, moustache, goatee and silver necklace.
+Dennis: use the user-provided photograph as identity reference. Preserve swept-back
+medium brown hair, blue eyes, full short brown beard and black hoodie. Apply the
+shared joyful expression, pink rat nose, whiskers and psychedelic comic style.
+
+Latest edit prompt (all five, built-in image_gen, separate calls): preserve each
+identity, hairstyle, facial hair, clothes and accessories. Make an EXTREMELY
+exaggerated silly face with crossed or mismatched eyes, uneven raised eyebrows,
+crooked open grins and tongues sticking sideways. Replace ALL realistic eyes
+with Disney-like oversized hand-drawn cream-white oval eyes, thick black outlines,
+simple large dark pupils and white highlight dots, matching Matthew's reference.
+Keep pink rat noses and whiskers where present, square head-and-shoulders framing
+and neon psychedelic ink style. No text.
+Argyle: lift sunglasses onto forehead to expose huge crossed cartoon eyes.
+Levi: huge crossed eyes, one high eyebrow, sideways tongue and wide grin.
+Jordi: one eye looking up, one toward nose, puffed cheek and crooked grin.
+Dennis: completely replace realistic blue eyes with enormous crossed cartoon eyes,
+one raised eyebrow, stretched grin and floppy tongue.
+Matthew: derive square avatar from onboarding illustration, preserve spiky hair,
+dark full beard and purple shirt, giant crossed eyes and curled tongue. Keep human
+nose; replace kitchen scene with neon swirls. Save separately as matthew-avatar.png.

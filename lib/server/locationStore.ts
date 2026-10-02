@@ -5,7 +5,7 @@ import { Redis } from "@upstash/redis";
 import type { StoredLocation } from "@/lib/domain/locationGame";
 import { loadLocationContent } from "./locationContent";
 
-type State = { locations: StoredLocation[] };
+type State = { locations: StoredLocation[]; resetId?: string };
 const globals = globalThis as typeof globalThis & { journeyQueue?: Promise<unknown> };
 
 let redis: Redis | undefined;
@@ -28,7 +28,16 @@ async function hydrate(raw: string | null): Promise<State> {
       };
   // Once released, keep the question and reward stable across content deployments.
   state.locations.forEach((location, index) => {
-    if (location.status === "locked" && !location.contentOverride) location.quiz = content[index];
+    if (location.status === "locked" && !location.statusBeforeLock && !location.contentOverride)
+      location.quiz = content[index];
+    // Upgrade unfinished legacy stops to the new physical quest types.
+    if (!location.quiz.type && location.status !== "completed" && content[index].type !== "quiz") {
+      location.quiz = {
+        ...location.quiz,
+        type: content[index].type,
+        question: location.quiz.question || content[index].question
+      };
+    }
   });
   return state;
 }

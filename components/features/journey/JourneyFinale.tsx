@@ -11,17 +11,6 @@ export function JourneyFinale({ onContinue }: { onContinue: () => void }) {
       aria-label="De reünie van Rattan"
       className="finale-scene relative isolate min-h-dvh overflow-hidden bg-[#100b24] text-parchment"
     >
-      <div className="absolute inset-0 -z-20">
-        <Image
-          src="/rewards/rattan-reunion.png"
-          alt="Rat Matthew omhelst samen met de kleine blonde rat Jade hun kind Ratthew, onder een gouden sterrenhemel boven Antwerpen."
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center"
-        />
-      </div>
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[#100b24]/65 via-transparent to-[#100b24]" />
       <div className="finale-stars pointer-events-none absolute inset-0" aria-hidden="true" />
       <div className="relative mx-auto flex min-h-dvh max-w-xl flex-col items-center px-6 pb-8 pt-10 text-center sm:pt-14">
         <div className="finale-arrival flex flex-col items-center">
@@ -40,7 +29,17 @@ export function JourneyFinale({ onContinue }: { onContinue: () => void }) {
             Matthew · Jade · Ratthew
           </p>
         </div>
-        <div className="min-h-[42dvh] flex-1" />
+        <div className="finale-arrival flex w-full justify-center py-7">
+          <Image
+            src="/rewards/matthew-jade-ratthew-finale.png"
+            alt="Psychedelische stripillustratie van Matthew en Jade die samen hun lachende babyzoontje Ratthew in hun armen houden."
+            width={1086}
+            height={1448}
+            priority
+            sizes="(max-width: 576px) 85vw, 480px"
+            className="h-auto max-h-[65svh] w-auto max-w-full rounded-2xl border-2 border-ink object-contain shadow-parchment"
+          />
+        </div>
         <div className="finale-arrival w-full rounded-3xl border border-gold/40 bg-[#100b24]/85 p-6 shadow-[0_0_60px_#d5a33825] backdrop-blur-md">
           <div
             className="mb-3 flex items-center justify-center gap-3 text-gold-bright"

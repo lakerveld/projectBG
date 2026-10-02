@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   try {
     const state = await locationStore();
-    return json({ locations: state.locations.map(publicLocation) });
+    return json({ locations: state.locations.map(publicLocation), resetId: state.resetId });
   } catch {
     return json({ error: "Locaties zijn tijdelijk niet bereikbaar. Probeer het opnieuw." }, 503);
   }
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
       if (!location) throw new Error("Onbekende locatie.");
       transition(location, action, answer);
     });
-    return json({ locations: state.locations.map(publicLocation) });
+    return json({ locations: state.locations.map(publicLocation), resetId: state.resetId });
   } catch (error) {
     return json({ error: error instanceof Error ? error.message : "Opslaan mislukt." }, 409);
   }

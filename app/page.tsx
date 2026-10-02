@@ -41,23 +41,23 @@ const steps = [
     )
   },
   {
-    title: "Jouw reis wordt bepaald door de dobbelsteen",
+    title: "Dobbel. Draai. Durf.",
     content: (
       <>
         <p>
-          Bij <strong>iedere locatie</strong> begint jouw volgende stap met één worp.
+          <strong>Dobbel zo vaak je wilt.</strong> Je worp bepaalt welke resource je verdient.
+          Maar pas op: de <strong>struikrover</strong> ligt op de loer.
         </p>
         <p>
-          De dobbelsteen bepaalt welke <strong>resource</strong> je verdient, welke{" "}
-          <strong>opdracht</strong> je te wachten staat en wat er onderweg gebeurt.
+          <strong>Draai aan het rattenrad</strong> en laat het lot bepalen wie trakteert — en waarop.
         </p>
         <p>
-          Soms helpt het lot je vooruit. Soms gooien de <strong>Struikrovers</strong> roet in het
-          eten.
+          Voltooi de opdrachten op <strong>alle zes locaties</strong> en verdien{" "}
+          <strong>ontwikkelingskaarten</strong>.
         </p>
         <p>
-          Elke worp brengt je een stap dichter bij je einddoel:{" "}
-          <strong>Herbouw Rattan. Vind Baby Ratthew.</strong>
+          Maar pas op… <strong>fout antwoord? Dan betaal je.</strong> Het rattenrad bepaalt jouw
+          traktatie.
         </p>
       </>
     )

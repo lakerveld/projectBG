@@ -10,6 +10,7 @@ type SealProps = {
   pulse?: boolean;
   label?: string;
   className?: string;
+  color?: string;
 };
 
 /** Flat sticker colors share the illustration's accent palette. */
@@ -33,9 +34,9 @@ export function Seal({
   size = "md",
   pulse,
   label,
-  className
+  className,
+  color
 }: SealProps) {
-  const color = TONE_COLORS[tone];
   const dims = SIZES[size];
 
   return (
@@ -49,7 +50,7 @@ export function Seal({
         pulse && "seal-pulse",
         className
       )}
-      style={{ background: color }}
+      style={{ background: color ?? TONE_COLORS[tone] }}
     >
       <Icon size={dims.icon} style={{ color: "#171722" }} strokeWidth={2.1} aria-hidden="true" />
     </span>

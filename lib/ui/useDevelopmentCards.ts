@@ -46,3 +46,9 @@ export function useDevelopmentCards() {
   const earned = parseEarnedCards(raw);
   return developmentCards.filter((card) => earned.includes(card.id));
 }
+
+export function resetDevelopmentCards() {
+  localStorage.removeItem(DEVELOPMENT_CARDS_KEY);
+  sessionFallback = null;
+  window.dispatchEvent(new Event(CHANGE_EVENT));
+}

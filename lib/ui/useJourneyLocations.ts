@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { applyAutomaticRewards } from "./useRewardInventory";
+import { applyJourneyReset } from "./journeyReset";
 import type { JourneyView } from "@/lib/domain/locationGame";
 
 export function useJourneyLocations() {
@@ -15,6 +17,15 @@ export function useJourneyLocations() {
   const seen = useRef<Set<string> | null>(null);
 
   const accept = useCallback((next: JourneyView) => {
+    try {
+      if (applyJourneyReset(next.resetId)) {
+        seen.current = new Set();
+        setNotice("");
+      }
+    } catch {
+      setError("Het spel kon niet worden gereset op deze telefoon. Probeer opnieuw.");
+      return;
+    }
     if (seen.current === null) {
       try {
         seen.current = new Set(JSON.parse(localStorage.getItem("rattan-location-notices") ?? "[]"));
@@ -23,7 +34,10 @@ export function useJourneyLocations() {
       }
     }
     const fresh = next.locations.filter(
-      (item) => item.unlockedAt && !seen.current!.has(`${item.id}:${item.unlockedAt}`)
+      (item) =>
+        item.status !== "locked" &&
+        item.unlockedAt &&
+        !seen.current!.has(`${item.id}:${item.unlockedAt}`)
     );
     if (fresh.length) {
       setNotice(`Nieuwe locatie ontgrendeld: ${fresh.map((item) => item.name).join(", ")}!`);
@@ -33,6 +47,7 @@ export function useJourneyLocations() {
         /* Optional device capability. */
       }
     }
+    if (next.locations.every((item) => item.status === "locked")) setNotice("");
     next.locations.forEach((item) => {
       if (item.unlockedAt) seen.current!.add(`${item.id}:${item.unlockedAt}`);
     });
@@ -42,7 +57,14 @@ export function useJourneyLocations() {
       /* Keep session notices. */
     }
     setData(next);
-    setError("");
+    try {
+      applyAutomaticRewards(next);
+      setError("");
+    } catch {
+      setError(
+        "Je beloning kon niet worden opgeslagen. Probeer opnieuw via je ontwikkelingskaarten."
+      );
+    }
   }, []);
 
   const refresh = useCallback(async () => {

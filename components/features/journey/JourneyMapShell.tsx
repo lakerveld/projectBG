@@ -1,10 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { DevelopmentCardsIcon } from "@/components/ui/DevelopmentCardsIcon";
+import { useRewardInventory, writeInventory } from "@/lib/ui/useRewardInventory";
+import { resourceColors } from "@/lib/ui/resourceColors";
 import { useDevelopmentCards } from "@/lib/ui/useDevelopmentCards";
-import { Wheat, Dice5, Snowflake, TestTube, Info, ChevronDown } from "lucide-react";
+import { Wheat, Dice5, Snowflake, TestTube } from "lucide-react";
 import { DiceTotalPicker } from "@/components/ui/DiceTotalPicker";
 import { ParchmentCard } from "@/components/ui/ParchmentCard";
 import { ActionButton } from "@/components/ui/ActionButton";
@@ -18,9 +21,7 @@ import { JourneyFinale } from "./JourneyFinale";
 import { DigitalDice } from "./DigitalDice";
 import { RewardReveal } from "./RewardReveal";
 import {
-  emptyInventory,
   resourceExchangeLabels,
-  readInventory,
   stealRandomResource,
   resourceForRoll,
   type RewardResource
@@ -43,41 +44,45 @@ const consumptionOptions = [
 ] as const;
 
 export function JourneyMapShell() {
-  const cards = useDevelopmentCards();
   const journey = useJourneyLocations();
+  return <JourneyMapContent key={journey.data?.resetId ?? "initial"} journey={journey} />;
+}
+
+function JourneyMapContent({ journey }: { journey: ReturnType<typeof useJourneyLocations> }) {
+  const cards = useDevelopmentCards();
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
   const closeLocation = useCallback(() => setSelectedLocation(null), []);
   const [quizLocation, setQuizLocation] = useState<string | null>(null);
   const location = journey.data?.locations.find((item) => item.id === selectedLocation);
   const activeQuiz = journey.data?.locations.find((item) => item.id === quizLocation);
-  const serverCards = journey.data?.locations.filter((item) => item.result?.correct) ?? [];
+  const serverCards =
+    journey.data?.locations.filter((item) => item.result?.correct && item.result.bonus) ?? [];
   const cardCount = serverCards.length + cards.length;
-  const [dismissedFinale, setDismissedFinale] = useState<string | null>(null);
+  const [finaleOpen, setFinaleOpen] = useState(false);
+  const [finalePending, setFinalePending] = useState(false);
   const allCompleted =
     journey.data?.locations.length === 6 &&
     journey.data.locations.every((item) => item.status === "completed");
-  const finaleKey = allCompleted
-    ? journey.data!.locations.map((item) => `${item.id}:${item.unlockedAt ?? 0}`).join("|")
-    : null;
   const [enteringRoll, setEnteringRoll] = useState(false);
   const [selectedTotal, setSelectedTotal] = useState<number | null>(null);
   const [digitalOpen, setDigitalOpen] = useState(false);
   const [digitalDice, setDigitalDice] = useState<[number, number] | null>(null);
   const [lastRoll, setLastRoll] = useState<number | null>(null);
 
-  const [inventory, setInventory] = useState(emptyInventory);
+  const { inventory } = useRewardInventory();
   const [reward, setReward] = useState<RewardResource | null>(null);
   const [robbery, setRobbery] = useState<{ resource: RewardResource | null } | null>(null);
   const [storageError, setStorageError] = useState(false);
   const [tradeMessage, setTradeMessage] = useState("");
+  const [selectedResource, setSelectedResource] = useState<RewardResource | null>(null);
+  const closeResource = useCallback(() => setSelectedResource(null), []);
 
   function consume(option: (typeof consumptionOptions)[number]) {
     const { resource, cost, label } = option;
     if (inventory[resource] < cost) return;
     const next = { ...inventory, [resource]: inventory[resource] - cost };
     try {
-      localStorage.setItem("rattan-journey-inventory", JSON.stringify(next));
-      setInventory(next);
+      writeInventory(next);
       setStorageError(false);
       setTradeMessage(`Gebruikt voor ${label}: −${cost} ${resource}.`);
     } catch {
@@ -97,8 +102,7 @@ export function JourneyMapShell() {
       [resource]: inventory[resource] + amount
     };
     try {
-      localStorage.setItem("rattan-journey-inventory", JSON.stringify(next));
-      setInventory(next);
+      writeInventory(next);
       setStorageError(false);
       setTradeMessage(`Geruild: −${cost} gerst, +${amount} ${resource}.`);
     } catch {
@@ -107,11 +111,6 @@ export function JourneyMapShell() {
       );
     }
   }
-  useEffect(() => {
-    // Hydrate browser-only storage after the server-rendered initial state.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setInventory(readInventory());
-  }, []);
 
   function confirmRoll() {
     if (selectedTotal === null) return;
@@ -121,9 +120,8 @@ export function JourneyMapShell() {
       ? { ...inventory, [resource]: inventory[resource] + 1 }
       : theft!.inventory;
     if (theft) setRobbery({ resource: theft.resource });
-    setInventory(next);
     try {
-      localStorage.setItem("rattan-journey-inventory", JSON.stringify(next));
+      writeInventory(next);
       setStorageError(false);
     } catch {
       setStorageError(true);
@@ -134,22 +132,35 @@ export function JourneyMapShell() {
     setDigitalOpen(false);
   }
 
-  if (activeQuiz?.quiz)
+  if (activeQuiz && activeQuiz.status !== "locked")
     return (
       <LocationQuiz
         key={activeQuiz.id}
         location={activeQuiz}
         busy={journey.busy}
         error={journey.error}
-        onAnswer={(answer) => {
-          void journey.command(activeQuiz.id, "answer", answer);
+        onAnswer={async (answer) => {
+          const next = await journey.command(activeQuiz.id, "answer", answer);
+          const completed = next?.locations.find((item) => item.id === "6");
+          if (activeQuiz.id === "6" && activeQuiz.status !== "completed" && completed?.result) {
+            if (completed.result.correct) {
+              setQuizLocation(null);
+              setFinaleOpen(true);
+            } else setFinalePending(true);
+          }
         }}
-        onClose={() => setQuizLocation(null)}
+        onClose={() => {
+          setQuizLocation(null);
+          if (finalePending) {
+            setFinalePending(false);
+            setFinaleOpen(true);
+          }
+        }}
       />
     );
 
-  if (finaleKey && dismissedFinale !== finaleKey) {
-    return <JourneyFinale onContinue={() => setDismissedFinale(finaleKey)} />;
+  if (finaleOpen) {
+    return <JourneyFinale onContinue={() => setFinaleOpen(false)} />;
   }
 
   if (robbery !== null) {
@@ -257,72 +268,28 @@ export function JourneyMapShell() {
       <h1 className="sr-only">Kaart van Antwerpen</h1>
       <div className="w-full overflow-hidden">
         <div className="overflow-hidden">
-          <ul
-            aria-label="Resources"
-            className="grid grid-cols-[repeat(3,minmax(0,1fr))_auto] divide-x divide-ink bg-[#ff91c4] px-2 pb-2 pt-4"
+          <Modal
+            open={selectedResource !== null}
+            onClose={closeResource}
+            title={
+              selectedResource
+                ? `${selectedResource} · ${inventory[selectedResource]} in voorraad`
+                : "Resources"
+            }
+            description={selectedResource ? resourceExchangeLabels[selectedResource] : undefined}
+            icon={resources.find(({ name }) => name === selectedResource)?.icon}
+            iconColor={selectedResource ? resourceColors[selectedResource] : undefined}
+            className="max-h-[85dvh] overflow-y-auto"
           >
-            {resources.map(({ name, icon: Icon }) => (
-              <li
-                key={name}
-                aria-label={`${name}: ${inventory[name]}`}
-                title={`${name}: ${resourceExchangeLabels[name]}`}
-                className="flex items-center justify-center gap-1 text-ink sm:gap-2"
-              >
-                <Icon size={22} strokeWidth={1.7} aria-hidden="true" />
-                <span
-                  aria-hidden="true"
-                  className="font-display text-xl font-bold tabular-nums text-ink"
-                >
-                  {inventory[name]}
-                </span>
-              </li>
-            ))}
-            <li className="pl-2">
-              <Link
-                href="/development-cards"
-                aria-label={`Ontwikkelingskaarten: ${cardCount}`}
-                title="Ontwikkelingskaarten"
-                className="trippy-button flex min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-lg bg-[#c681f5] px-2 text-ink"
-              >
-                <DevelopmentCardsIcon />
-                <span aria-hidden="true" className="text-sm font-bold">
-                  {cardCount}
-                </span>
-              </Link>
-            </li>
-          </ul>
-          <details className="group border-b-2 border-ink bg-[#ff91c4] text-ink">
-            <summary className="flex min-h-11 cursor-pointer list-none items-center justify-center gap-2 px-4 font-body text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-ink [&::-webkit-details-marker]:hidden">
-              <Info size={16} aria-hidden="true" />
-              Wat zijn je resources waard?
-              <ChevronDown
-                size={16}
-                aria-hidden="true"
-                className="transition-transform group-open:rotate-180 motion-reduce:transition-none"
-              />
-            </summary>
-            <div className="mx-3 mb-3 rounded-xl border border-ink/20 bg-white/40 p-4">
-              <p className="mb-3 font-body text-sm">Dit verzamel je tijdens je tocht:</p>
-              <dl className="space-y-3">
-                {resources.map(({ name, icon: Icon }) => (
-                  <div key={name} className="flex items-center gap-3">
-                    <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-white/50">
-                      <Icon size={24} strokeWidth={1.7} aria-hidden="true" />
-                    </span>
-                    <div>
-                      <dt className="font-display text-sm font-bold">{name}</dt>
-                      <dd className="font-body text-sm">{resourceExchangeLabels[name]}</dd>
-                    </div>
-                  </div>
-                ))}
-              </dl>
-              <div className="mt-4 border-t border-ink/20 pt-4">
-                <h2 className="font-display text-sm font-bold">Gebruiken</h2>
-                <p className="mt-1 font-body text-sm">
-                  De gebruikte resources gaan direct van je voorraad af.
-                </p>
-                <div className="mt-3 space-y-3">
-                  {consumptionOptions.map((option) => (
+            <div className="mt-4 border-t border-ink/20 pt-4">
+              <h2 className="font-display text-sm font-bold">Gebruiken</h2>
+              <p className="mt-1 font-body text-sm">
+                De gebruikte resources gaan direct van je voorraad af.
+              </p>
+              <div className="mt-3 space-y-3">
+                {consumptionOptions
+                  .filter((option) => option.resource === selectedResource)
+                  .map((option) => (
                     <div key={option.resource}>
                       <button
                         type="button"
@@ -340,8 +307,9 @@ export function JourneyMapShell() {
                       )}
                     </div>
                   ))}
-                </div>
               </div>
+            </div>
+            {selectedResource === "Gerst" && (
               <div className="mt-4 border-t border-ink/20 pt-4">
                 <h2 className="font-display text-sm font-bold">Ruilen</h2>
                 <p className="mt-1 font-body text-sm">
@@ -390,14 +358,14 @@ export function JourneyMapShell() {
                     </div>
                   ))}
                 </div>
-                {tradeMessage && (
-                  <p role="status" className="mt-3 font-body text-sm">
-                    {tradeMessage}
-                  </p>
-                )}
               </div>
-            </div>
-          </details>
+            )}
+            {tradeMessage && (
+              <p role="status" className="mt-3 font-body text-sm">
+                {tradeMessage}
+              </p>
+            )}
+          </Modal>
           {journey.notice && (
             <div
               role="status"
@@ -422,11 +390,66 @@ export function JourneyMapShell() {
           {!journey.data && !journey.error && (
             <p className="bg-night p-2 text-center text-parchment">Locaties laden…</p>
           )}
-          <LocationMap data={journey.data} onSelect={setSelectedLocation} />
+          <div className="relative isolate">
+            <LocationMap
+              data={journey.data}
+              onSelect={(id) => {
+                setSelectedLocation(id);
+              }}
+            />
+            <ul
+              aria-label="Resources"
+              className="pointer-events-none absolute inset-x-0 top-0 z-20 flex flex-wrap items-start gap-2 bg-gradient-to-b from-night-deep/50 to-transparent px-3 pb-8 pt-3 sm:gap-3 sm:p-5"
+            >
+              {resources.map(({ name, icon: Icon }) => (
+                <li
+                  key={name}
+                  aria-label={`${name}: ${inventory[name]}`}
+                  className="pointer-events-auto"
+                >
+                  <button
+                    type="button"
+                    aria-label={`${name}: ${inventory[name]}, bekijk opties`}
+                    aria-haspopup="dialog"
+                    onClick={() => {
+                      setTradeMessage("");
+                      setSelectedResource(name);
+                    }}
+                    title={name}
+                    style={{ backgroundColor: resourceColors[name] }}
+                    className="flex h-11 w-20 items-center justify-center gap-2 rounded-full border-2 border-ink/70 px-2 text-ink shadow-[0_4px_0_#302039,0_6px_10px_#00000055] transition hover:-translate-y-0.5 hover:brightness-110 active:translate-y-1 active:shadow-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white motion-reduce:transform-none"
+                  >
+                    <Icon size={18} strokeWidth={1.7} className="shrink-0" aria-hidden="true" />
+                    <span className="font-display text-base font-bold tabular-nums">
+                      {inventory[name]}
+                    </span>
+                  </button>
+                </li>
+              ))}
+              <li className="pointer-events-auto ml-auto">
+                <Link
+                  href="/development-cards"
+                  aria-label={`Ontwikkelingskaarten: ${cardCount}`}
+                  title="Ontwikkelingskaarten"
+                  className="trippy-button flex min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-lg bg-[#c681f5] px-3 text-ink shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                >
+                  <DevelopmentCardsIcon />
+                  <span aria-hidden="true" className="text-sm font-bold">
+                    {cardCount}
+                  </span>
+                </Link>
+              </li>
+            </ul>
+          </div>
           <Modal
+            className="max-h-[85dvh] overflow-y-auto"
             open={selectedLocation !== null}
             onClose={closeLocation}
-            title={location?.name ?? `Locatie ${selectedLocation}`}
+            title={
+              location && location.status !== "locked"
+                ? location.name
+                : `Locatie ${selectedLocation}`
+            }
             description={
               !location
                 ? "De locatiestatus is nog niet beschikbaar. Probeer het zo opnieuw."
@@ -434,7 +457,9 @@ export function JourneyMapShell() {
                   ? "Deze locatie is nog op slot. Jullie begeleiders geven deze vrij zodra jullie er zijn."
                   : location.status === "completed"
                     ? "Je hebt deze locatie al afgerond."
-                    : "Wil je deze locatie activeren en de quiz openen?"
+                    : !location.ready
+                      ? "Deze locatie is vrijgegeven. Bekijk de locatie en het verhaal; de quiz volgt zodra deze klaar is."
+                      : "Wil je deze locatie activeren en de quest openen?"
             }
             footer={
               <>
@@ -445,6 +470,11 @@ export function JourneyMapShell() {
                   <ActionButton
                     loading={journey.busy}
                     onClick={async () => {
+                      if (!location.ready) {
+                        setQuizLocation(location.id);
+                        setSelectedLocation(null);
+                        return;
+                      }
                       const next = await journey.command(location.id, "start");
                       if (next) {
                         setQuizLocation(location.id);
@@ -452,21 +482,32 @@ export function JourneyMapShell() {
                       }
                     }}
                   >
-                    {location.status === "available"
+                    {!location.ready
                       ? "Activeren"
-                      : location.status === "completed"
-                        ? "Bekijk resultaat"
-                        : locationStatusLabels[location.status]}
+                      : location.status === "available"
+                        ? "Activeren"
+                        : location.status === "completed"
+                          ? "Bekijk resultaat"
+                          : locationStatusLabels[location.status]}
                   </ActionButton>
                 )}
               </>
             }
           >
-            {location?.time && <p className="mb-2 font-bold">{location.time}</p>}
+            {location?.image && location.status !== "locked" && (
+              <Image
+                src={location.image}
+                alt={`Psychedelische illustratie van ${location.name}`}
+                width={1024}
+                height={1024}
+                sizes="(max-width: 640px) 85vw, 400px"
+                className="mb-4 aspect-[4/3] w-full rounded-xl object-cover"
+              />
+            )}
             {location?.story && location.status !== "locked" && (
               <p className="mb-3">{location.story}</p>
             )}
-            {journey.error && <p role="alert">{journey.error}</p>}
+            {journey.error && <p>{journey.error}</p>}
           </Modal>
           <div className="border-t-2 border-ink bg-night p-4">
             {allCompleted && (
@@ -474,7 +515,7 @@ export function JourneyMapShell() {
                 fullWidth
                 variant="iron"
                 className="mb-3"
-                onClick={() => setDismissedFinale(null)}
+                onClick={() => setFinaleOpen(true)}
               >
                 Bekijk de finale
               </ActionButton>

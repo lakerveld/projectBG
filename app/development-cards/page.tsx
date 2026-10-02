@@ -1,5 +1,7 @@
 "use client";
 
+import { RewardAction } from "@/components/features/journey/RewardAction";
+import { rewardKey } from "@/lib/domain/locationRewards";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { DevelopmentCardsIcon } from "@/components/ui/DevelopmentCardsIcon";
@@ -10,15 +12,17 @@ import { useDevelopmentCards } from "@/lib/ui/useDevelopmentCards";
 export default function DevelopmentCardsPage() {
   const legacyCards = useDevelopmentCards();
   const journey = useJourneyLocations();
-  const earned = journey.data?.locations.filter((item) => item.result?.correct) ?? [];
+  const earned =
+    journey.data?.locations.filter((item) => item.result?.correct && item.result.bonus) ?? [];
   const cards = [
     ...earned.map((item) => ({
       id: `location-${item.id}`,
+      rewardId: rewardKey(item),
       location: item.name,
       bonus: item.result!.bonus,
       description: `Verdiend bij locatie ${item.id}: ${item.name}.`
     })),
-    ...legacyCards
+    ...legacyCards.map((card) => ({ ...card, rewardId: `legacy:${card.id}` }))
   ];
   return (
     <main lang="nl" className="hall min-h-dvh px-5 py-8">
@@ -38,7 +42,8 @@ export default function DevelopmentCardsPage() {
           </p>
           <h1 className="mt-2 break-words text-3xl font-bold">Ontwikkelingskaarten</h1>
           <p className="mt-3 text-parchment/80">
-            Hier lees je de bonussen terug die je met goede antwoorden hebt verdiend.
+            Hier vind je jouw questbeloningen. Directe beloningen worden bijgeschreven; ruilkaarten
+            kun je hier eenmalig gebruiken.
           </p>
         </header>
         {journey.error && (
@@ -66,9 +71,9 @@ export default function DevelopmentCardsPage() {
                   </div>
                   <h2 className="text-2xl font-bold">{card.bonus}</h2>
                   <p>{card.description}</p>
-                  <p className="border-t-2 border-ink pt-3 text-sm text-sepia-muted">
-                    Het gebruiken van deze bonus volgt later.
-                  </p>
+                  <div className="border-t-2 border-ink pt-3">
+                    <RewardAction rewardId={card.rewardId} bonus={card.bonus} />
+                  </div>
                 </ParchmentCard>
               </li>
             ))}

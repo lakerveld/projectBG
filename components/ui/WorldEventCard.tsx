@@ -109,7 +109,13 @@ export function WorldEventCard({ event, round, className }: WorldEventCardProps)
 }
 
 /** A development reward uses the same seal, ribbon and parchment as event cards. */
-export function DevelopmentEventCard({ bonus }: { bonus: string }) {
+export function DevelopmentEventCard({
+  bonus,
+  description = "Beantwoord de vraag goed om deze bonus te verdienen."
+}: {
+  bonus: string;
+  description?: string;
+}) {
   return (
     <ParchmentCard variant="raised" className="relative pt-9">
       <div className="absolute -top-4 left-5 z-10">
@@ -123,9 +129,7 @@ export function DevelopmentEventCard({ bonus }: { bonus: string }) {
           Ontwikkelingskaart
         </p>
         <h2 className="mt-2 font-display text-2xl font-bold text-sepia">{bonus}</h2>
-        <p className="mt-2 font-body text-sm leading-6 text-sepia">
-          Beantwoord de vraag goed om deze bonus te verdienen.
-        </p>
+        <p className="mt-2 font-body text-sm leading-6 text-sepia">{description}</p>
       </div>
     </ParchmentCard>
   );

@@ -11,8 +11,8 @@ export function parseLocationContent(markdown: string): LocationQuizContent[] {
       block.match(new RegExp(`^${key}:[ \\t]*(.*)$`, "m"))?.[1].trim() ?? "";
     return {
       name: block.split("\n")[0].split(" | ").slice(1).join(" | ").trim(),
+      type: (field("Type") || "quiz") as LocationQuizContent["type"],
       story: field("Verhaal"),
-      time: field("Tijd"),
       question: field("Vraag"),
       answers: ["A", "B", "C", "D"].map(field),
       correct: ["A", "B", "C", "D"].indexOf(field("Correct")),

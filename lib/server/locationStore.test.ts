@@ -55,7 +55,7 @@ it("does not write when a transition fails", async () => {
   expect(saved).toBeNull();
 });
 
-it("resets all locations through admin and persists removal of answers and rewards", async () => {
+it("resets all locations and publishes a new reset ID while preserving configured quizzes", async () => {
   await locationStore((state) => {
     for (const location of state.locations) {
       location.status = "completed";
@@ -73,6 +73,8 @@ it("resets all locations through admin and persists removal of answers and rewar
   expect(response.status).toBe(200);
   const view = await response.json();
   expect(view.locations).toHaveLength(6);
+  expect(view.resetId).toEqual(expect.any(String));
+  expect((await locationStore()).resetId).toBe(view.resetId);
   for (const location of view.locations) {
     expect(location.status).toBe("locked");
     expect(location.result).toBeUndefined();
@@ -81,6 +83,8 @@ it("resets all locations through admin and persists removal of answers and rewar
     expect(location.status).toBe("locked");
     expect(location.answer).toBeUndefined();
     expect(location.unlockedAt).toBeUndefined();
+    expect(location.statusBeforeLock).toBeUndefined();
+    expect(location.rewardId).toBeUndefined();
   }
   await locationStore((state) => transition(state.locations[0], "unlock"));
   expect((await locationStore()).locations[0].status).toBe("available");
@@ -132,10 +136,14 @@ it("reports unavailable Redis instead of using a divergent local game", async ()
 it("saves admin quiz edits, preserves them across reads and resets, and hides correct answers", async () => {
   const original = (await locationStore()).locations[0].quiz;
   const content = { ...original, name: "Nieuwe locatie", question: "Nieuwe vraag?", correct: 2 };
-  const save = (value: unknown) => adminPost(new Request("https://game.example/api/journey/admin", {
-    method: "POST", headers: { origin: "https://game.example" },
-    body: JSON.stringify({ id: "2", action: "save", content: value })
-  }));
+  const save = (value: unknown) =>
+    adminPost(
+      new Request("https://game.example/api/journey/admin", {
+        method: "POST",
+        headers: { origin: "https://game.example" },
+        body: JSON.stringify({ id: "2", action: "save", content: value })
+      })
+    );
   expect((await save(content)).status).toBe(200);
   expect((await locationStore()).locations[1].quiz).toEqual(content);
   await locationStore((state) => {
@@ -145,12 +153,16 @@ it("saves admin quiz edits, preserves them across reads and resets, and hides co
   });
   expect((await save(content)).status).toBe(200);
   const edited = (await locationStore()).locations[1];
-  expect(edited.status).toBe("locked");
+  expect(edited.status).toBe("available");
   expect(edited.answer).toBeUndefined();
-  expect(edited.unlockedAt).toBeUndefined();
-  await adminPost(new Request("https://game.example/api/journey/admin", {
-    method: "POST", headers: { origin: "https://game.example" }, body: JSON.stringify({ action: "reset" })
-  }));
+  expect(edited.unlockedAt).toBeTypeOf("number");
+  await adminPost(
+    new Request("https://game.example/api/journey/admin", {
+      method: "POST",
+      headers: { origin: "https://game.example" },
+      body: JSON.stringify({ action: "reset" })
+    })
+  );
   expect((await locationStore()).locations[1].quiz).toEqual(content);
   const { GET } = await import("@/app/api/journey/route");
   const player = await (await GET()).json();
@@ -158,4 +170,17 @@ it("saves admin quiz edits, preserves them across reads and resets, and hides co
   expect(player.locations[1].quiz).toBeUndefined();
   expect((await save({ ...content, correct: 8 })).status).toBe(409);
   expect((await locationStore()).locations[1].quiz).toEqual(content);
+});
+
+it("preserves custom assignment instructions when migrating legacy quest types", async () => {
+  await locationStore((state) => {
+    const location = state.locations[2];
+    location.status = "available";
+    location.contentOverride = true;
+    delete location.quiz.type;
+    location.quiz.question = "Vraag een medewerker om een kaas voor Ratten en koop deze.";
+  });
+  const location = (await locationStore()).locations[2];
+  expect(location.quiz.type).toBe("purchase");
+  expect(location.quiz.question).toBe("Vraag een medewerker om een kaas voor Ratten en koop deze.");
 });

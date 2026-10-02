@@ -44,8 +44,8 @@ export function LocationMap({
             key={index}
             type="button"
             onClick={() => onSelect(String(index + 1))}
-            aria-label={`${index + 1}. ${location?.name ?? `Locatie ${index + 1}`} — ${locationStatusLabels[status]}`}
-            className={`location-hex absolute isolate grid place-items-center transition-colors focus-visible:bg-white/35 focus-visible:outline-none ${unlocked ? "location-hex-unlocked bg-lime-300/20 text-lime-200 hover:bg-lime-300/35" : status === "completed" ? "text-emerald-200" : "bg-night-deep/30 text-parchment/80 hover:bg-white/15"}`}
+            aria-label={`${index + 1}. ${status === "locked" ? `Locatie ${index + 1}` : (location?.name ?? `Locatie ${index + 1}`)} — ${locationStatusLabels[status]}`}
+            className={`location-hex absolute z-10 isolate grid cursor-pointer place-items-center transition-colors focus-visible:bg-white/35 focus-visible:outline-none ${unlocked ? "location-hex-unlocked bg-lime-300/20 text-lime-200 hover:bg-lime-300/35" : status === "completed" ? "text-emerald-200" : "bg-night-deep/30 text-parchment/80 hover:bg-white/15"}`}
             style={{
               left: `${pin.x - pin.w / 2}%`,
               top: `${pin.y - pin.h / 2}%`,
@@ -54,9 +54,18 @@ export function LocationMap({
               clipPath: "polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)"
             }}
           >
+            {status !== "locked" && location?.image && (
+              <Image
+                src={location.image}
+                alt=""
+                fill
+                sizes="24vw"
+                className="pointer-events-none -z-10 object-cover"
+              />
+            )}
             <span
               aria-hidden="true"
-              className="absolute top-[10%] font-display text-xl font-bold text-gold-bright sm:text-3xl"
+              className="absolute top-[10%] rounded-full bg-night-deep/80 px-2 font-display text-xl font-bold text-gold-bright sm:text-3xl"
             >
               {index + 1}
             </span>

@@ -1,5 +1,6 @@
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { TreatWheel } from "@/components/features/journey/TreatWheel";
 import RattenradPage from "./page";
 
 beforeEach(() => {
@@ -21,13 +22,13 @@ it.each([
   [0, 0.399999, "Levi", "Bier"],
   [0.1, 0.4, "Jordi", "Nakkie"],
   [0.2, 0.799999, "Matthew", "Nakkie"],
-  [0.15, 0.5, "Matthew", "Nakkie"],
-  [0.349999, 0.5, "Matthew", "Nakkie"],
-  [0.35, 0.5, "Argyle", "Nakkie"],
-  [0.65, 0.5, "Matthew", "Nakkie"],
-  [0.849999, 0.5, "Matthew", "Nakkie"],
-  [0.85, 0.5, "Argyle", "Nakkie"],
-  [0.35, 0.8, "Argyle", "Salmari shot"],
+  [0.1125, 0.5, "Matthew", "Nakkie"],
+  [0.387499, 0.5, "Matthew", "Nakkie"],
+  [0.3875, 0.5, "Argyle", "Nakkie"],
+  [0.6125, 0.5, "Matthew", "Nakkie"],
+  [0.887499, 0.5, "Matthew", "Nakkie"],
+  [0.8875, 0.5, "Argyle", "Nakkie"],
+  [0.3875, 0.8, "Argyle", "Salmari shot"],
   [0.999, 0.999, "Dennis", "Salmari shot"]
 ])("completes two eight-second spins with draws %s and %s", (who, what, name, treat) => {
   const random = vi.spyOn(Math, "random").mockReturnValue(who as number);
@@ -66,4 +67,18 @@ it.each([4000, 8000, 12000])("clears the active spin timer when leaving after %s
   act(() => vi.advanceTimersByTime(elapsed));
   unmount();
   expect(vi.getTimerCount()).toBe(0);
+});
+
+it("uses only one draw for the treat when Matthew answered incorrectly", () => {
+  const random = vi.spyOn(Math, "random").mockReturnValue(0.9);
+  const done = vi.fn();
+  render(<TreatWheel onDone={done} />);
+  expect(screen.getByText("Matthew trakteert!")).toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "Draai voor wie" })).not.toBeInTheDocument();
+  fireEvent.click(screen.getByRole("button", { name: "Draai voor de traktatie" }));
+  expect(random).toHaveBeenCalledTimes(1);
+  act(() => vi.advanceTimersByTime(8000));
+  expect(screen.getByRole("status")).toHaveTextContent("Matthew trakteert op Salmari shot!");
+  fireEvent.click(screen.getByRole("button", { name: "Naar de map" }));
+  expect(done).toHaveBeenCalledOnce();
 });

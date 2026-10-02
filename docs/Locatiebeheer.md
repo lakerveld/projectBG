@@ -5,21 +5,28 @@
 Bewerk [content/locatiequizzen.md](../content/locatiequizzen.md). Het nummer is het
 nummer op de kaart. Elke locatie heeft een naam, vraag, vier antwoorden, één juist
 antwoord (A–D) en een bonus. Alleen locatie 1 is al ingevuld. Vul de lege regels in
-voor de overige locaties; de beheerpagina laat vrijgeven pas toe als alles compleet is.
+voor de overige locaties. Via **Locatie vrijgeven** op `/beheer` kun je iedere locatie
+vrijgeven, ook als de quiz nog niet compleet is of je deze aan het bewerken bent.
 Houd iedere waarde op één regel. Publiceer een nieuwe deployment na een wijziging.
 Lokaal leest de server wijzigingen meteen. Reeds vrijgegeven quizzen blijven gelijk.
 
 ## Quizzen bewerken in locatiebeheer
 
+Iedere locatie heeft een aan/uitschakelaar. **Aan** geeft de locatie vrij;
+**Uit** zet deze weer op slot en verbergt de inhoud op de spelerskaart.
+Bij opnieuw aanzetten blijft de eerdere quizvoortgang en beloning behouden.
+De geopende spelersapp neemt de wijziging binnen ongeveer vijf seconden over.
+
 Open `/beheer` en kies **Quiz bewerken** bij een van de zes locaties. Bewerk naam,
 tijd, verhaal, vraag, de vier antwoorden, het correcte antwoord en de beloning.
 Met **Quiz opslaan** bewaar je de inhoud direct op de server; een deployment is niet nodig.
-Onvolledige quizzen mogen als concept worden opgeslagen, maar kunnen nog niet worden vrijgegeven.
+Onvolledige quizzen mogen als concept worden opgeslagen. De locatie kan al worden
+vrijgegeven; de quiz kan pas worden gestart zodra deze compleet is.
 
-Opslaan zet alleen de bewerkte locatie weer op slot en wist het eventuele antwoord
+Opslaan houdt de locatie vrijgegeven en wist het eventuele antwoord
 met de bijbehorende quizkaart. Bij een vrijgegeven locatie vraagt het formulier hiervoor bevestiging.
 Bewerkingen via beheer krijgen voorrang op het Markdown-bestand en blijven behouden
-bij **Alle locaties resetten**. Markdown blijft de bron voor locaties die nog niet via beheer zijn bewerkt.
+bij **Spel resetten**. Markdown blijft de bron voor locaties die nog niet via beheer zijn bewerkt.
 
 ## Route met zes locaties
 
@@ -79,6 +86,10 @@ Een bestaande `JOURNEY_ADMIN_PASSWORD` in `.env.local` wordt niet meer gebruikt 
 - Een begeleider kiest **Locatie vrijgeven**: de locatie wordt **beschikbaar**.
 - Matthew kiest **Activeren**: de quiz wordt **gestart**. Teruggaan of verversen
   bewaart deze status; via dezelfde hexagon kan hij hervatten.
+- Een klik op een vrijgegeven hexagon opent eerst een popup met locatie-info.
+  **Activeren** opent direct de locatiepagina met beloning, tegenprestatie en de
+  vraag met antwoorden of de fysieke opdracht. De locatie-info staat daar ingeklapt;
+  er is geen extra stap om de quiz te starten.
 - Het eerste bevestigde antwoord maakt de locatie **afgerond**, ook bij een fout
   antwoord. Alleen bij een goed antwoord verdient hij de bijbehorende kaart.
 - Antwoorden en beloningen worden op de server gecontroleerd en opgeslagen.
@@ -115,11 +126,15 @@ gelezen als Pils en Sneeuw; de vervallen resource Eten telt niet meer mee.
 
 De resources na dobbelworpen blijven zoals voorheen lokaal op Matthews telefoon.
 Dit onderdeel synchroniseert locaties, quizresultaten en de bijbehorende kaarten.
-Via **Alle locaties resetten** op `/beheer` kun je na bevestiging opnieuw beginnen.
-Alle locaties gaan op slot; antwoorden en verdiende quizkaarten worden gewist voor
-iedereen. De actuele quizinhoud wordt opnieuw ingelezen. Dit kan niet ongedaan worden
-gemaakt. Lokale resources en overige kaarten blijven behouden. Iedereen met toegang
-tot `/beheer` kan deze reset uitvoeren.
+Via **Spel resetten** op `/beheer` kun je na bevestiging opnieuw beginnen.
+Alle locaties gaan op slot; antwoorden, grondstoffen, ontwikkelingskaarten en
+registraties van gebruikte beloningen worden gewist. De opgeslagen vragen en
+opdrachten blijven behouden. Dit kan niet ongedaan worden gemaakt.
+De reset krijgt een unieke ID op de server. Iedere telefoon wist de lokale
+voorraad en kaarten zodra de app de nieuwe reset ophaalt, ook na een periode
+offline of wanneer de app tijdens de reset gesloten was. Dezelfde reset wordt
+maar één keer per browser uitgevoerd, zodat nieuw verdiende grondstoffen behouden blijven.
+Iedereen met toegang tot `/beheer` kan deze reset uitvoeren.
 
 ## Beheer laadt niet
 
@@ -131,3 +146,19 @@ tot `/beheer` kan deze reset uitvoeren.
   Redis-instellingen verplicht omdat die opdracht de productieversie start.
 - Als de pagina blijft laden of knoppen niet reageren: herstart de ontwikkelserver,
   open de `localhost`-URL en ververs de browser volledig.
+
+### Beloningen en ruilkaarten
+
+Petanque (locatie 6) beoordeelt de score op de server: onder 18 punten moet Matthew
+het traktatierad draaien en krijgt hij geen grondstoffen. Bij 18 punten of meer
+worden automatisch 30 Sneeuw bijgeschreven. Verversen kent die beloning niet opnieuw toe.
+Na een geslaagde Petanque-score verschijnt direct de finale. Bij een lagere score
+verschijnt deze na het verplichte traktatierad. Teruggaan naar de kaart of opnieuw
+openen toont de finale niet automatisch; bij een voltooide route blijft
+**Bekijk de finale** beschikbaar.
+
+Grondstofbeloningen worden bij een geslaagde quest automatisch bijgeschreven in de voorraad op dezelfde telefoon. Bijvoorbeeld: `+3 Gerst, +3 Salmari, +3 Sneeuw`. Dit geldt ook na het bevestigen van een aankoop.
+
+Ruilbeloningen bieden een knop **Voer ruil uit**, zowel bij het questresultaat als bij de ontwikkelingskaarten. Ondersteunde voorbeelden: `Ruil 2 gerst voor 2 sneeuw`, `2 gerst = 1 salmari + 1 sneeuw` en `Ruil 1 salmari voor +2 gerst en +2 sneeuw`. De ruil vereist voldoende voorraad en iedere kaart kan één keer worden gebruikt. Verversen schrijft een beloning niet opnieuw bij; normale voorraadwijzigingen behouden de gebruiksregistratie.
+
+Andere beloningsteksten blijven zichtbaar als fysieke spelbeloning. Na het wissen van een questresultaat levert een opnieuw afgeronde quest een nieuwe beloning op; eerder bijgeschreven grondstoffen worden daarbij niet teruggedraaid.
