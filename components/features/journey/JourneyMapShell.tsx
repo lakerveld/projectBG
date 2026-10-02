@@ -15,6 +15,7 @@ import { ActionButton } from "@/components/ui/ActionButton";
 import { LocationQuiz } from "./LocationQuiz";
 import { LocationMap, locationStatusLabels } from "./LocationMap";
 import { Modal } from "@/components/ui/Modal";
+import { LocationStory } from "./LocationStory";
 import { useJourneyLocations } from "@/lib/ui/useJourneyLocations";
 import { RobberReveal } from "./RobberReveal";
 import { JourneyFinale } from "./JourneyFinale";
@@ -505,7 +506,10 @@ function JourneyMapContent({ journey }: { journey: ReturnType<typeof useJourneyL
               />
             )}
             {location?.story && location.status !== "locked" && (
-              <p className="mb-3">{location.story}</p>
+              <section className="rounded-2xl border border-parchment-edge bg-parchment/40 p-4 text-sepia">
+                <h3 className="mb-3 font-display text-lg font-bold">Het verhaal</h3>
+                <LocationStory story={location.story} />
+              </section>
             )}
             {journey.error && <p>{journey.error}</p>}
           </Modal>

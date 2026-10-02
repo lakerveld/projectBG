@@ -1,6 +1,7 @@
 "use client";
 
 import { RewardAction } from "./RewardAction";
+import { LocationStory } from "./LocationStory";
 import { rewardKey } from "@/lib/domain/locationRewards";
 import { TreatWheel } from "@/components/features/journey/TreatWheel";
 import { useState } from "react";
@@ -120,7 +121,9 @@ export function LocationQuiz({
             <summary className="min-h-11 cursor-pointer content-center font-bold text-gold-bright">
               Lees meer over deze locatie
             </summary>
-            <p className="mt-3 whitespace-pre-line">{location.story}</p>
+            <div className="mt-3">
+              <LocationStory story={location.story} />
+            </div>
           </details>
         )}
         <div
