@@ -72,6 +72,9 @@ it.each([17, 18, 19])(
       await screen.findByText("Het rad draait…");
       expect(screen.queryByRole("button", { name: "Naar de map" })).not.toBeInTheDocument();
     } else {
+      await screen.findByText("Proef geslaagd!");
+      expect(screen.queryByRole("heading", { name: "Weer samen." })).not.toBeInTheDocument();
+      fireEvent.click(screen.getByRole("button", { name: "Naar de map" }));
       await screen.findByRole("heading", { name: "Weer samen." });
       fireEvent.click(screen.getByRole("button", { name: "Naar de map" }));
       expect(screen.queryByRole("heading", { name: "Weer samen." })).not.toBeInTheDocument();
@@ -148,6 +151,7 @@ it("keeps locked hexagons closed, notices an unlock and completes the location q
   fireEvent.click(screen.getByRole("radio", { name: "A. Prik & Tik" }));
   fireEvent.click(screen.getByRole("button", { name: "Bevestig antwoord" }));
   await screen.findByText("Gekozen antwoord");
+  expect(screen.getByText("✓ Goed geantwoord!")).toBeInTheDocument();
   expect(document.querySelector('img[src*="cafe-rood-wit"]')).toBeInTheDocument();
   expect(screen.queryByText("Lees meer over deze locatie")).not.toBeInTheDocument();
   expect(screen.queryByRole("img", { name: "Ontwikkelingskaart" })).not.toBeInTheDocument();

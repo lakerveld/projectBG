@@ -18,6 +18,7 @@ type ModalProps = {
   /** Action row pinned to the foot of the dialog. */
   footer?: ReactNode;
   size?: "sm" | "md";
+  height?: "content" | "tall";
   className?: string;
 };
 
@@ -36,6 +37,7 @@ export function Modal({
   children,
   footer,
   size = "md",
+  height = "content",
   className
 }: ModalProps) {
   const titleId = useId();
@@ -104,6 +106,7 @@ export function Modal({
         className={cn(
           "scroll-in parchment-face illuminated relative w-full overflow-hidden rounded-3xl border-2 border-parchment-edge text-sepia shadow-parchment outline-none",
           size === "sm" ? "max-w-sm" : "max-w-md",
+          height === "tall" && "flex h-[90dvh] max-h-[calc(100dvh-2rem)] flex-col",
           className
         )}
       >
@@ -116,7 +119,9 @@ export function Modal({
           <X size={18} aria-hidden="true" />
         </button>
 
-        <div className="px-6 pb-6 pt-7">
+        <div
+          className={cn("px-6 pb-6 pt-7", height === "tall" && "min-h-0 flex-1 overflow-y-auto")}
+        >
           <div className="flex items-start gap-3.5">
             {icon ? <Seal icon={icon} tone={tone} color={iconColor} size="md" /> : null}
             <div className="min-w-0 flex-1 pr-6">
@@ -135,7 +140,7 @@ export function Modal({
         </div>
 
         {footer ? (
-          <div className="flex justify-end gap-2.5 border-t border-parchment-edge bg-[#f6d9ef]/40 px-6 py-4">
+          <div className="flex shrink-0 justify-end gap-2.5 border-t border-parchment-edge bg-[#f6d9ef]/40 px-6 py-4">
             {footer}
           </div>
         ) : null}

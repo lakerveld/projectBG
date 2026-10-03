@@ -144,10 +144,7 @@ function JourneyMapContent({ journey }: { journey: ReturnType<typeof useJourneyL
           const next = await journey.command(activeQuiz.id, "answer", answer);
           const completed = next?.locations.find((item) => item.id === "6");
           if (activeQuiz.id === "6" && activeQuiz.status !== "completed" && completed?.result) {
-            if (completed.result.correct) {
-              setQuizLocation(null);
-              setFinaleOpen(true);
-            } else setFinalePending(true);
+            setFinalePending(true);
           }
         }}
         onClose={() => {
@@ -444,7 +441,7 @@ function JourneyMapContent({ journey }: { journey: ReturnType<typeof useJourneyL
             </ul>
           </div>
           <Modal
-            className="max-h-[85dvh] overflow-y-auto"
+            height="tall"
             open={selectedLocation !== null}
             onClose={closeLocation}
             title={
@@ -503,12 +500,12 @@ function JourneyMapContent({ journey }: { journey: ReturnType<typeof useJourneyL
                 width={1024}
                 height={1024}
                 sizes="(max-width: 640px) 85vw, 400px"
-                className="mb-4 aspect-[4/3] w-full rounded-xl object-cover"
+                className="mb-3 aspect-[4/3] w-full rounded-xl object-cover"
               />
             )}
             {location?.story && location.status !== "locked" && (
-              <section className="rounded-2xl border border-parchment-edge bg-parchment/40 p-4 text-sepia">
-                <h3 className="mb-3 font-display text-lg font-bold">Het verhaal</h3>
+              <section className="text-sepia">
+                <h3 className="mb-2 font-display text-lg font-bold">Het verhaal</h3>
                 <LocationStory story={location.story} />
               </section>
             )}

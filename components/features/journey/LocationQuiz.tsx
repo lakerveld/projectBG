@@ -143,7 +143,16 @@ export function LocationQuiz({
                   <p className="rounded-xl border border-gold-bright bg-gold/20 p-3">
                     <span className="block text-sm text-parchment/70">Gekozen antwoord</span>
                     {location.result.chosenAnswer ??
-                      (selected === null ? "" : quiz?.answers[selected])}
+                      (selected === null
+                        ? location.result.correct
+                          ? location.result.correctAnswer
+                          : ""
+                        : quiz?.answers[selected])}
+                    {location.result.correct && (
+                      <span className="mt-2 block font-bold text-gold-bright">
+                        ✓ Goed geantwoord!
+                      </span>
+                    )}
                   </p>
                   {!location.result.correct && (
                     <p className="rounded-xl border border-parchment/30 bg-parchment/5 p-3">
