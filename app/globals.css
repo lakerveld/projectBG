@@ -61,6 +61,12 @@ h3 {
   flex-direction: column;
 }
 
+/* Preserve the full-width illustration and its aligned location targets. */
+.journey-map-artwork {
+  width: 100%;
+  aspect-ratio: 941 / 1672;
+}
+
 /* Quiet cosmic canvas keeps the vivid controls readable. */
 .hall {
   color: #fffdf2;

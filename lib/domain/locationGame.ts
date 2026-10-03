@@ -39,6 +39,7 @@ export type LocationView = {
   result?: {
     correct: boolean;
     correctAnswer: string;
+    chosenAnswer?: string;
     bonus: string;
     score?: number;
     rewardId?: string;
@@ -93,6 +94,9 @@ export function publicLocation(location: StoredLocation): LocationView {
               ? (location.answer ?? 0) >= 18
               : type === "purchase" || type === "score" || location.answer === correct,
             correctAnswer: quiz.answers[correct] ?? "",
+            ...(type === undefined || type === "quiz"
+              ? { chosenAnswer: quiz.answers[location.answer ?? -1] ?? "" }
+              : {}),
             ...(type === "score" ? { score: location.answer } : {}),
             rewardId: location.rewardId,
             bonus: petanque && (location.answer ?? 0) < 18 ? "" : quiz.bonus

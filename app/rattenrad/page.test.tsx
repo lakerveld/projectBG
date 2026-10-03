@@ -73,9 +73,12 @@ it("uses only one draw for the treat when Matthew answered incorrectly", () => {
   const random = vi.spyOn(Math, "random").mockReturnValue(0.9);
   const done = vi.fn();
   render(<TreatWheel onDone={done} />);
+  act(() => vi.advanceTimersByTime(0));
   expect(screen.getByText("Matthew trakteert!")).toBeInTheDocument();
   expect(screen.queryByRole("button", { name: "RATATATATATA" })).not.toBeInTheDocument();
-  fireEvent.click(screen.getByRole("button", { name: "Draai voor de traktatie" }));
+  expect(screen.queryByRole("button")).not.toBeInTheDocument();
+  expect(screen.getByRole("status")).toHaveTextContent("Het rad draait…");
+  expect(document.querySelector(".robber-reel")).toBeInTheDocument();
   expect(random).toHaveBeenCalledTimes(1);
   act(() => vi.advanceTimersByTime(8000));
   expect(screen.getByRole("status")).toHaveTextContent("Matthew trakteert op Salmari shot!");

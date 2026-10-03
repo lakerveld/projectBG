@@ -41,34 +41,35 @@ export function Rattenrad({
   const [person, setPerson] = useState<number | null>(forcedMatthew ? 2 : null);
   const [treat, setTreat] = useState<number | null>(null);
   const [phase, setPhase] = useState<"who" | "what" | "done">(forcedMatthew ? "what" : "who");
-  const [spinning, setSpinning] = useState(false);
+  const [spinning, setSpinning] = useState(forcedMatthew);
   const busy = useRef(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  useEffect(
-    () => () => {
+  useEffect(() => {
+    if (forcedMatthew) {
+      busy.current = true;
+      timer.current = setTimeout(() => {
+        const draw = Math.random();
+        setTreat(draw < 0.4 ? 0 : draw < 0.8 ? 1 : 2);
+        timer.current = setTimeout(
+          () => {
+            setPhase("done");
+            setSpinning(false);
+            busy.current = false;
+          },
+          window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? 0 : SPIN_MS
+        );
+      }, 0);
+    }
+    return () => {
       if (timer.current) clearTimeout(timer.current);
-    },
-    []
-  );
+    };
+  }, [forcedMatthew]);
 
   function spin() {
-    if (busy.current || (phase !== "who" && !(forcedMatthew && phase === "what"))) return;
+    if (busy.current || phase !== "who") return;
     busy.current = true;
     setSpinning(true);
-    if (forcedMatthew) {
-      const draw = Math.random();
-      setTreat(draw < 0.4 ? 0 : draw < 0.8 ? 1 : 2);
-      timer.current = setTimeout(
-        () => {
-          setPhase("done");
-          setSpinning(false);
-          busy.current = false;
-        },
-        window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? 0 : SPIN_MS
-      );
-      return;
-    }
     const draw = Math.random();
     setPerson(wheelSlices.findIndex((slice) => draw < slice.end / 360));
     const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
@@ -230,10 +231,6 @@ export function Rattenrad({
           ) : phase === "who" ? (
             <ActionButton fullWidth size="lg" disabled={spinning} onClick={spin}>
               {spinning ? "Even geduld…" : "RATATATATATA"}
-            </ActionButton>
-          ) : forcedMatthew ? (
-            <ActionButton fullWidth size="lg" disabled={spinning} onClick={spin}>
-              {spinning ? "Even geduld…" : "Draai voor de traktatie"}
             </ActionButton>
           ) : null}
           {!forcedMatthew && (

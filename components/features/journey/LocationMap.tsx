@@ -13,13 +13,15 @@ export const locationStatusLabels = {
 
 export function LocationMap({
   data,
-  onSelect
+  onSelect,
+  onFinale
 }: {
   data: JourneyView | null;
   onSelect: (id: string) => void;
+  onFinale?: () => void;
 }) {
   return (
-    <div className="relative">
+    <div className="journey-map-artwork relative">
       <Image
         src="/maps/antwerp-six-locations.png"
         alt="Geïllustreerde kaart van Antwerpen met zes genummerde locaties, de Schelde en de kathedraal."
@@ -101,6 +103,33 @@ export function LocationMap({
           </button>
         );
       })}
+      {onFinale && (
+        <button
+          type="button"
+          onClick={onFinale}
+          aria-label="Bekijk de finale"
+          title="Bekijk de finale"
+          className="location-hex absolute bottom-[3%] left-1/2 z-10 grid h-16 w-16 -translate-x-1/2 cursor-pointer place-items-center bg-night-deep/80 text-gold-bright hover:bg-night-deep focus-visible:bg-gold/40 focus-visible:outline-none"
+          style={{ clipPath: "polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)" }}
+        >
+          <span aria-hidden="true" className="text-3xl">
+            🏁
+          </span>
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 100 100"
+            className="pointer-events-none absolute inset-0 size-full"
+            fill="none"
+          >
+            <polygon
+              points="50,2 98,26 98,74 50,98 2,74 2,26"
+              stroke="currentColor"
+              strokeWidth="3"
+              vectorEffect="non-scaling-stroke"
+            />
+          </svg>
+        </button>
+      )}
     </div>
   );
 }

@@ -66,8 +66,10 @@ export function LocationQuiz({
 }) {
   const [selected, setSelected] = useState<number | null>(null);
   const [score, setScore] = useState("");
+  const [openedBeforeCompletion] = useState(() => !location.result);
   const quiz = location.quiz;
   const type = quiz?.type ?? "quiz";
+  const completedQuestion = Boolean(location.result && type === "quiz");
   const petanque = location.id === "6" && type === "score";
   return (
     <section lang="nl" className="relative isolate min-h-dvh overflow-hidden">
@@ -85,17 +87,21 @@ export function LocationQuiz({
       />
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-night-deep/40 via-night-deep/80 to-night-deep" />
       <div className="mx-auto flex min-h-dvh max-w-lg flex-col gap-5 px-5 py-8">
-        <p className="text-xs font-bold uppercase tracking-widest text-gold-bright">
-          Locatie {location.id}
-          {quiz?.bonus ? " · Ontwikkelingskaart" : ""}
-        </p>
-        <h1
-          tabIndex={-1}
-          ref={focusHeading}
-          className="font-display text-4xl font-bold text-parchment outline-none"
-        >
-          {location.name}
-        </h1>
+        {!completedQuestion && (
+          <>
+            <p className="text-xs font-bold uppercase tracking-widest text-gold-bright">
+              Locatie {location.id}
+              {quiz?.bonus ? " · Ontwikkelingskaart" : ""}
+            </p>
+            <h1
+              tabIndex={-1}
+              ref={focusHeading}
+              className="font-display text-4xl font-bold text-parchment outline-none"
+            >
+              {location.name}
+            </h1>
+          </>
+        )}
         {!location.result && quiz?.bonus && (
           <DevelopmentEventCard
             bonus={quiz.bonus}
@@ -131,47 +137,56 @@ export function LocationQuiz({
         >
           {location.result ? (
             <>
-              <div role="status" className="space-y-3">
-                <h2 className="font-bold text-gold-bright">
-                  {petanque
-                    ? location.result.correct
-                      ? "Proef geslaagd!"
-                      : "Minder dan 18 punten: Matthew trakteert."
-                    : type !== "quiz"
-                      ? "Quest afgerond!"
-                      : location.result.correct
-                        ? "Goed geantwoord!"
-                        : "Helaas, dat is niet het juiste antwoord."}
-                </h2>
-                <p>
-                  {type === "score"
-                    ? `Je score: ${location.result.score}`
-                    : type === "purchase" && !quiz?.bonus
-                      ? "Je aankoop is bevestigd."
-                      : location.result.correct
-                        ? quiz?.bonus
-                          ? `Je hebt een ontwikkelingskaart verdiend: ${location.result.bonus}.`
-                          : "Je hebt de vraag goed beantwoord."
-                        : `Het juiste antwoord is: ${location.result.correctAnswer}`}
-                </p>
-                <p>Deze locatie is afgerond.</p>
-              </div>
-              {location.result.correct && location.result.bonus && (
+              {type === "quiz" ? (
+                <div className="space-y-3">
+                  <h2 className="whitespace-pre-line text-xl font-bold">{quiz?.question}</h2>
+                  <p className="rounded-xl border border-gold-bright bg-gold/20 p-3">
+                    <span className="block text-sm text-parchment/70">Gekozen antwoord</span>
+                    {location.result.chosenAnswer ??
+                      (selected === null ? "" : quiz?.answers[selected])}
+                  </p>
+                  {!location.result.correct && (
+                    <p className="rounded-xl border border-parchment/30 bg-parchment/5 p-3">
+                      <span className="block text-sm text-parchment/70">Juiste antwoord</span>
+                      {location.result.correctAnswer}
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <div role="status" className="space-y-3">
+                  <h2 className="font-bold text-gold-bright">
+                    {petanque
+                      ? location.result.correct
+                        ? "Proef geslaagd!"
+                        : "Minder dan 18 punten: Matthew trakteert."
+                      : "Quest afgerond!"}
+                  </h2>
+                  <p>
+                    {type === "score"
+                      ? `Je score: ${location.result.score}`
+                      : type === "purchase" && !quiz?.bonus
+                        ? "Je aankoop is bevestigd."
+                        : location.result.correct
+                          ? quiz?.bonus
+                            ? `Je hebt een ontwikkelingskaart verdiend: ${location.result.bonus}.`
+                            : "Je hebt de vraag goed beantwoord."
+                          : `Het juiste antwoord is: ${location.result.correctAnswer}`}
+                  </p>
+                  <p>Deze locatie is afgerond.</p>
+                </div>
+              )}
+              {type !== "quiz" && location.result.correct && location.result.bonus && (
                 <RewardAction rewardId={rewardKey(location)} bonus={location.result.bonus} />
               )}
-              {location.result.correct && location.result.bonus && (
+              {type !== "quiz" && location.result.correct && location.result.bonus && (
                 <Link className="block underline" href="/development-cards">
                   Bekijk je ontwikkelingskaarten
                 </Link>
               )}
-              {!location.result.correct && (type === "quiz" || petanque) ? (
-                <>
-                  <p className="rounded-xl border border-gold-bright/50 bg-gold/10 p-4 font-bold">
-                    Matthew, je bent verplicht het rattenrad te draaien. Jij trakteert; het rad
-                    bepaalt waarop.
-                  </p>
-                  <TreatWheel onDone={onClose} />
-                </>
+              {openedBeforeCompletion &&
+              !location.result.correct &&
+              (type === "quiz" || petanque) ? (
+                <TreatWheel onDone={onClose} />
               ) : (
                 <ActionButton fullWidth onClick={onClose}>
                   Naar de map

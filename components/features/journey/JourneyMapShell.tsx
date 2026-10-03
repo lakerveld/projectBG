@@ -264,11 +264,11 @@ function JourneyMapContent({ journey }: { journey: ReturnType<typeof useJourneyL
     <section
       aria-label="Kaart van Antwerpen"
       lang="nl"
-      className="flex min-h-dvh w-full items-start pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]"
+      className="relative flex h-dvh w-full flex-col overflow-hidden pt-[env(safe-area-inset-top)]"
     >
       <h1 className="sr-only">Kaart van Antwerpen</h1>
-      <div className="w-full overflow-hidden">
-        <div className="overflow-hidden">
+      <div className="flex min-h-0 w-full flex-1 flex-col">
+        <div className="flex min-h-0 flex-1 flex-col">
           <Modal
             open={selectedResource !== null}
             onClose={closeResource}
@@ -370,7 +370,7 @@ function JourneyMapContent({ journey }: { journey: ReturnType<typeof useJourneyL
           {journey.notice && (
             <div
               role="status"
-              className="flex items-center justify-between gap-3 border-b-2 border-ink bg-gold-bright p-4 font-bold text-ink"
+              className="flex shrink-0 items-center justify-between gap-3 border-b-2 border-ink bg-gold-bright p-3 font-bold text-ink"
             >
               <p>{journey.notice}</p>
               <button
@@ -391,9 +391,10 @@ function JourneyMapContent({ journey }: { journey: ReturnType<typeof useJourneyL
           {!journey.data && !journey.error && (
             <p className="bg-night p-2 text-center text-parchment">Locaties laden…</p>
           )}
-          <div className="relative isolate">
+          <div className="relative isolate min-h-0 flex-1 overflow-y-auto pb-[calc(5rem+env(safe-area-inset-bottom))]">
             <LocationMap
               data={journey.data}
+              onFinale={allCompleted ? () => setFinaleOpen(true) : undefined}
               onSelect={(id) => {
                 setSelectedLocation(id);
               }}
@@ -513,46 +514,35 @@ function JourneyMapContent({ journey }: { journey: ReturnType<typeof useJourneyL
             )}
             {journey.error && <p>{journey.error}</p>}
           </Modal>
-          <div className="border-t-2 border-ink bg-night p-4">
-            {allCompleted && (
-              <ActionButton
-                fullWidth
-                variant="iron"
-                className="mb-3"
-                onClick={() => setFinaleOpen(true)}
-              >
-                Bekijk de finale
-              </ActionButton>
-            )}
+          <div className="pointer-events-none absolute inset-x-0 bottom-[env(safe-area-inset-bottom)] z-30 p-3">
             {storageError && (
               <p role="alert" className="mb-3 text-parchment">
                 Je score is alleen voor deze sessie bewaard. Lokale opslag is niet beschikbaar.
               </p>
             )}
-            {lastRoll !== null && (
-              <p role="status" className="mb-3 text-center font-body text-parchment">
-                Laatste worp: {lastRoll} ogen
-              </p>
-            )}
-            <ActionButton
-              type="button"
-              icon={Dice5}
-              fullWidth
-              size="lg"
-              onClick={() => {
-                setSelectedTotal(null);
-                setDigitalDice(null);
-                setEnteringRoll(true);
-              }}
-            >
-              DICE
-            </ActionButton>
-            <Link
-              href="/rattenrad"
-              className="trippy-button mt-3 flex min-h-14 items-center justify-center rounded-xl border border-ink bg-[#c681f5] px-4 font-display font-bold text-ink focus-visible:outline-2 focus-visible:outline-gold-bright"
-            >
-              🐀 Het rattenrad — wie trakteert?
-            </Link>
+            <div className="grid grid-cols-2 gap-3">
+              <ActionButton
+                type="button"
+                icon={Dice5}
+                className="pointer-events-auto"
+                style={{ backgroundColor: "#d5fa55bf" }}
+                fullWidth
+                size="lg"
+                onClick={() => {
+                  setSelectedTotal(null);
+                  setDigitalDice(null);
+                  setEnteringRoll(true);
+                }}
+              >
+                DICE
+              </ActionButton>
+              <Link
+                href="/rattenrad"
+                className="trippy-button pointer-events-auto flex min-h-14 items-center justify-center gap-2 rounded-xl border border-ink bg-[#c681f5bf] px-3 font-display font-bold text-ink focus-visible:outline-2 focus-visible:outline-gold-bright"
+              >
+                🐀 Rattenrad
+              </Link>
+            </div>
           </div>
         </div>
       </div>

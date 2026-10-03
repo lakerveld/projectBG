@@ -172,12 +172,12 @@ describe("JourneyMapShell", () => {
     });
     fireEvent.click(screen.getByRole("button", { name: "Naar de map" }));
     expect(screen.getByRole("listitem", { name: "Sneeuw: 1" })).toBeInTheDocument();
-    expect(screen.getByRole("status")).toHaveTextContent("Laatste worp: 10 ogen");
+    expect(screen.queryByText(/Laatste worp:/)).not.toBeInTheDocument();
     expect(screen.getByRole("listitem", { name: "Gerst: 0" })).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "DICE" }));
     expect(screen.getByRole("button", { name: "Bevestig worp" })).toBeDisabled();
     fireEvent.click(screen.getByRole("button", { name: "Terug naar de kaart" }));
-    expect(screen.getByRole("status")).toHaveTextContent("Laatste worp: 10 ogen");
+    expect(screen.queryByText(/Laatste worp:/)).not.toBeInTheDocument();
   });
   it("spins on seven, steals one owned resource exactly once, and returns to the map", () => {
     vi.useFakeTimers();

@@ -69,7 +69,7 @@ it.each([17, 18, 19])(
     });
     fireEvent.click(screen.getByRole("button", { name: "Bevestig score" }));
     if (score < 18) {
-      await screen.findByRole("button", { name: "Draai voor de traktatie" });
+      await screen.findByText("Het rad draait…");
       expect(screen.queryByRole("button", { name: "Naar de map" })).not.toBeInTheDocument();
     } else {
       await screen.findByRole("heading", { name: "Weer samen." });
@@ -147,7 +147,7 @@ it("keeps locked hexagons closed, notices an unlock and completes the location q
   expect(screen.getByRole("button", { name: "Bevestig antwoord" })).toBeDisabled();
   fireEvent.click(screen.getByRole("radio", { name: "A. Prik & Tik" }));
   fireEvent.click(screen.getByRole("button", { name: "Bevestig antwoord" }));
-  await screen.findByText("Goed geantwoord!");
+  await screen.findByText("Gekozen antwoord");
   expect(document.querySelector('img[src*="cafe-rood-wit"]')).toBeInTheDocument();
   expect(screen.queryByText("Lees meer over deze locatie")).not.toBeInTheDocument();
   expect(screen.queryByRole("img", { name: "Ontwikkelingskaart" })).not.toBeInTheDocument();
@@ -155,7 +155,14 @@ it("keeps locked hexagons closed, notices an unlock and completes the location q
   expect(screen.getByRole("link", { name: "Ontwikkelingskaarten: 1" })).toBeInTheDocument();
   fireEvent.click(screen.getByRole("button", { name: /1. Café Rood\/Wit — Afgerond/ }));
   await activateLocation();
-  await screen.findByText("Goed geantwoord!");
+  await screen.findByText("Gekozen antwoord");
+  expect(screen.getByText("Prik & Tik", { exact: true })).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "Welke spreuk is echt?" })).toBeInTheDocument();
+  expect(screen.queryByText("Deze locatie is afgerond.")).not.toBeInTheDocument();
+  expect(screen.queryByRole("heading", { name: "Café Rood/Wit" })).not.toBeInTheDocument();
+  expect(
+    screen.queryByRole("link", { name: "Bekijk je ontwikkelingskaarten" })
+  ).not.toBeInTheDocument();
   expect(screen.queryByRole("button", { name: "Bevestig antwoord" })).not.toBeInTheDocument();
 });
 
@@ -190,8 +197,10 @@ it("reveals the reunion after the last quiz result, even with a wrong answer, an
   await activateLocation();
   fireEvent.click(await screen.findByRole("radio", { name: "B. B" }));
   fireEvent.click(screen.getByRole("button", { name: "Bevestig antwoord" }));
-  await screen.findByText("Helaas, dat is niet het juiste antwoord.");
-  fireEvent.click(screen.getByRole("button", { name: "Draai voor de traktatie" }));
+  await screen.findByText("Gekozen antwoord");
+  expect(screen.getByText("B", { exact: true })).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "Welke spreuk is echt?" })).toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "Draai voor de traktatie" })).not.toBeInTheDocument();
   await screen.findByRole("button", { name: "Naar de map" });
   expect(screen.queryByRole("heading", { name: "Weer samen." })).not.toBeInTheDocument();
   fireEvent.click(screen.getByRole("button", { name: "Naar de map" }));
@@ -334,7 +343,7 @@ it("shows and accepts quiz answers without a configured reward", async () => {
   fireEvent.click(await screen.findByRole("radio", { name: "A. Prik & Tik" }));
   expect(screen.getAllByRole("radio")).toHaveLength(4);
   fireEvent.click(screen.getByRole("button", { name: "Bevestig antwoord" }));
-  await screen.findByText("Je hebt de vraag goed beantwoord.");
+  await screen.findByText("Gekozen antwoord");
   fireEvent.click(screen.getByRole("button", { name: "Naar de map" }));
   expect(screen.getByRole("link", { name: "Ontwikkelingskaarten: 0" })).toBeInTheDocument();
 });
@@ -375,4 +384,29 @@ it("keeps a location open and allows returning when starting its quiz fails", as
   expect(
     screen.getByRole("button", { name: /1. Café Rood\/Wit — Beschikbaar/ })
   ).toBeInTheDocument();
+});
+
+it("shows the wheel after a wrong answer but omits it when reopening the result", async () => {
+  vi.stubGlobal(
+    "matchMedia",
+    vi.fn(() => ({ matches: true }))
+  );
+  locations[0].status = "started";
+  render(<JourneyMapShell />);
+  fireEvent.click(
+    await screen.findByRole("button", { name: /1. Café Rood\/Wit — Quiz hervatten/ })
+  );
+  await activateLocation();
+  fireEvent.click(screen.getByRole("radio", { name: "B. B" }));
+  fireEvent.click(screen.getByRole("button", { name: "Bevestig antwoord" }));
+  await screen.findByText("Matthew trakteert!");
+  fireEvent.click(await screen.findByRole("button", { name: "Naar de map" }));
+
+  fireEvent.click(screen.getByRole("button", { name: /1. Café Rood\/Wit — Afgerond/ }));
+  await activateLocation();
+  expect(screen.getByRole("heading", { name: "Welke spreuk is echt?" })).toBeInTheDocument();
+  expect(screen.getByText("B", { exact: true })).toBeInTheDocument();
+  expect(screen.queryByText("Matthew trakteert!")).not.toBeInTheDocument();
+  expect(screen.queryByRole("heading", { name: "Het rattenrad" })).not.toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "Naar de map" })).toBeEnabled();
 });
