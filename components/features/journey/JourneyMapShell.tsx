@@ -493,7 +493,7 @@ function JourneyMapContent({ journey }: { journey: ReturnType<typeof useJourneyL
               </>
             }
           >
-            {location?.image && location.status === "completed" && (
+            {location?.image && location.status !== "locked" && (
               <Image
                 src={location.image}
                 alt={`Psychedelische illustratie van ${location.name}`}

@@ -138,7 +138,9 @@ it("keeps locked hexagons closed, notices an unlock and completes the location q
   fireEvent.click(screen.getByRole("button", { name: /1. Café Rood\/Wit — Beschikbaar/ }));
   expect(screen.getByRole("heading", { name: "Café Rood/Wit" })).toBeInTheDocument();
   expect(screen.getByRole("dialog")).toHaveTextContent("Het spoor begint in Café Rood/Wit.");
-  expect(document.querySelector('img[src*="cafe-rood-wit"]')).not.toBeInTheDocument();
+  expect(
+    screen.getByRole("img", { name: "Psychedelische illustratie van Café Rood/Wit" })
+  ).toBeInTheDocument();
   fireEvent.click(screen.getByRole("button", { name: "Activeren" }));
   await screen.findByRole("group", { name: "Welke spreuk is echt?" });
   expect(document.querySelector('img[src*="cafe-rood-wit"]')).not.toBeInTheDocument();

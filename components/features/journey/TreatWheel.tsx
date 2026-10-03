@@ -11,8 +11,8 @@ const wheelPeople = [...people, ...people];
 const wheelSlices = wheelPeople.map((name, index) => {
   const start = wheelPeople
     .slice(0, index)
-    .reduce((sum, person) => sum + (person === "Matthew" ? 99 : 20.25), 0);
-  const end = start + (name === "Matthew" ? 99 : 20.25);
+    .reduce((sum, person) => sum + (person === "Matthew" ? 54 : 31.5), 0);
+  const end = start + (name === "Matthew" ? 54 : 31.5);
   return { start, end, center: (start + end) / 2 };
 });
 const treats = ["Bier", "Nakkie", "Salmari shot"];
