@@ -261,11 +261,11 @@ function JourneyMapContent({ journey }: { journey: ReturnType<typeof useJourneyL
     <section
       aria-label="Kaart van Antwerpen"
       lang="nl"
-      className="relative flex h-dvh w-full flex-col overflow-hidden pt-[env(safe-area-inset-top)]"
+      className="relative min-h-dvh w-full pt-[env(safe-area-inset-top)]"
     >
       <h1 className="sr-only">Kaart van Antwerpen</h1>
-      <div className="flex min-h-0 w-full flex-1 flex-col">
-        <div className="flex min-h-0 flex-1 flex-col">
+      <div className="w-full">
+        <div>
           <Modal
             open={selectedResource !== null}
             onClose={closeResource}
@@ -388,7 +388,7 @@ function JourneyMapContent({ journey }: { journey: ReturnType<typeof useJourneyL
           {!journey.data && !journey.error && (
             <p className="bg-night p-2 text-center text-parchment">Locaties laden…</p>
           )}
-          <div className="relative isolate min-h-0 flex-1 overflow-y-auto pb-[calc(5rem+env(safe-area-inset-bottom))]">
+          <div className="relative isolate pb-[calc(5rem+env(safe-area-inset-bottom))]">
             <LocationMap
               data={journey.data}
               onFinale={allCompleted ? () => setFinaleOpen(true) : undefined}
@@ -511,7 +511,7 @@ function JourneyMapContent({ journey }: { journey: ReturnType<typeof useJourneyL
             )}
             {journey.error && <p>{journey.error}</p>}
           </Modal>
-          <div className="pointer-events-none absolute inset-x-0 bottom-[env(safe-area-inset-bottom)] z-30 p-3">
+          <div className="pointer-events-none fixed inset-x-0 bottom-[env(safe-area-inset-bottom)] z-30 p-3">
             {storageError && (
               <p role="alert" className="mb-3 text-parchment">
                 Je score is alleen voor deze sessie bewaard. Lokale opslag is niet beschikbaar.
