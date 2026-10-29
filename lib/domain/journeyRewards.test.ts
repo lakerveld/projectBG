@@ -9,15 +9,15 @@ import {
 describe("journey rewards", () => {
   it.each([
     [2, "Salmari"],
-    [3, "Sneeuw"],
+    [3, "Water"],
     [4, "Salmari"],
-    [5, "Sneeuw"],
+    [5, "Water"],
     [6, "Gerst"],
     [7, null],
     [8, "Gerst"],
     [9, "Gerst"],
-    [10, "Sneeuw"],
-    [11, "Sneeuw"],
+    [10, "Water"],
+    [11, "Water"],
     [12, "Salmari"]
   ])("maps %s to %s", (roll, resource) => {
     expect(resourceForRoll(Number(roll))).toBe(resource);
@@ -30,7 +30,7 @@ describe("journey rewards", () => {
       "rattan-journey-inventory",
       JSON.stringify({ Bier: 3, Salmiak: 2, Poedersuiker: 4, Eten: 5 })
     );
-    expect(readInventory()).toEqual({ Gerst: 3, Salmari: 2, Sneeuw: 4 });
+    expect(readInventory()).toEqual({ Gerst: 3, Salmari: 2, Water: 4 });
     localStorage.clear();
   });
   it("preserves the previous three-resource inventory", () => {
@@ -38,7 +38,7 @@ describe("journey rewards", () => {
       "rattan-journey-inventory",
       JSON.stringify({ Gerst: 3, Salmiak: 2, Sneeuwvlokje: 4 })
     );
-    expect(readInventory()).toEqual({ Gerst: 3, Salmari: 2, Sneeuw: 4 });
+    expect(readInventory()).toEqual({ Gerst: 3, Salmari: 2, Water: 4 });
     localStorage.clear();
   });
   it("migrates Pils and Salmiak without losing existing quantities", () => {
@@ -46,7 +46,7 @@ describe("journey rewards", () => {
       "rattan-journey-inventory",
       JSON.stringify({ Pils: 5, Salmiak: 3, Sneeuw: 2 })
     );
-    expect(readInventory()).toEqual({ Gerst: 5, Salmari: 3, Sneeuw: 2 });
+    expect(readInventory()).toEqual({ Gerst: 5, Salmari: 3, Water: 2 });
     localStorage.clear();
   });
   it("recovers from malformed storage", () => {
@@ -54,9 +54,9 @@ describe("journey rewards", () => {
     expect(readInventory()).toEqual(emptyInventory);
     localStorage.setItem(
       "rattan-journey-inventory",
-      JSON.stringify({ Gerst: -1, Salmari: "4", Sneeuw: 2 })
+      JSON.stringify({ Gerst: -1, Salmari: "4", Water: 2 })
     );
-    expect(readInventory()).toEqual({ ...emptyInventory, Sneeuw: 2 });
+    expect(readInventory()).toEqual({ ...emptyInventory, Water: 2 });
     localStorage.clear();
   });
 });
@@ -69,9 +69,9 @@ describe("robber theft", () => {
     expect(inventory.Salmari).toBe(2);
   });
   it("selects among available types", () => {
-    const inventory = { ...emptyInventory, Gerst: 3, Sneeuw: 1 };
+    const inventory = { ...emptyInventory, Gerst: 3, Water: 1 };
     expect(stealRandomResource(inventory, () => 0).resource).toBe("Gerst");
-    expect(stealRandomResource(inventory, () => 0.99).resource).toBe("Sneeuw");
+    expect(stealRandomResource(inventory, () => 0.99).resource).toBe("Water");
   });
   it("leaves empty inventory unchanged", () => {
     expect(stealRandomResource(emptyInventory)).toEqual({

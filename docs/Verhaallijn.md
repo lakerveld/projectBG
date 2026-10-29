@@ -1,4 +1,4 @@
-# Ketanisten van Rattan — Verhaallijn
+# Kolonisten van Rattan — Verhaallijn
 
 De introductie, de zes locaties in routevolgorde en de afsluiting van het verhaal.
 Gebaseerd op de huidige introductie in de app en de locaties in het inhoudsbestand.
@@ -7,7 +7,7 @@ Gebaseerd op de huidige introductie in de app en de locaties in het inhoudsbesta
 
 ### De legende
 
-Lang geleden leefden diep onder Antwerpen de **Ketanisten van Rattan**, geleid door de machtige **Rattenkoning**.
+Lang geleden leefden diep onder Antwerpen de **Kolonisten van Rattan**, geleid door de machtige **Rattenkoning**.
 
 Maar het rijk viel uiteen. Handelsroutes verdwenen, de koning raakte vermist en zijn zoon **Baby Ratthew**, de toekomstige erfgenaam, werd ergens in Antwerpen verborgen.
 
@@ -17,7 +17,7 @@ Sindsdien wachten de ratten op iemand die Rattan kan herstellen.
 
 Matthew, die iemand ben jij.
 
-Verzamel **Gerst, Salmari en Sneeuw**. Herstel de handelsroutes. Bouw het rijk opnieuw op en volg de sporen door Antwerpen.
+Verzamel **Gerst, Salmari en Water**. Herstel de handelsroutes. Bouw het rijk opnieuw op en volg de sporen door Antwerpen.
 
 En boven alles: **Vind Baby Ratthew.**
 

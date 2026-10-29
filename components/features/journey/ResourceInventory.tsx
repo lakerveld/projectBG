@@ -1,4 +1,4 @@
-import { Wheat, TestTube, Snowflake } from "lucide-react";
+import { Wheat, TestTube, Droplets } from "lucide-react";
 import {
   rewardResources,
   type JourneyInventory,
@@ -7,7 +7,7 @@ import {
 import styles from "./ResourceReveal.module.css";
 import { resourceColors } from "@/lib/ui/resourceColors";
 
-const icons = { Gerst: Wheat, Salmari: TestTube, Sneeuw: Snowflake };
+const icons = { Gerst: Wheat, Salmari: TestTube, Water: Droplets };
 
 export function ResourceInventory({
   inventory,

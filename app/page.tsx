@@ -8,11 +8,11 @@ import { ActionButton } from "@/components/ui/ActionButton";
 
 const steps = [
   {
-    title: "Ketanisten van Rattan",
+    title: "Kolonisten van Rattan",
     content: (
       <>
         <p>
-          Lang geleden leefden diep onder Antwerpen de <strong>Ketanisten van Rattan</strong>,
+          Lang geleden leefden diep onder Antwerpen de <strong>Kolonisten van Rattan</strong>,
           geleid door de machtige <strong>Rattenkoning</strong>.
         </p>
         <p>
@@ -31,8 +31,8 @@ const steps = [
         <p>Sindsdien wachten de ratten op iemand die Rattan kan herstellen.</p>
         <p>Matthew, die iemand ben jij.</p>
         <p>
-          Verzamel <strong>Gerst, Salmari en Sneeuw</strong>. Herstel de handelsroutes.
-          Bouw het rijk opnieuw op en volg de sporen door Antwerpen.
+          Verzamel <strong>Gerst, Salmari en Water</strong>. Herstel de handelsroutes. Bouw het rijk
+          opnieuw op en volg de sporen door Antwerpen.
         </p>
         <p>
           En boven alles: <strong>Vind Baby Ratthew.</strong>
@@ -45,11 +45,12 @@ const steps = [
     content: (
       <>
         <p>
-          <strong>Dobbel zo vaak je wilt.</strong> Je worp bepaalt welke resource je verdient.
-          Maar pas op: de <strong>struikrover</strong> ligt op de loer.
+          <strong>Dobbel zo vaak je wilt.</strong> Je worp bepaalt welke resource je verdient. Maar
+          pas op: de <strong>struikrover</strong> ligt op de loer.
         </p>
         <p>
-          <strong>Draai aan het rattenrad</strong> en laat het lot bepalen wie trakteert — en waarop.
+          <strong>Draai aan het rattenrad</strong> en laat het lot bepalen wie trakteert — en
+          waarop.
         </p>
         <p>
           Voltooi de opdrachten op <strong>alle zes locaties</strong> en verdien{" "}
@@ -155,7 +156,7 @@ export default function HomePage() {
           inert={!introDone}
         >
           <p className="font-display text-xs uppercase tracking-[0.22em] text-parchment/80">
-            Ketanisten van Rattan
+            Kolonisten van Rattan
           </p>
           <span
             className="shrink-0 font-display text-xs tracking-widest text-gold-bright"

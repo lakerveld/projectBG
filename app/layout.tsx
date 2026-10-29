@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Ketanisten van Rattan",
+  title: "Kolonisten van Rattan",
   description: "A mobile-first Antwerp journey app for Matthew."
 };
 

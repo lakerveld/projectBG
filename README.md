@@ -1,6 +1,6 @@
 # ProjectBG
 
-ProjectBG is the working repository for **Ketanisten van Rattan**, a mobile-first Antwerp journey app for Matthew. The phone acts as a route companion: it shows the map, detects or confirms arrival at locations, accepts physical dice input, resolves location rewards, and keeps the resource ledger locally.
+ProjectBG is the working repository for **Kolonisten van Rattan**, a mobile-first Antwerp journey app for Matthew. The phone acts as a route companion: it shows the map, detects or confirms arrival at locations, accepts physical dice input, resolves location rewards, and keeps the resource ledger locally.
 
 ## Tech Stack
 

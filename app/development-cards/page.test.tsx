@@ -26,7 +26,7 @@ describe("development card collection", () => {
   it("restores a saved card and shows its bonus", () => {
     localStorage.setItem(DEVELOPMENT_CARDS_KEY, JSON.stringify(["bierpaleis"]));
     render(<DevelopmentCardsPage />);
-    expect(screen.getByRole("heading", { name: "Ruil 1 pils voor 1 sneeuw" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Ruil 1 pils voor 1 water" })).toBeInTheDocument();
     expect(screen.getByText("Het Bierpaleis")).toBeInTheDocument();
   });
 
@@ -53,7 +53,7 @@ it("executes an earned trade, updates the stock and prevents a second use", () =
   localStorage.setItem(DEVELOPMENT_CARDS_KEY, JSON.stringify(["bierpaleis"]));
   localStorage.setItem(
     "rattan-journey-inventory",
-    JSON.stringify({ Gerst: 1, Salmari: 0, Sneeuw: 0 })
+    JSON.stringify({ Gerst: 1, Salmari: 0, Water: 0 })
   );
   render(<DevelopmentCardsPage />);
   fireEvent.click(screen.getByRole("button", { name: "Voer ruil uit" }));
@@ -62,6 +62,6 @@ it("executes an earned trade, updates the stock and prevents a second use", () =
   expect(JSON.parse(localStorage.getItem("rattan-journey-inventory")!)).toMatchObject({
     Gerst: 0,
     Salmari: 0,
-    Sneeuw: 1
+    Water: 1
   });
 });

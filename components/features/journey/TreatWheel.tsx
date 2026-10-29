@@ -15,8 +15,8 @@ const wheelSlices = wheelPeople.map((name, index) => {
   const end = start + (name === "Matthew" ? 54 : 31.5);
   return { start, end, center: (start + end) / 2 };
 });
-const treats = ["Bier", "Nakkie", "Salmari shot"];
-const treatColors = [resourceColors.Gerst, resourceColors.Sneeuw, resourceColors.Salmari];
+const treats = ["Bier", "Slok water", "Salmari shot"];
+const treatColors = [resourceColors.Gerst, resourceColors.Water, resourceColors.Salmari];
 const colors = ["#ff91c4", "#c681f5", "#dfff00", "#89dccc", "#ffb66e"];
 const SPIN_MS = 8000;
 

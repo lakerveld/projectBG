@@ -20,14 +20,14 @@ afterEach(() => {
 it.each([
   [0, 0, "Levi", "Bier"],
   [0, 0.399999, "Levi", "Bier"],
-  [0.1, 0.4, "Jordi", "Nakkie"],
-  [0.2, 0.799999, "Matthew", "Nakkie"],
-  [0.175, 0.5, "Matthew", "Nakkie"],
-  [0.324999, 0.5, "Matthew", "Nakkie"],
-  [0.325, 0.5, "Argyle", "Nakkie"],
-  [0.675, 0.5, "Matthew", "Nakkie"],
-  [0.824999, 0.5, "Matthew", "Nakkie"],
-  [0.825, 0.5, "Argyle", "Nakkie"],
+  [0.1, 0.4, "Jordi", "Slok water"],
+  [0.2, 0.799999, "Matthew", "Slok water"],
+  [0.175, 0.5, "Matthew", "Slok water"],
+  [0.324999, 0.5, "Matthew", "Slok water"],
+  [0.325, 0.5, "Argyle", "Slok water"],
+  [0.675, 0.5, "Matthew", "Slok water"],
+  [0.824999, 0.5, "Matthew", "Slok water"],
+  [0.825, 0.5, "Argyle", "Slok water"],
   [0.325, 0.8, "Argyle", "Salmari shot"],
   [0.999, 0.999, "Dennis", "Salmari shot"]
 ])("completes two eight-second spins with draws %s and %s", (who, what, name, treat) => {

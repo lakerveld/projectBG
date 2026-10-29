@@ -23,7 +23,7 @@ beforeEach(() => {
       question: "Welke spreuk is echt?",
       answers: ["Prik & Tik", "B", "C", "D"],
       correct: 0,
-      bonus: "Ruil 1 pils voor 1 sneeuw"
+      bonus: "Ruil 1 pils voor 1 water"
     }
   }));
   vi.stubGlobal(
@@ -58,7 +58,7 @@ it.each([17, 18, 19])(
       question: "Speel petanque.",
       answers: ["", "", "", ""],
       correct: -1,
-      bonus: "+30 Sneeuw"
+      bonus: "+30 Water"
     };
     locations[5].status = "available";
     render(<JourneyMapShell />);
@@ -82,12 +82,12 @@ it.each([17, 18, 19])(
         screen.queryByRole("button", { name: "Draai voor de traktatie" })
       ).not.toBeInTheDocument();
     }
-    expect(JSON.parse(localStorage.getItem("rattan-journey-inventory") ?? "{}").Sneeuw ?? 0).toBe(
+    expect(JSON.parse(localStorage.getItem("rattan-journey-inventory") ?? "{}").Water ?? 0).toBe(
       score >= 18 ? 30 : 0
     );
     act(() => window.dispatchEvent(new Event("online")));
     await waitFor(() => expect(fetch).toHaveBeenCalled());
-    expect(JSON.parse(localStorage.getItem("rattan-journey-inventory") ?? "{}").Sneeuw ?? 0).toBe(
+    expect(JSON.parse(localStorage.getItem("rattan-journey-inventory") ?? "{}").Water ?? 0).toBe(
       score >= 18 ? 30 : 0
     );
   }
@@ -96,7 +96,7 @@ it.each([17, 18, 19])(
 it("receives an admin reset on the player's device, clears resources and cards and closes the quiz", async () => {
   localStorage.setItem(
     "rattan-journey-inventory",
-    JSON.stringify({ Gerst: 7, Salmari: 2, Sneeuw: 3 })
+    JSON.stringify({ Gerst: 7, Salmari: 2, Water: 3 })
   );
   localStorage.setItem("rattan-development-cards", '["bierpaleis"]');
   locations[0].status = "started";
@@ -115,7 +115,7 @@ it("receives an admin reset on the player's device, clears resources and cards a
   expect(screen.queryByRole("radio")).not.toBeInTheDocument();
   expect(screen.getByRole("button", { name: "Gerst: 0, bekijk opties" })).toBeInTheDocument();
   expect(screen.getByRole("button", { name: "Salmari: 0, bekijk opties" })).toBeInTheDocument();
-  expect(screen.getByRole("button", { name: "Sneeuw: 0, bekijk opties" })).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "Water: 0, bekijk opties" })).toBeInTheDocument();
   expect(screen.getByRole("link", { name: "Ontwikkelingskaarten: 0" })).toBeInTheDocument();
 });
 
@@ -147,7 +147,7 @@ it("keeps locked hexagons closed, notices an unlock and completes the location q
   expect(screen.getByText("Lees meer over deze locatie").closest("details")).not.toHaveAttribute(
     "open"
   );
-  expect(screen.getByRole("heading", { name: "Ruil 1 pils voor 1 sneeuw" })).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "Ruil 1 pils voor 1 water" })).toBeInTheDocument();
   expect(screen.queryByRole("button", { name: "Start quiz" })).not.toBeInTheDocument();
   expect(screen.getByRole("button", { name: "Bevestig antwoord" })).toBeDisabled();
   fireEvent.click(screen.getByRole("radio", { name: "A. Prik & Tik" }));
@@ -242,7 +242,7 @@ it("credits the Skins purchase reward immediately and offers the Only Cheese exc
   locations[0].quiz = {
     ...locations[0].quiz,
     type: "purchase",
-    bonus: "+3 Gerst, +3 Salmari ,+ 3 Sneeuw"
+    bonus: "+3 Gerst, +3 Salmari ,+ 3 Water"
   };
   locations[0].status = "started";
   const view = render(<JourneyMapShell />);
@@ -256,7 +256,7 @@ it("credits the Skins purchase reward immediately and offers the Only Cheese exc
   locations[1].quiz = {
     ...locations[1].quiz,
     type: "purchase",
-    bonus: "2 gerst = 1 salmari + 1 sneeuw"
+    bonus: "2 gerst = 1 salmari + 1 water"
   };
   locations[1].status = "started";
   render(<JourneyMapShell />);
@@ -268,7 +268,7 @@ it("credits the Skins purchase reward immediately and offers the Only Cheese exc
   fireEvent.click(screen.getByRole("button", { name: "Naar de map" }));
   expect(screen.getByRole("button", { name: "Gerst: 1, bekijk opties" })).toBeInTheDocument();
   expect(screen.getByRole("button", { name: "Salmari: 4, bekijk opties" })).toBeInTheDocument();
-  expect(screen.getByRole("button", { name: "Sneeuw: 4, bekijk opties" })).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "Water: 4, bekijk opties" })).toBeInTheDocument();
 });
 
 it("opens released locations even when their quiz is not complete", async () => {

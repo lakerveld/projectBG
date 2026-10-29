@@ -51,7 +51,7 @@ export function DevelopmentQuiz({ onContinue }: { onContinue: () => void }) {
         <div className="mt-5 rounded-3xl border border-gold/40 bg-night-deep/90 p-5 shadow-glow backdrop-blur-sm">
           <div className="space-y-3 font-body text-base leading-relaxed text-parchment/85">
             <p>
-              De Ketanisten hebben hun eerste handelspost bereikt. Volgens de legende ligt hier één
+              De Kolonisten hebben hun eerste handelspost bereikt. Volgens de legende ligt hier één
               van de grootste drankvoorraden van Rattan.
             </p>
             <p>Maar de poort blijft gesloten.</p>
@@ -104,7 +104,7 @@ export function DevelopmentQuiz({ onContinue }: { onContinue: () => void }) {
                 </p>
                 <p className="mt-2">
                   {correct
-                    ? "Je hebt de ontwikkelingskaart verdiend: ruil 1 pils voor 1 sneeuw."
+                    ? "Je hebt de ontwikkelingskaart verdiend: ruil 1 pils voor 1 water."
                     : "Het juiste antwoord is A: Prik & Tik, uw drankenspecialist."}
                 </p>
                 {correct && (

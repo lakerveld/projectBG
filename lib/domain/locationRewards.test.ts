@@ -8,65 +8,65 @@ beforeEach(() => localStorage.clear());
 
 it.each([
   [
-    "Ruil 2 gerst voor 2 sneeuw",
-    { Gerst: 2, Salmari: 0, Sneeuw: 0 },
-    { Gerst: 0, Salmari: 0, Sneeuw: 2 }
+    "Ruil 2 gerst voor 2 water",
+    { Gerst: 2, Salmari: 0, Water: 0 },
+    { Gerst: 0, Salmari: 0, Water: 2 }
   ],
   [
     "Ruil 3 gerst voor 1 salmari",
-    { Gerst: 3, Salmari: 0, Sneeuw: 0 },
-    { Gerst: 0, Salmari: 1, Sneeuw: 0 }
+    { Gerst: 3, Salmari: 0, Water: 0 },
+    { Gerst: 0, Salmari: 1, Water: 0 }
   ],
   [
-    "2 gerst =  1 salmari + 1 sneeuw",
-    { Gerst: 2, Salmari: 0, Sneeuw: 0 },
-    { Gerst: 0, Salmari: 1, Sneeuw: 1 }
+    "2 gerst =  1 salmari + 1 water",
+    { Gerst: 2, Salmari: 0, Water: 0 },
+    { Gerst: 0, Salmari: 1, Water: 1 }
   ],
   [
-    "Ruil 1 salmari voor +2 gerst en +2 sneeuw",
-    { Gerst: 0, Salmari: 1, Sneeuw: 0 },
-    { Gerst: 2, Salmari: 0, Sneeuw: 2 }
+    "Ruil 1 salmari voor +2 gerst en +2 water",
+    { Gerst: 0, Salmari: 1, Water: 0 },
+    { Gerst: 2, Salmari: 0, Water: 2 }
   ],
   [
-    "+3 Gerst, +3 Salmari ,+ 3 Sneeuw",
-    { Gerst: 0, Salmari: 0, Sneeuw: 0 },
-    { Gerst: 3, Salmari: 3, Sneeuw: 3 }
+    "+3 Gerst, +3 Salmari ,+ 3 Water",
+    { Gerst: 0, Salmari: 0, Water: 0 },
+    { Gerst: 3, Salmari: 3, Water: 3 }
   ],
-  ["+30 Sneeuw", { Gerst: 0, Salmari: 0, Sneeuw: 0 }, { Gerst: 0, Salmari: 0, Sneeuw: 30 }]
+  ["+30 Water", { Gerst: 0, Salmari: 0, Water: 0 }, { Gerst: 0, Salmari: 0, Water: 30 }]
 ])("understands the configured reward %s", (bonus, cost, gain) => {
   expect(parseRewardEffect(bonus)).toEqual({ cost, gain });
 });
 
 it.each([
   "",
-  "Ruil -1 gerst voor 2 sneeuw",
+  "Ruil -1 gerst voor 2 water",
   "+2 gerst bij een goed antwoord, anders betaal je",
-  "Ruil 1 onbekend voor 2 sneeuw",
-  "0 gerst = 1 sneeuw"
+  "Ruil 1 onbekend voor 2 water",
+  "0 gerst = 1 water"
 ])("does not guess unsupported effects: %s", (bonus) => {
   expect(parseRewardEffect(bonus)).toBeNull();
 });
 
 it("executes an exchange once and preserves consumption when the inventory changes later", () => {
-  writeInventory({ Gerst: 4, Salmari: 0, Sneeuw: 1 });
-  const effect = parseRewardEffect("2 gerst = 1 salmari + 1 sneeuw")!;
+  writeInventory({ Gerst: 4, Salmari: 0, Water: 1 });
+  const effect = parseRewardEffect("2 gerst = 1 salmari + 1 water")!;
   applyReward("cheese", effect);
-  expect(readInventory()).toEqual({ Gerst: 2, Salmari: 1, Sneeuw: 2 });
-  writeInventory({ Gerst: 1, Salmari: 1, Sneeuw: 2 });
+  expect(readInventory()).toEqual({ Gerst: 2, Salmari: 1, Water: 2 });
+  writeInventory({ Gerst: 1, Salmari: 1, Water: 2 });
   applyReward("cheese", effect);
-  expect(readInventory()).toEqual({ Gerst: 1, Salmari: 1, Sneeuw: 2 });
+  expect(readInventory()).toEqual({ Gerst: 1, Salmari: 1, Water: 2 });
 });
 
 it("does not change inventory or use a card when resources are insufficient", () => {
-  writeInventory({ Gerst: 1, Salmari: 0, Sneeuw: 0 });
+  writeInventory({ Gerst: 1, Salmari: 0, Water: 0 });
   const original = localStorage.getItem("rattan-journey-inventory");
-  expect(() => applyReward("cheese", parseRewardEffect("2 gerst = 1 sneeuw")!)).toThrow(
+  expect(() => applyReward("cheese", parseRewardEffect("2 gerst = 1 water")!)).toThrow(
     "Niet genoeg"
   );
   expect(localStorage.getItem("rattan-journey-inventory")).toBe(original);
-  writeInventory({ Gerst: 2, Salmari: 0, Sneeuw: 0 });
-  applyReward("cheese", parseRewardEffect("2 gerst = 1 sneeuw")!);
-  expect(readInventory()).toEqual({ Gerst: 0, Salmari: 0, Sneeuw: 1 });
+  writeInventory({ Gerst: 2, Salmari: 0, Water: 0 });
+  applyReward("cheese", parseRewardEffect("2 gerst = 1 water")!);
+  expect(readInventory()).toEqual({ Gerst: 0, Salmari: 0, Water: 1 });
 });
 
 it("automatically applies a confirmed purchase reward once across repeated reads", () => {
@@ -78,16 +78,16 @@ it("automatically applies a confirmed purchase reward once across repeated reads
     result: {
       correct: true,
       correctAnswer: "",
-      bonus: "+3 Gerst, +3 Salmari ,+ 3 Sneeuw",
+      bonus: "+3 Gerst, +3 Salmari ,+ 3 Water",
       rewardId: "first"
     }
   };
   applyAutomaticRewards({ locations: [location] });
   applyAutomaticRewards({ locations: [location] });
-  expect(readInventory()).toEqual({ Gerst: 3, Salmari: 3, Sneeuw: 3 });
+  expect(readInventory()).toEqual({ Gerst: 3, Salmari: 3, Water: 3 });
   location.result!.rewardId = "second";
   applyAutomaticRewards({ locations: [location] });
-  expect(readInventory()).toEqual({ Gerst: 6, Salmari: 6, Sneeuw: 6 });
+  expect(readInventory()).toEqual({ Gerst: 6, Salmari: 6, Water: 6 });
   expect(rewardKey(location)).toContain("second");
 });
 
@@ -99,7 +99,7 @@ it("never automatically charges an exchange or rewards an incorrect answer", () 
         name: "Cheese",
         ready: true,
         status: "completed",
-        result: { correct: true, correctAnswer: "", bonus: "2 gerst = 1 sneeuw" }
+        result: { correct: true, correctAnswer: "", bonus: "2 gerst = 1 water" }
       },
       {
         id: "1",

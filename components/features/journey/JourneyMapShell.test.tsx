@@ -29,7 +29,7 @@ describe("JourneyMapShell", () => {
       "src",
       expect.stringContaining("antwerp-six-locations.png")
     );
-    for (const resource of ["Gerst", "Salmari", "Sneeuw"]) {
+    for (const resource of ["Gerst", "Salmari", "Water"]) {
       expect(screen.getByRole("listitem", { name: `${resource}: 0` })).toBeInTheDocument();
     }
     expect(screen.getAllByRole("button", { name: /— Op slot$/ })).toHaveLength(6);
@@ -46,8 +46,10 @@ describe("JourneyMapShell", () => {
     expect(screen.queryByRole("button", { name: /Ruil/ })).not.toBeInTheDocument();
     fireEvent.keyDown(document, { key: "Escape" });
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: /Sneeuw: .*bekijk opties/ }));
-    expect(screen.getByRole("button", { name: "Gebruik 2 sneeuw voor 1 nakkie" })).toBeDisabled();
+    fireEvent.click(screen.getByRole("button", { name: /Water: .*bekijk opties/ }));
+    expect(
+      screen.getByRole("button", { name: "Gebruik 2 water voor een slok water" })
+    ).toBeDisabled();
     expect(screen.queryByRole("button", { name: /Gebruik 1 salmari/ })).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Ontwikkelingskaarten: 0" })).toHaveAttribute(
       "href",
@@ -57,30 +59,32 @@ describe("JourneyMapShell", () => {
   it("trades both rewards, persists the stock and prevents overspending", () => {
     localStorage.setItem(
       "rattan-journey-inventory",
-      JSON.stringify({ Gerst: 15, Salmari: 2, Sneeuw: 1 })
+      JSON.stringify({ Gerst: 15, Salmari: 2, Water: 1 })
     );
     const view = render(<JourneyMapShell />);
     fireEvent.click(screen.getByRole("button", { name: /Gerst: .*bekijk opties/ }));
-    fireEvent.click(screen.getByRole("button", { name: "Ruil 10 gerst voor 1 nakkie" }));
-    expect(screen.getByRole("listitem", { name: "Sneeuw: 3" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Ruil 10 gerst voor 1 nakkie" })).toBeDisabled();
+    fireEvent.click(screen.getByRole("button", { name: "Ruil 10 gerst voor een slok water" }));
+    expect(screen.getByRole("listitem", { name: "Water: 3" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Ruil 10 gerst voor een slok water" })
+    ).toBeDisabled();
     fireEvent.click(screen.getByRole("button", { name: "Ruil 5 gerst voor 1 Salmari" }));
     expect(screen.getByRole("button", { name: "Ruil 5 gerst voor 1 Salmari" })).toBeDisabled();
     expect(JSON.parse(localStorage.getItem("rattan-journey-inventory")!)).toEqual({
       Gerst: 0,
       Salmari: 3,
-      Sneeuw: 3
+      Water: 3
     });
     view.unmount();
     render(<JourneyMapShell />);
     expect(screen.getByRole("listitem", { name: "Gerst: 0" })).toBeInTheDocument();
     expect(screen.getByRole("listitem", { name: "Salmari: 3" })).toBeInTheDocument();
-    expect(screen.getByRole("listitem", { name: "Sneeuw: 3" })).toBeInTheDocument();
+    expect(screen.getByRole("listitem", { name: "Water: 3" })).toBeInTheDocument();
   });
   it("keeps the stock unchanged when a trade cannot be saved", () => {
     localStorage.setItem(
       "rattan-journey-inventory",
-      JSON.stringify({ Gerst: 5, Salmari: 0, Sneeuw: 0 })
+      JSON.stringify({ Gerst: 5, Salmari: 0, Water: 0 })
     );
     render(<JourneyMapShell />);
     fireEvent.click(screen.getByRole("button", { name: /Gerst: .*bekijk opties/ }));
@@ -95,7 +99,7 @@ describe("JourneyMapShell", () => {
   it("uses resources, saves the deductions and disables unaffordable actions", () => {
     localStorage.setItem(
       "rattan-journey-inventory",
-      JSON.stringify({ Gerst: 4, Salmari: 1, Sneeuw: 3 })
+      JSON.stringify({ Gerst: 4, Salmari: 1, Water: 3 })
     );
     const view = render(<JourneyMapShell />);
     fireEvent.click(screen.getByRole("button", { name: /Gerst: .*bekijk opties/ }));
@@ -103,7 +107,7 @@ describe("JourneyMapShell", () => {
     for (const [resource, name] of [
       ["Gerst", "Gebruik 3 gerst voor 1 biertje"],
       ["Salmari", "Gebruik 1 salmari voor 1 shotje"],
-      ["Sneeuw", "Gebruik 2 sneeuw voor 1 nakkie"]
+      ["Water", "Gebruik 2 water voor een slok water"]
     ]) {
       fireEvent.click(
         screen.getByRole("button", { name: new RegExp(`${resource}: .*bekijk opties`) })
@@ -115,18 +119,18 @@ describe("JourneyMapShell", () => {
     expect(JSON.parse(localStorage.getItem("rattan-journey-inventory")!)).toEqual({
       Gerst: 1,
       Salmari: 0,
-      Sneeuw: 1
+      Water: 1
     });
     view.unmount();
     render(<JourneyMapShell />);
-    for (const name of ["Gerst: 1", "Salmari: 0", "Sneeuw: 1"]) {
+    for (const name of ["Gerst: 1", "Salmari: 0", "Water: 1"]) {
       expect(screen.getByRole("listitem", { name })).toBeInTheDocument();
     }
   });
   it("does not deduct consumed resources if saving fails", () => {
     localStorage.setItem(
       "rattan-journey-inventory",
-      JSON.stringify({ Gerst: 3, Salmari: 0, Sneeuw: 0 })
+      JSON.stringify({ Gerst: 3, Salmari: 0, Water: 0 })
     );
     render(<JourneyMapShell />);
     fireEvent.click(screen.getByRole("button", { name: /Gerst: .*bekijk opties/ }));
@@ -163,15 +167,15 @@ describe("JourneyMapShell", () => {
     fireEvent.click(screen.getByRole("button", { name: "10" }));
     expect(screen.getByRole("button", { name: "10" })).toHaveAttribute("aria-pressed", "true");
     fireEvent.click(screen.getByRole("button", { name: "Bevestig worp" }));
-    expect(screen.getByRole("heading", { name: "+1 Sneeuw" })).toBeInTheDocument();
-    expect(screen.getByRole("status")).toHaveTextContent("Je krijgt 1 Sneeuw.");
+    expect(screen.getByRole("heading", { name: "+1 Water" })).toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent("Je krijgt 1 Water.");
     expect(JSON.parse(localStorage.getItem("rattan-journey-inventory")!)).toEqual({
       Gerst: 0,
       Salmari: 0,
-      Sneeuw: 1
+      Water: 1
     });
     fireEvent.click(screen.getByRole("button", { name: "Naar de map" }));
-    expect(screen.getByRole("listitem", { name: "Sneeuw: 1" })).toBeInTheDocument();
+    expect(screen.getByRole("listitem", { name: "Water: 1" })).toBeInTheDocument();
     expect(screen.queryByText(/Laatste worp:/)).not.toBeInTheDocument();
     expect(screen.getByRole("listitem", { name: "Gerst: 0" })).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "DICE" }));
@@ -184,7 +188,7 @@ describe("JourneyMapShell", () => {
     vi.spyOn(Math, "random").mockReturnValue(0.99);
     localStorage.setItem(
       "rattan-journey-inventory",
-      JSON.stringify({ Gerst: 2, Salmari: 0, Sneeuw: 1 })
+      JSON.stringify({ Gerst: 2, Salmari: 0, Water: 1 })
     );
     render(<JourneyMapShell />);
     fireEvent.click(screen.getByRole("button", { name: "DICE" }));
@@ -194,14 +198,14 @@ describe("JourneyMapShell", () => {
     expect(screen.getByRole("status")).toHaveTextContent("De automaat draait");
     expect(screen.getByRole("button", { name: "Naar de map" })).toBeDisabled();
     act(() => vi.advanceTimersByTime(3600));
-    expect(screen.getByRole("status")).toHaveTextContent("−1 Sneeuw");
+    expect(screen.getByRole("status")).toHaveTextContent("−1 Water");
     expect(JSON.parse(localStorage.getItem("rattan-journey-inventory")!)).toEqual({
       Gerst: 2,
       Salmari: 0,
-      Sneeuw: 0
+      Water: 0
     });
     act(() => vi.advanceTimersByTime(5000));
-    expect(JSON.parse(localStorage.getItem("rattan-journey-inventory")!).Sneeuw).toBe(0);
+    expect(JSON.parse(localStorage.getItem("rattan-journey-inventory")!).Water).toBe(0);
     fireEvent.click(screen.getByRole("button", { name: "Naar de map" }));
     expect(screen.getByRole("heading", { name: "Kaart van Antwerpen" })).toBeInTheDocument();
   });
@@ -215,7 +219,7 @@ describe("JourneyMapShell", () => {
     expect(JSON.parse(localStorage.getItem("rattan-journey-inventory")!)).toEqual({
       Gerst: 0,
       Salmari: 0,
-      Sneeuw: 0
+      Water: 0
     });
   });
 });

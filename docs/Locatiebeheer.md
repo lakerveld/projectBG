@@ -104,25 +104,25 @@ Een bestaande `JOURNEY_ADMIN_PASSWORD` in `.env.local` wordt niet meer gebruikt 
   antwoord bevestigen vereisen een geslaagde serveropslag. Een melding geeft aan dat
   de verbinding weg is; verzoeken kunnen veilig opnieuw worden geprobeerd.
 
-Het spel gebruikt maximaal drie resources: **Pils**, **Salmiak** en **Sneeuw**.
+Het spel gebruikt maximaal drie resources: **Pils**, **Salmiak** en **Water**.
 De verdeling bij twee dobbelstenen is:
 
 | Getal | Stippen    | Combinaties (uit 36) | Kans   | Resource / actie           |
 | ----- | ---------- | -------------------- | ------ | -------------------------- |
 | 2     | 1          | 1                    | 2,78%  | Salmiak                    |
-| 3     | 2          | 2                    | 5,56%  | Sneeuw                     |
+| 3     | 2          | 2                    | 5,56%  | Water                      |
 | 4     | 3          | 3                    | 8,33%  | Salmiak                    |
-| 5     | 4          | 4                    | 11,11% | Sneeuw                     |
+| 5     | 4          | 4                    | 11,11% | Water                      |
 | 6     | 5 (rood)   | 5                    | 13,89% | Pils                       |
 | 7     | Geen fiche | 6                    | 16,67% | Struikrover, geen resource |
 | 8     | 5 (rood)   | 5                    | 13,89% | Pils                       |
 | 9     | 4          | 4                    | 11,11% | Pils                       |
-| 10    | 3          | 3                    | 8,33%  | Sneeuw                     |
-| 11    | 2          | 2                    | 5,56%  | Sneeuw                     |
+| 10    | 3          | 3                    | 8,33%  | Water                      |
+| 11    | 2          | 2                    | 5,56%  | Water                      |
 | 12    | 1          | 1                    | 2,78%  | Salmiak                    |
 
 Een 7 activeert de struikrover. Bestaande lokale voorraden Bier/Gerst en Poedersuiker/Sneeuwvlokje worden
-gelezen als Pils en Sneeuw; de vervallen resource Eten telt niet meer mee.
+gelezen als Pils en Water; de vervallen resource Eten telt niet meer mee.
 
 De resources na dobbelworpen blijven zoals voorheen lokaal op Matthews telefoon.
 Dit onderdeel synchroniseert locaties, quizresultaten en de bijbehorende kaarten.
@@ -151,14 +151,14 @@ Iedereen met toegang tot `/beheer` kan deze reset uitvoeren.
 
 Petanque (locatie 6) beoordeelt de score op de server: onder 18 punten moet Matthew
 het traktatierad draaien en krijgt hij geen grondstoffen. Bij 18 punten of meer
-worden automatisch 30 Sneeuw bijgeschreven. Verversen kent die beloning niet opnieuw toe.
+worden automatisch 30 Water bijgeschreven. Verversen kent die beloning niet opnieuw toe.
 Na een geslaagde Petanque-score verschijnt direct de finale. Bij een lagere score
 verschijnt deze na het verplichte traktatierad. Teruggaan naar de kaart of opnieuw
 openen toont de finale niet automatisch; bij een voltooide route blijft
 **Bekijk de finale** beschikbaar.
 
-Grondstofbeloningen worden bij een geslaagde quest automatisch bijgeschreven in de voorraad op dezelfde telefoon. Bijvoorbeeld: `+3 Gerst, +3 Salmari, +3 Sneeuw`. Dit geldt ook na het bevestigen van een aankoop.
+Grondstofbeloningen worden bij een geslaagde quest automatisch bijgeschreven in de voorraad op dezelfde telefoon. Bijvoorbeeld: `+3 Gerst, +3 Salmari, +3 Water`. Dit geldt ook na het bevestigen van een aankoop.
 
-Ruilbeloningen bieden een knop **Voer ruil uit**, zowel bij het questresultaat als bij de ontwikkelingskaarten. Ondersteunde voorbeelden: `Ruil 2 gerst voor 2 sneeuw`, `2 gerst = 1 salmari + 1 sneeuw` en `Ruil 1 salmari voor +2 gerst en +2 sneeuw`. De ruil vereist voldoende voorraad en iedere kaart kan één keer worden gebruikt. Verversen schrijft een beloning niet opnieuw bij; normale voorraadwijzigingen behouden de gebruiksregistratie.
+Ruilbeloningen bieden een knop **Voer ruil uit**, zowel bij het questresultaat als bij de ontwikkelingskaarten. Ondersteunde voorbeelden: `Ruil 2 gerst voor 2 water`, `2 gerst = 1 salmari + 1 water` en `Ruil 1 salmari voor +2 gerst en +2 water`. De ruil vereist voldoende voorraad en iedere kaart kan één keer worden gebruikt. Verversen schrijft een beloning niet opnieuw bij; normale voorraadwijzigingen behouden de gebruiksregistratie.
 
 Andere beloningsteksten blijven zichtbaar als fysieke spelbeloning. Na het wissen van een questresultaat levert een opnieuw afgeronde quest een nieuwe beloning op; eerder bijgeschreven grondstoffen worden daarbij niet teruggedraaid.

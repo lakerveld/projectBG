@@ -8,7 +8,8 @@ const resourceNames: Record<string, RewardResource> = {
   bier: "Gerst",
   salmari: "Salmari",
   salmiak: "Salmari",
-  sneeuw: "Sneeuw"
+  sneeuw: "Water",
+  water: "Water"
 };
 
 // Only execute fully understood resource instructions; never guess from prose.
@@ -20,7 +21,7 @@ function amounts(text: string): JourneyInventory | null {
     .filter(Boolean);
   if (!tokens.length) return null;
   for (const token of tokens) {
-    const match = token.trim().match(/^(\d+)\s+(gerst|pils|bier|salmari|salmiak|sneeuw)$/i);
+    const match = token.trim().match(/^(\d+)\s+(gerst|pils|bier|salmari|salmiak|sneeuw|water)$/i);
     if (!match) return null;
     const count = Number(match[1]);
     const resource = resourceNames[match[2].toLowerCase()];

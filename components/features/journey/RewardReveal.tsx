@@ -32,13 +32,13 @@ export function RewardReveal({
       src: "/rewards/salmari-psychedelic.png",
       alt: "Psychedelische illustratie van een donkere Salmari-fles en een shotglas"
     },
-    Sneeuw: {
-      src: "/rewards/sneeuwpoeder-psychedelic.png",
-      alt: "Psychedelische illustratie van een gouden schaal met wit sneeuwpoeder"
+    Water: {
+      src: "/rewards/water.svg",
+      alt: "Illustratie van een glas fris water"
     }
   }[resource];
 
-  const accent = { Gerst: "#dfff00", Salmari: "#d5a1ff", Sneeuw: "#ff91c4" }[resource];
+  const accent = { Gerst: "#dfff00", Salmari: "#d5a1ff", Water: "#ff91c4" }[resource];
   return (
     <section
       lang="nl"

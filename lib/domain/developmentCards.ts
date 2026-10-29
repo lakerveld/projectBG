@@ -2,8 +2,8 @@ export const developmentCards = [
   {
     id: "bierpaleis",
     location: "Het Bierpaleis",
-    bonus: "Ruil 1 pils voor 1 sneeuw",
-    description: "Bij de eerste handelspost van Rattan mag je 1 pils ruilen voor 1 sneeuw."
+    bonus: "Ruil 1 pils voor 1 water",
+    description: "Bij de eerste handelspost van Rattan mag je 1 pils ruilen voor 1 water."
   }
 ] as const;
 

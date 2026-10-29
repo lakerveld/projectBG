@@ -7,7 +7,7 @@ import { DevelopmentCardsIcon } from "@/components/ui/DevelopmentCardsIcon";
 import { useRewardInventory, writeInventory } from "@/lib/ui/useRewardInventory";
 import { resourceColors } from "@/lib/ui/resourceColors";
 import { useDevelopmentCards } from "@/lib/ui/useDevelopmentCards";
-import { Wheat, Dice5, Snowflake, TestTube } from "lucide-react";
+import { Wheat, Dice5, Droplets, TestTube } from "lucide-react";
 import { DiceTotalPicker } from "@/components/ui/DiceTotalPicker";
 import { ParchmentCard } from "@/components/ui/ParchmentCard";
 import { ActionButton } from "@/components/ui/ActionButton";
@@ -35,13 +35,13 @@ function focusHeading(node: HTMLHeadingElement | null) {
 const resources = [
   { name: "Gerst", icon: Wheat },
   { name: "Salmari", icon: TestTube },
-  { name: "Sneeuw", icon: Snowflake }
+  { name: "Water", icon: Droplets }
 ] as const;
 
 const consumptionOptions = [
   { resource: "Gerst", cost: 3, label: "1 biertje" },
   { resource: "Salmari", cost: 1, label: "1 shotje" },
-  { resource: "Sneeuw", cost: 2, label: "1 nakkie" }
+  { resource: "Water", cost: 2, label: "een slok water" }
 ] as const;
 
 export function JourneyMapShell() {
@@ -93,7 +93,7 @@ function JourneyMapContent({ journey }: { journey: ReturnType<typeof useJourneyL
     }
   }
 
-  function trade(resource: "Salmari" | "Sneeuw") {
+  function trade(resource: "Salmari" | "Water") {
     const cost = resource === "Salmari" ? 5 : 10;
     const amount = resource === "Salmari" ? 1 : 2;
     if (inventory.Gerst < cost) return;
@@ -317,11 +317,11 @@ function JourneyMapContent({ journey }: { journey: ReturnType<typeof useJourneyL
                   {(
                     [
                       {
-                        resource: "Sneeuw",
+                        resource: "Water",
                         cost: 10,
-                        label: "1 nakkie",
-                        detail: "+2 sneeuw",
-                        icon: Snowflake
+                        label: "een slok water",
+                        detail: "+2 water",
+                        icon: Droplets
                       },
                       {
                         resource: "Salmari",

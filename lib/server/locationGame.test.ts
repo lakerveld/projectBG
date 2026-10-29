@@ -202,6 +202,6 @@ it.each([0, 17, 18, 19, 30])("evaluates petanque score %i on the server", async 
   expect(publicLocation(location).result).toMatchObject({
     score: answer,
     correct: answer >= 18,
-    bonus: answer >= 18 ? "+30 Sneeuw" : ""
+    bonus: answer >= 18 ? "+30 Water" : ""
   });
 });

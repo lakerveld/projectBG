@@ -69,11 +69,23 @@ const locationArtwork: Record<string, string> = {
   "6": "/locations/petanque-escape-room-cafe.png"
 };
 
+function currentWording(text: string): string {
+  return text
+    .replace(/Ketanisten/gi, "Kolonisten")
+    .replace(/sneeuw/gi, (word) => (word[0] === "S" ? "Water" : "water"))
+    .replace(/nakkies|nakkie|nakje/gi, "slok water");
+}
+
 export function publicLocation(location: StoredLocation): LocationView {
   // Explicitly select public fields so legacy stored times are never exposed.
-  const { type, correct, name, story, question, answers, bonus } = location.quiz;
+  const { type, correct } = location.quiz;
+  const name = currentWording(location.quiz.name);
+  const story = currentWording(location.quiz.story ?? "");
+  const question = currentWording(location.quiz.question);
+  const answers = location.quiz.answers.map(currentWording);
+  const bonus = currentWording(location.quiz.bonus);
   const petanque = location.id === "6" && type === "score";
-  const quiz = { type, name, story, question, answers, bonus: petanque ? "+30 Sneeuw" : bonus };
+  const quiz = { type, name, story, question, answers, bonus: petanque ? "+30 Water" : bonus };
   const revealed = location.status !== "locked";
   return {
     id: location.id,

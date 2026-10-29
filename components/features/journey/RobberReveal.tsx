@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type CSSProperties } from "react";
 import Image from "next/image";
-import { Wheat, Snowflake, TestTube, Dice5, ShieldAlert, ArrowRight } from "lucide-react";
+import { Wheat, Droplets, TestTube, Dice5, ShieldAlert, ArrowRight } from "lucide-react";
 import { ResourceInventory } from "./ResourceInventory";
 import styles from "./ResourceReveal.module.css";
 import { ActionButton } from "@/components/ui/ActionButton";
@@ -12,11 +12,11 @@ import {
   type RewardResource
 } from "@/lib/domain/journeyRewards";
 
-const icons = { Gerst: Wheat, Salmari: TestTube, Sneeuw: Snowflake };
+const icons = { Gerst: Wheat, Salmari: TestTube, Water: Droplets };
 const colors = {
   Gerst: "bg-gold",
   Salmari: "bg-[#c681f5]",
-  Sneeuw: "bg-[#ff91c4]"
+  Water: "bg-[#ff91c4]"
 };
 const SPIN_MS = 3600;
 

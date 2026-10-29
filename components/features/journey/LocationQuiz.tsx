@@ -110,7 +110,7 @@ export function LocationQuiz({
                 ? "Bevestig je aankoop om deze beloning te verdienen. Ruilbeloningen voer je daarna zelf uit."
                 : type === "score"
                   ? petanque
-                    ? "18 punten of meer: +30 Sneeuw. Minder dan 18 punten: Matthew draait het traktatierad."
+                    ? "18 punten of meer: +30 Water. Minder dan 18 punten: Matthew draait het traktatierad."
                     : "Vul je score in om deze beloning te verdienen."
                   : undefined
             }

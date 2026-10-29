@@ -8,9 +8,7 @@ describe("DevelopmentQuiz", () => {
     const onContinue = vi.fn();
     render(<DevelopmentQuiz onContinue={onContinue} />);
     expect(screen.getAllByRole("radio")).toHaveLength(4);
-    expect(
-      screen.getByRole("heading", { name: "Ruil 1 pils voor 1 sneeuw" })
-    ).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Ruil 1 pils voor 1 water" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Bevestig antwoord" })).toBeDisabled();
     expect(screen.queryByRole("status")).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole("radio", { name: /^A\./ }));

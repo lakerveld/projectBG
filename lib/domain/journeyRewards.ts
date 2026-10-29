@@ -1,20 +1,20 @@
-export const rewardResources = ["Gerst", "Salmari", "Sneeuw"] as const;
+export const rewardResources = ["Gerst", "Salmari", "Water"] as const;
 export const resourceExchangeLabels = {
   Gerst: "3 gerst = 1 biertje",
   Salmari: "1 Salmari = 1 shotje",
-  Sneeuw: "2 sneeuw = 1 nakje"
+  Water: "2 water = een slok water"
 } as const;
 
 export type RewardResource = (typeof rewardResources)[number];
 export type JourneyInventory = Record<RewardResource, number>;
-export const emptyInventory: JourneyInventory = { Gerst: 0, Salmari: 0, Sneeuw: 0 };
+export const emptyInventory: JourneyInventory = { Gerst: 0, Salmari: 0, Water: 0 };
 
 // Two-dice resource table; seven activates the robber without a reward.
 export function resourceForRoll(total: number): RewardResource | null {
   if (!Number.isInteger(total) || total < 2 || total > 12) throw new Error("Ongeldige worp");
   if (total === 7) return null;
   if ([2, 4, 12].includes(total)) return "Salmari";
-  if ([3, 5, 10, 11].includes(total)) return "Sneeuw";
+  if ([3, 5, 10, 11].includes(total)) return "Water";
   return "Gerst";
 }
 
@@ -25,9 +25,14 @@ export function readInventory(): JourneyInventory {
     const result = { ...emptyInventory };
     for (const name of rewardResources) {
       const stored = saved as Record<string, unknown>;
-      const legacyName = name === "Gerst" ? "Bier" : name === "Sneeuw" ? "Poedersuiker" : name;
-      const previousName = name === "Gerst" ? "Pils" : name === "Salmari" ? "Salmiak" : "Sneeuwvlokje";
-      const value = stored[name] ?? stored[previousName] ?? stored[legacyName];
+      const legacyName = name === "Gerst" ? "Bier" : name === "Water" ? "Poedersuiker" : name;
+      const previousName =
+        name === "Gerst" ? "Pils" : name === "Salmari" ? "Salmiak" : "Sneeuwvlokje";
+      const value =
+        stored[name] ??
+        (name === "Water" ? stored["Sneeuw"] : undefined) ??
+        stored[previousName] ??
+        stored[legacyName];
       if (typeof value === "number" && Number.isSafeInteger(value) && value >= 0)
         result[name] = value;
     }
