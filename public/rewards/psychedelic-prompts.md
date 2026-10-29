@@ -10,6 +10,6 @@ Use case: stylized-concept. Create one square mobile fantasy board-game reward i
 
 Use case: stylized-concept. Create one square mobile fantasy board-game reward illustration, richly painted psychedelic LSD poster storybook art, intricate black ink contours, elaborate gold highlights, swirling turquoise magenta violet orange clouds, Antwerp cathedral and waterfront in the background, dark navy edges. Maximalist luxurious magical celebratory composition. Central subject fills most of frame with comfortable margin. No letters, words, numbers, logos or watermarks. Keep lower 15 percent darker for UI overlay. Subject: one ornate dark glass salmiak liqueur bottle with black cap, gold botanical ornament on a completely TEXT-FREE label, with one small shot glass of nearly black liqueur at its base. Absolutely no lettering on bottle.
 
-### water.svg
+### water-psychedelic.png
 
-Handwritten SVG illustration of a glass of fresh water with bubbles on a blue background. Used by RewardReveal for Water.
+Generated with the built-in image_gen tool using gerst-psychedelic.png and salmari-psychedelic.png as style references. A crystal glass of fresh blue water on an ornate black-and-gold pedestal at the Antwerp waterfront, matching the other resource illustrations. Full generation prompt: water.prompt.txt. Used by RewardReveal for Water.

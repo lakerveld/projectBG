@@ -33,8 +33,8 @@ export function RewardReveal({
       alt: "Psychedelische illustratie van een donkere Salmari-fles en een shotglas"
     },
     Water: {
-      src: "/rewards/water.svg",
-      alt: "Illustratie van een glas fris water"
+      src: "/rewards/water-psychedelic.png",
+      alt: "Kleurrijke fantasie-illustratie van een kristallen glas water aan de Antwerpse waterkant"
     }
   }[resource];
 
