@@ -45,6 +45,13 @@ describe("onboarding entrance", () => {
     fireEvent.click(screen.getByRole("button", { name: "Next" }));
     expect(screen.getByText("Matthew, die iemand ben jij.")).toBeInTheDocument();
     expect(animate).toHaveBeenCalledOnce();
+    expect(screen.getByRole("heading", { name: "Jouw missie" })).toHaveFocus();
+    expect(window.scrollTo).toHaveBeenLastCalledWith({ top: 0, behavior: "instant" });
+    fireEvent.click(screen.getByRole("button", { name: "Next" }));
+    expect(screen.getByRole("heading", { name: "Dobbel. Draai. Durf." })).toHaveFocus();
+    expect(screen.getByRole("button", { name: "Start het spel" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Vorige stap" }));
+    expect(screen.getByRole("heading", { name: "Jouw missie" })).toHaveFocus();
   });
 
   it("skips the introduction when reduced motion is preferred", () => {

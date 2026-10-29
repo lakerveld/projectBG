@@ -103,7 +103,7 @@ export default function HomePage() {
             left: `${rect.left}px`,
             width: `${rect.width}px`,
             height: `${rect.height}px`,
-            borderRadius: "6px",
+            borderRadius: "50%",
             borderWidth: "2px"
           }
         ],
@@ -123,10 +123,14 @@ export default function HomePage() {
     };
   }, [artworkReady, introDone]);
 
-  function goToStep(index: number) {
-    setStep(index);
+  useEffect(() => {
+    if (!introDone) return;
     heading.current?.focus({ preventScroll: true });
     window.scrollTo({ top: 0, behavior: "instant" });
+  }, [step, introDone]);
+
+  function goToStep(index: number) {
+    setStep(index);
   }
 
   return (
@@ -143,14 +147,14 @@ export default function HomePage() {
               fill
               priority
               sizes="100vw"
-              className="object-cover"
+              className="object-cover object-[center_22%]"
               onLoad={() => setArtworkReady(true)}
               onError={() => setIntroDone(true)}
             />
           </div>
         </div>
       )}
-      <div className="mx-auto flex min-h-dvh w-full max-w-lg flex-col px-6 pt-[max(1.5rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))] sm:px-8">
+      <div className="onboarding-layout mx-auto flex min-h-dvh w-full max-w-lg flex-col px-6 sm:px-8">
         <header
           className="onboarding-copy flex items-center justify-between gap-4"
           inert={!introDone}
@@ -166,7 +170,7 @@ export default function HomePage() {
           </span>
         </header>
 
-        <div className="flex flex-1 items-center justify-center py-6">
+        <div className="onboarding-portrait flex shrink-0 items-center justify-center">
           <Image
             ref={artwork}
             src="/onboarding/matthew-trippy.png"
@@ -174,18 +178,18 @@ export default function HomePage() {
             width={1086}
             height={1448}
             priority
-            sizes="(max-width: 512px) 80vw, 360px"
-            className={`block h-auto max-h-[48svh] w-auto max-w-full rounded-xl border-2 border-ink object-contain shadow-parchment ${introDone ? "" : "invisible"}`}
+            sizes="(max-height: 700px) 72px, 112px"
+            className={`onboarding-avatar block rounded-full border-2 border-ink object-cover shadow-parchment ${introDone ? "" : "invisible"}`}
           />
         </div>
 
         <section
           aria-labelledby="onboarding-title"
-          className="onboarding-copy trippy-story"
+          className="onboarding-copy onboarding-story trippy-story flex flex-1 flex-col"
           inert={!introDone}
         >
           <div className="scroll-in">
-            <p className="mb-3 font-display text-xs uppercase tracking-[0.3em] text-gold-bright">
+            <p className="onboarding-eyebrow mb-2 font-display text-xs uppercase tracking-[0.3em] text-gold-bright">
               {["De legende", "Jouw missie", "Het avontuur"][step]}
             </p>
             <h1
@@ -195,19 +199,19 @@ export default function HomePage() {
               className={
                 current.hideTitle
                   ? "sr-only"
-                  : "font-display text-3xl font-bold leading-tight text-parchment outline-none sm:text-4xl"
+                  : "onboarding-heading font-display text-2xl font-bold leading-tight text-parchment outline-none sm:text-3xl"
               }
             >
               {current.title}
             </h1>
             <div
-              className={`${current.hideTitle ? "" : "mt-5"} space-y-4 font-body text-base leading-relaxed text-parchment/80 [&_strong]:font-semibold [&_strong]:text-parchment`}
+              className={`onboarding-body ${current.hideTitle ? "" : "mt-3"} space-y-3 font-body text-base leading-relaxed text-parchment/80 [&_strong]:font-semibold [&_strong]:text-parchment`}
             >
               {current.content}
             </div>
           </div>
 
-          <nav aria-label="Onboarding stappen" className="mt-6 flex items-center gap-2">
+          <nav aria-label="Onboarding stappen" className="mt-auto flex items-center gap-2 pt-2">
             {steps.map((item, index) => (
               <button
                 key={item.title}
