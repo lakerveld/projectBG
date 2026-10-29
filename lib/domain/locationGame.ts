@@ -71,19 +71,28 @@ const locationArtwork: Record<string, string> = {
 
 function currentWording(text: string): string {
   return text
-    .replace(/Ketanisten/gi, "Kolonisten")
-    .replace(/sneeuw/gi, (word) => (word[0] === "S" ? "Water" : "water"))
-    .replace(/nakkies|nakkie|nakje/gi, "slok water");
+    .replace(/\bketanisten\b/gi, "Kolonisten")
+    .replace(/\bsneeuw(?:vlokjes?|poeder)?\b/gi, (word) => (word[0] === "S" ? "Water" : "water"))
+    .replace(/\b(?:een|1)\s+(?:nakkies?|nakjes?)\b/gi, "een slok water")
+    .replace(/\b(?:nakkies?|nakjes?)\b/gi, "slok water");
+}
+
+export function currentLocationContent(content: LocationQuizContent): LocationQuizContent {
+  return {
+    ...content,
+    name: currentWording(content.name),
+    ...(content.story !== undefined ? { story: currentWording(content.story) } : {}),
+    question: currentWording(content.question),
+    answers: content.answers.map(currentWording),
+    bonus: currentWording(content.bonus)
+  };
 }
 
 export function publicLocation(location: StoredLocation): LocationView {
   // Explicitly select public fields so legacy stored times are never exposed.
-  const { type, correct } = location.quiz;
-  const name = currentWording(location.quiz.name);
-  const story = currentWording(location.quiz.story ?? "");
-  const question = currentWording(location.quiz.question);
-  const answers = location.quiz.answers.map(currentWording);
-  const bonus = currentWording(location.quiz.bonus);
+  const { type, correct, name, story, question, answers, bonus } = currentLocationContent(
+    location.quiz
+  );
   const petanque = location.id === "6" && type === "score";
   const quiz = { type, name, story, question, answers, bonus: petanque ? "+30 Water" : bonus };
   const revealed = location.status !== "locked";

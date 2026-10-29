@@ -184,3 +184,37 @@ it("preserves custom assignment instructions when migrating legacy quest types",
   expect(location.quiz.type).toBe("purchase");
   expect(location.quiz.question).toBe("Vraag een medewerker om een kaas voor Ratten en koop deze.");
 });
+
+it.each(["locked", "available", "started", "completed"] as const)(
+  "updates every stored location text for %s locations, including admin overrides",
+  async (status) => {
+    await locationStore((state) => {
+      const location = state.locations[0];
+      location.status = status;
+      location.contentOverride = true;
+      location.rewardId = "existing-reward";
+      location.quiz = {
+        name: "Ketanisten bij de handelspost",
+        story: "De Ketanisten verzamelen Sneeuw en nemen 1 nakkie.",
+        question: "Ruil je sneeuw voor een nakje?",
+        answers: ["Nakkies", "Nakjes", "Sneeuwvlokje", "Water"],
+        correct: 3,
+        bonus: "Ruil 1 pils voor 1 sneeuw"
+      };
+    });
+    const location = (await locationStore()).locations[0];
+    expect(location.quiz).toEqual({
+      name: "Kolonisten bij de handelspost",
+      story: "De Kolonisten verzamelen Water en nemen een slok water.",
+      question: "Ruil je water voor een slok water?",
+      answers: ["slok water", "slok water", "Water", "Water"],
+      correct: 3,
+      bonus: "Ruil 1 pils voor 1 water"
+    });
+    expect(location.status).toBe(status);
+    expect(location.rewardId).toBe("existing-reward");
+    const { GET } = await import("@/app/api/journey/admin/route");
+    const view = await (await GET()).json();
+    expect(view.locations[0].content).toEqual(location.quiz);
+  }
+);

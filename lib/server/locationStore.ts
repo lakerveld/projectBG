@@ -2,7 +2,7 @@ import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
 import { Redis } from "@upstash/redis";
-import type { StoredLocation } from "@/lib/domain/locationGame";
+import { currentLocationContent, type StoredLocation } from "@/lib/domain/locationGame";
 import { loadLocationContent } from "./locationContent";
 
 type State = { locations: StoredLocation[]; resetId?: string };
@@ -38,6 +38,7 @@ async function hydrate(raw: string | null): Promise<State> {
         question: location.quiz.question || content[index].question
       };
     }
+    location.quiz = currentLocationContent(location.quiz);
   });
   return state;
 }
