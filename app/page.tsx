@@ -87,6 +87,7 @@ export default function HomePage() {
       if (motion.matches) return finish();
       if (!artworkReady || !artwork.current || !introArtwork.current) return;
       const rect = artwork.current.getBoundingClientRect();
+      const frame = introArtwork.current.parentElement!.getBoundingClientRect();
       if (!introArtwork.current.animate) return finish();
       animation = introArtwork.current.animate(
         [
@@ -99,8 +100,8 @@ export default function HomePage() {
             borderWidth: "0px"
           },
           {
-            top: `${rect.top}px`,
-            left: `${rect.left}px`,
+            top: `${rect.top - frame.top}px`,
+            left: `${rect.left - frame.left}px`,
             width: `${rect.width}px`,
             height: `${rect.height}px`,
             borderRadius: "50%",
@@ -139,14 +140,14 @@ export default function HomePage() {
       lang="nl"
     >
       {!introDone && (
-        <div className="fixed inset-0 z-50" aria-hidden="true">
+        <div className="onboarding-overlay fixed inset-0 z-50" aria-hidden="true">
           <div ref={introArtwork} className="absolute inset-0 overflow-hidden border-ink bg-night">
             <Image
               src="/onboarding/matthew-trippy.png"
               alt=""
               fill
               priority
-              sizes="100vw"
+              sizes="(max-width: 430px) 100vw, 430px"
               className="object-cover object-[center_22%]"
               onLoad={() => setArtworkReady(true)}
               onError={() => setIntroDone(true)}
@@ -154,7 +155,7 @@ export default function HomePage() {
           </div>
         </div>
       )}
-      <div className="onboarding-layout mx-auto flex min-h-dvh w-full max-w-lg flex-col px-6 sm:px-8">
+      <div className="onboarding-layout mx-auto flex min-h-dvh w-full max-w-lg flex-col px-6">
         <header
           className="onboarding-copy flex items-center justify-between gap-4"
           inert={!introDone}
